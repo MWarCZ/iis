@@ -1,41 +1,65 @@
 <template>
-  <div class="film-wrapper">
+  <div>
     <div v-if="film !== undefined">
       <h2>{{film.name}}</h2>
-      <div class="film-item">
-        <div class="film-info-box">
-          <img class="film-img" src="@/assets/logo.png" :alt="film.name"/>
 
-          <div class="film-info">
-            <h3>Délka:</h3>
-            {{film.duration}}
+      <b-card>
 
-            <h3>Premiéra:</h3>
-            {{film.premiere}}
+        <b-card-group>
+          <b-card>
+            <img src="@/assets/logo.png" :alt="film.name"/>
+          </b-card>
+          <b-card :title="'<b>Název: </b>' + film.name">
+            <b-list-group flush>
 
-            <h3>Studio:</h3>
-            {{film.studio.name}}
+              <b-list-group-item>
+                <b>Délka:</b> {{film.duration}}
+              </b-list-group-item>
 
-            <h3>Žánry:</h3>
-            <span class="film-genre"
-              v-for="(genre, index) in film.genres"
-              :key="index"
-              >
-              {{genre.name}}
-            </span>
-          </div>
-        </div>
+              <b-list-group-item>
+                <b>Premiéra:</b> {{film.premiere}}
+              </b-list-group-item>
 
-        <div class="film-projections">
+              <b-list-group-item>
+                <b>Studio:</b> {{film.studio.name}}
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <b>Režisér:</b> {{film.director.lastname + ' ' + film.director.firstname}}
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <b>Herci:</b>
+                <span class="comma-line"
+                  v-for="(actor, index) in film.actors"
+                  :key="index">
+                  {{actor.lastname + ' ' + actor.firstname}}
+                </span>
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <b>Žánry:</b>
+                <b-badge class="badge-genre"
+                  variant="dark"
+                  v-for="(genre, index) in film.genres"
+                  :key="index">
+                  {{genre.name}}
+                </b-badge>
+              </b-list-group-item>
+
+            </b-list-group>
+          </b-card>
+        </b-card-group>
+
+        <b-card>
           <h2>Projekce</h2>
           <Projections :idFilm="id" />
-        </div>
+        </b-card>
 
-      </div>
-
+      </b-card>
     </div>
     <div v-else>
-      <h2>Film Neexistuje!</h2>
+      <h2>Film Neexistuje.</h2>
     </div>
   </div>
 </template>
@@ -78,6 +102,16 @@ export default {
             id
             name
           }
+          director {
+            id
+            firstname
+            lastname
+          }
+          actors {
+            id
+            firstname
+            lastname
+          }
         }
       }`
 
@@ -104,8 +138,19 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+.badge-genre {
+  font-size: 100%;
+  margin-left: 3px;
+}
+.comma-line:after {
+  content: ', ';
+  display: inline;
+}
+.comma-line:last-child:after {
+  content: ' ';
+}
+/*
 .film-item {
   display: flex;
   flex-direction: column;
@@ -140,4 +185,5 @@ h3:before {
 .film-info {
   overflow: auto;
 }
+ */
 </style>

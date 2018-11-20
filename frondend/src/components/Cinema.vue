@@ -1,37 +1,46 @@
 <template>
-  <div class="cinema-wrapper">
+  <div>
     <div v-if="cinema !== undefined">
       <h2>{{cinema.name}}</h2>
-      <div class="cinema-item">
-        <div class="cinema-info-box">
-          <img class="cinema-img" src="@/assets/logo.png" :alt="cinema.name"/>
 
-          <div class="cinema-info">
-            <h3>Adresa:</h3>
-            {{cinema.address}}
-            <h3>Místnosti:</h3>
-            <span
-              class="cinema-room"
-              v-for="(room, index) in cinema.rooms"
-              :key="index"
-              >
-              {{room.name}}({{room.capacity}} míst)</span>
-          </div>
+      <b-card>
 
-        </div>
+        <b-card-group>
+          <b-card>
+            <img src="@/assets/logo.png" :alt="cinema.name"/>
+          </b-card>
+          <b-card :title="'<b>Název: </b>' + cinema.name">
+            <b-list-group flush>
 
-        <div class="cinema-projections">
+              <b-list-group-item>
+                <b>Adresa:</b> {{cinema.address}}
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <b>Místnosti:</b>
+                <span class="comma-line"
+                  v-for="(room, index) in cinema.rooms"
+                  :key="index">
+                  {{room.name}}({{room.capacity}} míst)
+                </span>
+              </b-list-group-item>
+
+            </b-list-group>
+          </b-card>
+        </b-card-group>
+
+        <b-card>
           <h2>Projekce</h2>
           <Projections :idCinema="id" />
-        </div>
+        </b-card>
 
-      </div>
-
+      </b-card>
     </div>
     <div v-else>
-      <h2>Kino Neexistuje!</h2>
+      <h2>Kino Neexistuje.</h2>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -95,31 +104,12 @@ export default {
 
 <style scoped lang="less">
 
-.cinema-room:after {
+.comma-line:after {
   content: ', ';
   display: inline;
 }
-.cinema-room:last-child:after {
+.comma-line:last-child:after {
   content: ' '
-}
-.cinema-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.cinema-info-box {
-  display: flex;
-  align-items: center;
-  text-align: left;
-}
-
-h3 {
-  display: inline;
-}
-h3:before {
-  content: ' ';
-  display: block;
 }
 
 </style>

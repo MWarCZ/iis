@@ -1,4 +1,29 @@
 <template>
+  <div>
+    <b-card>
+      <router-link class="link-as-text" :to="'/cinema/'+cinema.id"
+        v-for="(cinema, index) in cinemas"
+        :key="index">
+        <b-card-group>
+          <b-card>
+            <img src="@/assets/logo.png" :alt="cinema.name"/>
+          </b-card>
+          <b-card :title="'<b>Název: </b>' + cinema.name">
+            <b-list-group flush>
+
+              <b-list-group-item>
+                <b>Adresa:</b> {{cinema.address}}
+              </b-list-group-item>
+
+            </b-list-group>
+          </b-card>
+        </b-card-group>
+      </router-link>
+
+    </b-card>
+  </div>
+
+<!--
   <div class="cinemas-wrapper">
     <div class="cinemas-box">
 
@@ -20,6 +45,7 @@
 
     </div>
   </div>
+-->
 </template>
 
 <script>
@@ -69,6 +95,19 @@ export default {
 </script>
 
 <style scoped lang="less">
+.link-as-text {
+  color: #2c3e50;
+  text-decoration: none;
+}
+.link-as-text:hover {
+  color: #2c3e50;
+  text-decoration: none;
+
+  .card, .list-group-item {
+    background-color: #eee;
+  }
+}
+/*
 .cinemas-item {
   display: flex;
   flex-direction: row;
@@ -84,4 +123,5 @@ h3:before {
   content: ' ';
   display: block;
 }
+*/
 </style>

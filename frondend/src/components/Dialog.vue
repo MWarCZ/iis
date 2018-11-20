@@ -35,6 +35,7 @@ export default {
   top: 0;
   bottom: 0;
   padding: 45px;
+  z-index: 10;
 }
 .dialog-dark {
   position: absolute;

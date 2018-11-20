@@ -1,32 +1,38 @@
 <template>
-  <div class="projections-wrapper">
+  <div>
     <div class="projections-filter-box">
 
-      <label v-if="idCinema === undefined">Kino:
-        <select v-model="selectIdCinema">
-          <option value="">
-          </option>
-          <template
-            v-for="(cinema, index) in cinemas"
-            >
+      <b-input-group v-if="idCinema === undefined"
+                     prepend="Kino:">
+        <b-form-select v-model="selectIdCinema">
+          <option :value="undefined" selected> ( Všechna kina )</option>
+          <template v-for="(cinema, index) in cinemas">
             <option :value="cinema.id" :key="index">
               {{cinema.name}}
             </option>
           </template>
-        </select>
-      </label>
+        </b-form-select>
+      </b-input-group>
 
-      <label v-if="idFilm === undefined">Film:
-        <input v-model="filmStartName">
-      </label>
+      <b-input-group v-if="idFilm === undefined"
+                     prepend="Film:">
+        <b-form-input v-model="filmStartName"
+                      type="text"
+                      label="film"
+                      placeholder="Název filmu.">
+        </b-form-input>
+      </b-input-group>
 
-      <label>Datum:
-        <input type="date" id="id_filter_date" v-model="_date">
-      </label>
+      <b-input-group prepend="Datum:">
+        <b-form-input v-model="_date"
+                      type="date">
+        </b-form-input>
+      </b-input-group>
 
     </div>
-    <div class="projections-box">
-      <table>
+    <div>
+      <table class="table b-table table-bordered table-striped table-hover">
+        <thead>
         <tr>
           <th>Datum</th>
           <th>Čas</th>
@@ -36,12 +42,14 @@
           <th>Základní cena</th>
           <th>Akce</th>
         </tr>
+        </thead>
+        <tbody>
         <tr v-for="(projection, index) in filterProjections()" :key="index">
           <td>
             {{DateTime.date2string(new Date(projection.datetime))}}
           </td>
           <td>
-            {{time2string(new Date(projection.datetime))}}
+            {{DateTime.time2string(new Date(projection.datetime))}}
           </td>
           <td>
             {{projection.type.film.name}}
@@ -59,6 +67,7 @@
             <button>Rezervovat</button>
           </td>
         </tr>
+        </tbody>
       </table>
 
     </div>
@@ -101,6 +110,7 @@ export default {
         return DateTime.date2string(this.mydate, 'input')
       },
       set (value) {
+        console.log('----------------------------')
         console.log('String Date: ', value)
         let newDate = new Date(value)
         if (isNaN(newDate.getTime())) {
@@ -113,11 +123,6 @@ export default {
     }
   },
   methods: {
-
-    time2string: function (dateValue, version) {
-      return dateValue.getHours() + ':' + dateValue.getMinutes()
-    },
-
     filterProjections () {
       let projections = this.projections
       // Filtr: Film start with ...
@@ -240,5 +245,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+
+.projections-filter-box {
+  display: flex;
+}
 
 </style>
