@@ -4,7 +4,22 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/films">Filmy</router-link> |
       <router-link to="/cinemas">Kina</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+
+      <template v-if="store.user === undefined">
+        <!--<router-link to="/login">Přihlasit se</router-link>-->
+        <a href="#" @click="loginVisible = true">Přihlásit se</a>
+      </template>
+      <template v-else>
+        <router-link to="/myaccount">Můj účet</router-link> |
+        <a href="#" @click="logout()">Odhlásit se</a>
+      </template>
+
+      <Dialog v-if="loginVisible" @close="loginVisible = false">
+        <h1>Přihlášení:</h1>
+        <Login @success="loginVisible = false; " />
+      </Dialog>
+
     </div>
 
     <keep-alive include="FilmsPage">
@@ -13,6 +28,38 @@
     <!--<router-view />-->
   </div>
 </template>
+
+<script>
+import Dialog from '@/components/Dialog.vue'
+import Login from '@/components/Login.vue'
+import store from '@/utils/Store.js'
+
+export default {
+  name: 'App',
+  components: {
+    Dialog,
+    Login
+  },
+  data: function () {
+    return {
+      loginVisible: false,
+      store: store
+    }
+  },
+  mounted: function () {
+    this.store.load()
+  },
+  methods: {
+    logout: function () {
+      this.store.user = undefined
+      this.store.save()
+      console.log('localStorage', localStorage)
+      this.$router.push('/')
+    }
+  }
+}
+
+</script>
 
 <style lang="less">
 

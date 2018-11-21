@@ -6,6 +6,8 @@ import FilmsPage from './views/FilmsPage.vue'
 import FilmPage from './views/FilmPage.vue'
 import CinemasPage from './views/CinemasPage.vue'
 import CinemaPage from './views/CinemaPage.vue'
+import LoginPage from './views/LoginPage.vue'
+import AccountPage from './views/AccountPage.vue'
 
 Vue.use(Router)
 
@@ -45,6 +47,16 @@ export default new Router({
       path: '/cinema/:id',
       name: 'Kino',
       component: CinemaPage
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginPage
+    },
+    {
+      path: '/myaccount',
+      name: 'My Account',
+      component: AccountPage
     }
   ]
 })

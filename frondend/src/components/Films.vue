@@ -1,49 +1,57 @@
 <template>
-  <div class="films-wrapper">
-    <div class="films-filter-box">
-      <label>Nazev:
-        <input v-model="filterStartName" placeholder="Napis nazev filmu">
-      </label>
-      <div id="films-filter-genre">
-        <label v-for="(genre, index) in genres" :key="index">
-          <input :value="genre.id" name="filterGenre" type="checkbox" v-model="filterGenre">
-          {{genre.name}}
-        </label>
-      </div>
-    </div>
-    <!--
-    <Dialog v-if="showFilm" @close="showFilm = false">
-      <Film :id="selectedFilmId" />
-    </Dialog>
-    -->
-    <div class="films-box">
+  <div>
 
-      <router-link :to="'/film/'+film.id"
-         class="film_item"
-         v-for="(film, index) in filterFilms()"
-         :key="index"
-         >
-      <!--<div class="films-film-item"
-          v-for="(film, index) in filterFilms()"
-          :key="index"
-          @click="selectedFilmId = film.id; showFilm = true;"
-          >-->
+    <b-card>
+      <b-input-group prepend="Název:">
+        <b-form-input v-model="filterStartName"
+                      type="text"
+                      label="film"
+                      placeholder="Napiš název filmu.">
+        </b-form-input>
+      </b-input-group>
 
-        <h3>{{film.name}}</h3>
-        <div class="films-film-img-box">
-          <img class="films-film-img" src="@/assets/logo.png" alt="film.name"/>
-          <span>
-            {{new Date(film.premiere).getFullYear()}}</span>
-        </div>
-        <span class="films-film-genre" v-for="(genre, index) in film.genres" :key="index">
-          {{genre.name}}
-        </span>
+      <b-input-group prepend="Žánry:">
+        <b-form-checkbox-group style="flex-wrap: wrap;" buttons v-model="filterGenre" >
+          <b-form-checkbox class="checkbox-genre"
+            v-for="(genre, index) in genres"
+            :key="index"
+            :value="genre.id">
+            {{genre.name}}
+          </b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-input-group>
+    </b-card>
 
-      <!--</div>-->
+    <b-card class="films-box">
+      <router-link class="link-as-text" :to="'/film/'+film.id"
+        v-for="(film, index) in filterFilms()"
+        :key="index">
+        <b-card-group>
+          <b-card :title="'<b>Název: </b>' + film.name">
+            <img src="@/assets/logo.png" :alt="film.name"/>
+            <b-list-group flush>
+
+              <b-list-group-item>
+                {{new Date(film.premiere).getFullYear()}}
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <b-badge class="badge-genre"
+                  variant="dark"
+                  v-for="(genre, index) in film.genres"
+                  :key="index">
+                  {{genre.name}}
+                </b-badge>
+              </b-list-group-item>
+
+            </b-list-group>
+          </b-card>
+        </b-card-group>
       </router-link>
 
-    </div>
+    </b-card>
   </div>
+
 </template>
 
 <script>
@@ -154,21 +162,37 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-.films-film-item {
-  overflow: hidden;
-  display: block;
-  max-width: 200px;
-}
-.films-film-img {
-  /*float: left;*/
-  display: block;
-}
-.films-film-genre {
-  border: 1px solid black;
-}
-.films-box {
+.films-box > .card-body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
+.link-as-text {
+  color: #2c3e50;
+  text-decoration: none;
+}
+.link-as-text:hover {
+  color: #2c3e50;
+  text-decoration: none;
+
+  .card, .list-group-item {
+    background-color: #eee;
+  }
+}
+.badge-genre {
+  font-size: 100%;
+  margin-left: 3px;
+}
+.checkbox-genre {
+  &:first-child {
+    margin-left: 2px;
+  }
+  &.btn-secondary:not(:disabled):not(.disabled).active {
+    background-color: #3a50d1;
+  }
+  &.btn:focus, &.btn.focus {
+    box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.25);
+  }
+}
+
 </style>
