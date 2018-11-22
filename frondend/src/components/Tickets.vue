@@ -4,6 +4,18 @@
       :fields="ticketsFields"
       :items="ticketsProvider()"
       sort-by="date">
+      <template slot="film" slot-scope="row">
+        <router-link class="link-as-text" :to="'/film/'+row.item.idFilm">
+        {{row.item.film}}
+        </router-link>
+      </template>
+
+      <template slot="cinema" slot-scope="row">
+        <router-link class="link-as-text" :to="'/film/'+row.item.idCinema">
+        {{row.item.cinema}}
+        </router-link>
+      </template>
+
     </b-table>
   </div>
 </template>

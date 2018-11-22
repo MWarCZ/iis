@@ -51,7 +51,7 @@ export default {
   methods: {
     loginClient: function () {
       let query = `{
-        client(login: "${this.login}", password: "${this.password}") {
+        clientLogin(login: "${this.login}", password: "${this.password}") {
           id
           firstname
           lastname
