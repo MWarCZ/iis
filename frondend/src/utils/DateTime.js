@@ -14,7 +14,7 @@ export default class DateTime {
 
   static time2string (date, version) {
     let strTime = ''
-    strTime = date.getHours() + ':' + date.getMinutes()
+    strTime = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
     return strTime
   }
 }

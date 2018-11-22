@@ -31,6 +31,18 @@
 
     </div>
     <div>
+
+      <b-table striped hover
+        :fields="fields"
+        :items="projectionsProvider()"
+        sort-by="date">
+        <template slot="event" slot-scope="data">
+          <b-button v-if="!!store.user">Rezervovat</b-button>
+          <span v-else>Rezervace jen pro přihlašené.</span>
+        </template>
+      </b-table>
+
+      <!--
       <table class="table b-table table-bordered table-striped table-hover">
         <thead>
         <tr>
@@ -69,6 +81,7 @@
         </tr>
         </tbody>
       </table>
+      -->
 
     </div>
   </div>
@@ -77,6 +90,7 @@
 <script>
 import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
+import store from '@/utils/Store.js'
 
 export default {
   name: 'Projections',
@@ -101,6 +115,16 @@ export default {
       films: [],
       mydate: new Date(),
       projections: [],
+      fields: [
+        { key: 'date', label: 'Datum', sortable: true },
+        { key: 'time', label: 'Čas', sortable: true},
+        { key: 'film', label: 'Film', sortable: true },
+        { key: 'cinema', label: 'Kino', sortable: true},
+        { key: 'room', label: 'Sál', sortable: true},
+        { key: 'price', label: 'Základní cena', sortable: true},
+        { key: 'event', label: 'Akce' }
+      ],
+      store: store,
       DateTime: DateTime
     }
   },
@@ -123,6 +147,26 @@ export default {
     }
   },
   methods: {
+    projectionsProvider () {
+      let projections = this.filterProjections ()
+      projections = projections.map((item) => {
+        let res = {}
+        res.id = item.id
+        res.datetime = new Date(item.datetime)
+        res.date = DateTime.date2string(res.datetime, 'input')
+        res.time = DateTime.time2string(res.datetime)
+        res.film = item.type.film.name
+        res.idFilm = item.type.film.id
+        res.cinema = item.room.cinema.name
+        res.idCinema = item.room.cinema.id
+        res.room = item.room.name
+        res.price = item.price
+
+        return res
+      })
+      return projections
+    },
+
     filterProjections () {
       let projections = this.projections
       // Filtr: Film start with ...

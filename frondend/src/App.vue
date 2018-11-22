@@ -46,7 +46,7 @@ export default {
       store: store
     }
   },
-  mounted: function () {
+  created: function () {
     this.store.load()
   },
   methods: {

@@ -3,12 +3,13 @@
     {{store}}
     <h1>This is an about page</h1>
     <!--<Filter v-model="select" :listOfValues="list" />-->
-    <Tickets :idUser="1" />
+    <Reservations :idClient="1" />
+    <!--<Tickets :idClient="1" />-->
     <button @click="showDialog = true">Open</button>
     <Dialog v-if="showDialog" @close="showDialog = false">
       <Film :id="1" />
     </Dialog>
-    <Projections />
+    <!--<Projections />-->
   </div>
 </template>
 
@@ -20,6 +21,8 @@ import Dialog from '@/components/Dialog.vue'
 import Projections from '@/components/Projections.vue'
 import store from '@/utils/Store.js'
 import Tickets from '@/components/Tickets.vue'
+import Reservations from '@/components/Reservations.vue'
+
 
 export default {
   name: 'About',
@@ -31,7 +34,8 @@ export default {
     Film,
     Dialog,
     Projections,
-    Tickets
+    Tickets,
+    Reservations
   },
   created: function () {
     console.log('Query filter: ', this.$route.query.filter)

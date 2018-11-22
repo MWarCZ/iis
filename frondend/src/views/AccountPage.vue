@@ -2,20 +2,25 @@
   <div>
     <button @click="$router.go(-1)">Zpět</button>
     <b-card>
+      <h1>Rezervace</h1>
+      <Reservations :idClient="idUser" />
       <h1>Zakoupené lístky</h1>
-      <Tickets :idUser="idUser"/>
+      <Tickets :idClient="idUser"/>
     </b-card>
   </div>
 </template>
 
 <script>
-import Tickets from '@/components/Tickets.vue'
 import store from '@/utils/Store.js'
+
+import Tickets from '@/components/Tickets.vue'
+import Reservations from '@/components/Reservations.vue'
 
 export default {
   name: 'AccountPage',
   components: {
-    Tickets
+    Tickets,
+    Reservations
   },
   data: function () {
     return {
