@@ -117,11 +117,11 @@ export default {
       projections: [],
       fields: [
         { key: 'date', label: 'Datum', sortable: true },
-        { key: 'time', label: 'Čas', sortable: true},
+        { key: 'time', label: 'Čas', sortable: true },
         { key: 'film', label: 'Film', sortable: true },
-        { key: 'cinema', label: 'Kino', sortable: true},
-        { key: 'room', label: 'Sál', sortable: true},
-        { key: 'price', label: 'Základní cena', sortable: true},
+        { key: 'cinema', label: 'Kino', sortable: true },
+        { key: 'room', label: 'Sál', sortable: true },
+        { key: 'price', label: 'Základní cena', sortable: true },
         { key: 'event', label: 'Akce' }
       ],
       store: store,
@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     projectionsProvider () {
-      let projections = this.filterProjections ()
+      let projections = this.filterProjections()
       projections = projections.map((item) => {
         let res = {}
         res.id = item.id

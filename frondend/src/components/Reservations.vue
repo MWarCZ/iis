@@ -66,10 +66,10 @@ export default {
       selectIdClient: this.idClient,
       reservations: [],
       fields: [
-        { key: 'dateAndTime', label: 'Zarezervováno'},
-        { key: 'code', label: 'Kód'},
-        { key: 'show_details', label: 'Zobrazit'},
-        { key: 'state', label: 'Stav'}
+        { key: 'dateAndTime', label: 'Zarezervováno' },
+        { key: 'code', label: 'Kód' },
+        { key: 'show_details', label: 'Zobrazit' },
+        { key: 'state', label: 'Stav' }
       ],
       mydate: new Date(),
       DateTime: DateTime

@@ -41,11 +41,11 @@ export default {
       ticketsList: this.tickets,
       ticketsFields: [
         { key: 'date', label: 'Datum', sortable: true },
-        { key: 'time', label: 'Čas', sortable: true},
+        { key: 'time', label: 'Čas', sortable: true },
         { key: 'film', label: 'Film', sortable: true },
-        { key: 'cinema', label: 'Kino', sortable: true},
-        { key: 'room', label: 'Sál', sortable: true},
-        { key: 'price', label: 'Cena', sortable: true}
+        { key: 'cinema', label: 'Kino', sortable: true },
+        { key: 'room', label: 'Sál', sortable: true },
+        { key: 'price', label: 'Cena', sortable: true }
       ],
       DateTime: DateTime
     }
@@ -65,11 +65,11 @@ export default {
         res.room = ticket.projection.room.name
         res.price =
           (ticket.sale)
-          ?this.getFinalPrice(
+            ? this.getFinalPrice(
               ticket.projection.price,
               ticket.sale.price,
               ticket.sale.precentage)
-          :ticket.projection.price
+            : ticket.projection.price
 
         return res
       })
@@ -123,7 +123,7 @@ export default {
     }
   },
   mounted: function () {
-    if(!!this.idClient) {
+    if (this.idClient) {
       this.downloadClietTickets()
     }
   }

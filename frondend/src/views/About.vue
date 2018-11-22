@@ -23,7 +23,6 @@ import store from '@/utils/Store.js'
 import Tickets from '@/components/Tickets.vue'
 import Reservations from '@/components/Reservations.vue'
 
-
 export default {
   name: 'About',
   data: () => ({
