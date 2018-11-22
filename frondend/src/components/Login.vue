@@ -63,7 +63,7 @@ export default {
         query: query
       })
         .then(res => {
-          this.user = res.data.data.client
+          this.user = res.data.data.clientLogin
           this.loginFailed = !this.user
           console.log('Client is:', this.user)
           if (!this.loginFailed) {
