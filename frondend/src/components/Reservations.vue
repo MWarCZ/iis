@@ -68,6 +68,7 @@ export default {
       fields: [
         { key: 'dateAndTime', label: 'Zarezervováno' },
         { key: 'code', label: 'Kód' },
+        { key: 'total_price', label: 'Celková cena' },
         { key: 'show_details', label: 'Zobrazit' },
         { key: 'state', label: 'Stav' }
       ],
@@ -79,6 +80,15 @@ export default {
     debug (...obj) {
       console.log(...obj)
     },
+
+    getFinalPrice: function (price, salePrice, salePercent) {
+      let sale = 0
+      sale += (salePrice) || 0
+      sale += (salePercent) ? (price * salePercent) : 0
+      let finalPrice = (price < sale) ? 0 : (price - sale)
+      return finalPrice
+    },
+
     reservationsProvider () {
       let reservations = this.reservations
       reservations = reservations.map((item) => {
@@ -90,6 +100,17 @@ export default {
         res.time = DateTime.time2string(res.registrated)
         res.dateAndTime = res.date + ' ' + res.time
         res.tickets = item.tickets
+        res.total_price = res.tickets.reduce((sum, item) => {
+          let price =
+            (item.sale)
+              ? this.getFinalPrice(
+                item.projection.price,
+                item.sale.price,
+                item.sale.precentage)
+              : item.projection.price
+
+          return sum + price
+        }, 0)
         res.state = 'STAV'
 
         // Nutne pro aktivaci zbalovaciho obsahu
@@ -107,6 +128,7 @@ export default {
           code
           registrated
           tickets {
+            seat
             sale {
               price
               precentage

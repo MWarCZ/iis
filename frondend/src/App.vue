@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/films">Filmy</router-link> |
       <router-link to="/cinemas">Kina</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link to="/about">HokusPokus</router-link> |
 
       <template v-if="store.user === undefined">
         <!--<router-link to="/login">Přihlasit se</router-link>-->

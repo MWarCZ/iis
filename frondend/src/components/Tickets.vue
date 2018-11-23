@@ -45,6 +45,7 @@ export default {
         { key: 'film', label: 'Film', sortable: true },
         { key: 'cinema', label: 'Kino', sortable: true },
         { key: 'room', label: 'Sál', sortable: true },
+        { key: 'seat', label: 'Sedadlo', sortable: true },
         { key: 'price', label: 'Cena', sortable: true }
       ],
       DateTime: DateTime
@@ -52,9 +53,11 @@ export default {
   },
   methods: {
     ticketsProvider: function () {
-      let tickets = this.ticketsList.map((ticket) => {
+      console.log(this.tickets)
+      let tickets = this.tickets.map((ticket) => {
         let res = {}
         res.id = ticket.id
+        res.seat = ticket.seat
         res.datetime = new Date(ticket.projection.datetime)
         res.date = DateTime.date2string(res.datetime, 'input')
         res.time = DateTime.time2string(res.datetime)
@@ -86,6 +89,7 @@ export default {
       let query = `{
         clientTickets(idClient: ${this.idClient}) {
           id
+          seat
           projection {
             datetime
             price
@@ -113,8 +117,8 @@ export default {
         query: query
       })
         .then(res => {
-          this.ticketsList = res.data.data.clientTickets
-          console.log('Tickets are downloaded.', this.ticketsList)
+          this.tickets = res.data.data.clientTickets
+          console.log('Tickets are downloaded.', this.tickets)
         })
         .catch(e => {
           console.log('Tickets are NOT downloaded.')

@@ -29,7 +29,7 @@ export default {
   overflow: auto;
   display: block;
   text-align: left;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;

@@ -37,10 +37,17 @@
         :items="projectionsProvider()"
         sort-by="date">
         <template slot="event" slot-scope="data">
-          <b-button v-if="!!store.user">Rezervovat</b-button>
+          <b-button v-if="!!store.user"
+            @click="showDialog = true">
+            Rezervovat
+          </b-button>
           <span v-else>Rezervace jen pro přihlašené.</span>
         </template>
       </b-table>
+
+      <ReservationDialog
+        :showDialog="showDialog"
+        @close="showDialog = false" />
 
       <!--
       <table class="table b-table table-bordered table-striped table-hover">
@@ -91,9 +98,13 @@
 import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
 import store from '@/utils/Store.js'
+import ReservationDialog from '@/components/ReservationDialog.vue'
 
 export default {
   name: 'Projections',
+  components: {
+    ReservationDialog
+  },
   props: {
     idCinema: {
       type: Number,
@@ -114,6 +125,7 @@ export default {
       cinemas: [],
       films: [],
       mydate: new Date(),
+      showDialog: false,
       projections: [],
       fields: [
         { key: 'date', label: 'Datum', sortable: true },
