@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
 
 export default {
@@ -58,21 +58,22 @@ export default {
         let res = {}
         res.id = ticket.id
         res.seat = ticket.seat
-        res.datetime = new Date(ticket.projection.datetime)
+        res.datetime = new Date(ticket.datetime)
         res.date = DateTime.date2string(res.datetime, 'input')
         res.time = DateTime.time2string(res.datetime)
-        res.film = ticket.projection.type.film.name
-        res.idFilm = ticket.projection.type.film.id
-        res.cinema = ticket.projection.room.cinema.name
-        res.idCinema = ticket.projection.room.cinema.id
-        res.room = ticket.projection.room.name
+        res.film = ticket.film
+        res.idFilm = ticket.idFilm
+        res.cinema = ticket.cinema
+        res.idCinema = ticket.idCinema
+        res.room = ticket.room
+        res.idRoom = ticket.idRoom
         res.price =
           (ticket.sale)
             ? this.getFinalPrice(
-              ticket.projection.price,
-              ticket.sale.price,
-              ticket.sale.precentage)
-            : ticket.projection.price
+              ticket.price,
+              ticket.salePrice,
+              ticket.salePrecentage)
+            : ticket.price
 
         return res
       })
@@ -84,7 +85,8 @@ export default {
       sale += (salePercent) ? (price * salePercent) : 0
       let finalPrice = (price < sale) ? 0 : (price - sale)
       return finalPrice
-    },
+    }
+    /*
     downloadClietTickets: function () {
       let query = `{
         clientTickets(idClient: ${this.idClient}) {
@@ -124,12 +126,28 @@ export default {
           console.log('Tickets are NOT downloaded.')
           console.log(e)
         })
-    }
+    } */
   },
   mounted: function () {
-    if (this.idClient) {
-      this.downloadClietTickets()
-    }
+    if (this.idClient !== undefined) {
+      // this.downloadClietTickets()
+      console.log('ASDF')
+
+      // Stazeni projektci
+      this.$myStore.backend.Tickets.getByIdClient(this.idClient)
+        .then(res => {
+          console.log('Tickets are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Tickets.', res })
+          }
+          this.tickets = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.tickets = []
+        })
+    }// if (this.idClient)
+    console.log('--------------', this.tickets)
   }
 }
 </script>

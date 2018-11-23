@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow:auto">
     <b-table striped hover
       :fields="fields"
       :items="reservationsProvider()"
@@ -16,37 +16,11 @@
       </template>
     </b-table>
 
-    <!--
-    <b-card>
-      <b-list-group flush>
-
-        <b-list-group-item v-for="(reservation, index) in reservations"
-          :key="index">
-
-          <b>{{reservation.code}}</b> |
-          {{DateTime.date2string(new Date(reservation.registrated),'input')}} |
-          {{DateTime.time2string(new Date(reservation.registrated))}} |
-          <b-button v-b-toggle="'r'+index">Zobrazit více</b-button>
-          <b-collapse :id="'r'+index">
-              <Tickets :tickets="reservation.tickets" />
-          </b-collapse>
-
-        </b-list-group-item>
-
-      </b-list-group>
-    </b-card>
-
-    <b-table striped hover :fields="fields" :items="reservations">
-      <template slot="registrated" slot-scope="data">
-        {{DateTime.date2string(new Date(data.item.registrated),'input')}} {{DateTime.time2string(new Date(data.item.registrated))}}
-      </template>
-    </b-table>
-    -->
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
 import Tickets from '@/components/Tickets.vue'
 
@@ -100,17 +74,24 @@ export default {
         res.time = DateTime.time2string(res.registrated)
         res.dateAndTime = res.date + ' ' + res.time
         res.tickets = item.tickets
-        res.total_price = res.tickets.reduce((sum, item) => {
-          let price =
+        console.log('PPPP>>', res.tickets)
+
+        if (res.tickets) {
+          res.total_price = res.tickets.reduce((sum, item) => {
+            let price =
             (item.sale)
               ? this.getFinalPrice(
-                item.projection.price,
-                item.sale.price,
-                item.sale.precentage)
-              : item.projection.price
+                item.price,
+                item.salePrice,
+                item.salePrecentage)
+              : item.price
 
-          return sum + price
-        }, 0)
+            return sum + price
+          }, 0)
+        }
+        else {
+          res.total_price = Number('NaN')
+        }
         res.state = 'STAV'
 
         // Nutne pro aktivaci zbalovaciho obsahu
@@ -119,55 +100,43 @@ export default {
         return res
       })
       return reservations
-    },
-
-    downloadReservations: function () {
-      let query = `{
-        clientReservations(idClient: ${this.idClient}) {
-          id
-          code
-          registrated
-          tickets {
-            seat
-            sale {
-              price
-              precentage
-            }
-            projection {
-              datetime
-              price
-              room {
-                name
-                cinema {
-                  id
-                  name
-                }
-              }
-              type {
-                film {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          this.reservations = res.data.data.clientReservations
-          console.log('Reservations are downloaded.', this.reservations)
-        })
-        .catch(e => {
-          console.log('Reservations are NOT downloaded.')
-          console.log(e)
-        })
     }
+
   },
   mounted: function () {
-    this.downloadReservations()
+    // this.downloadReservations()
+
+    // Stazeni rezervaci a listku
+    this.$myStore.backend.Reservations.getByIdClient(this.idClient)
+      .then(res => {
+        console.log('Reservations are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Reservations.', res })
+        }
+        // this.reservations = res
+        return res
+      })
+      .then(res => {
+        this.reservations = res
+        return Promise.all(res.map(reservation => {
+          return this.$myStore.backend.Tickets.getByIdReservation(reservation.id)
+            .then(res2 => {
+              reservation.tickets = res2
+              return res2
+            })
+            .catch(e => {
+              reservation.tickets = []
+              return undefined
+            })
+        }))
+      })
+      .then(res => {
+        this.$forceUpdate()
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.reservations = []
+      })
   }
 }
 </script>
