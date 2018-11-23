@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import Projections from '@/components/Projections.vue'
 
 export default {
@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-
+    /*
     downloadCinema: function () {
       let query = `{
         cinema(id: ${this.id}) {
@@ -92,12 +92,38 @@ export default {
           console.log('Cinema is NOT downloaded.')
           console.log(e)
         })
-    }
+    } */
 
   }, // methots
 
   mounted: function () {
-    this.downloadCinema()
+    // this.downloadCinema()
+
+    // Stazeni kin
+    this.$myStore.backend.Cinemas.getById(this.id)
+      .then(res => {
+        console.log('Cinema is:', res)
+        return this.$myStore.backend.Rooms.getByIdCinema(this.id)
+          .then(res2 => {
+            res.rooms = res2
+            console.log('Rooms are:', res)
+            return res
+          })
+          .catch(e => {
+            return undefined
+          })
+      })
+      .then(res => {
+        console.log('Cinema with Rooms is:', res)
+        if (res.id === undefined) {
+          throw new Error({ msg: 'Empty Cinema.', res })
+        }
+        this.cinema = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.cinema = undefined
+      })
   }
 }
 </script>

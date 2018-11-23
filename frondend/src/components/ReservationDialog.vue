@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import Dialog from '@/components/Dialog.vue'
 import Reservation from '@/components/Reservation.vue'
 

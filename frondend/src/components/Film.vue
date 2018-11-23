@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import Projections from '@/components/Projections.vue'
 
 export default {
@@ -85,7 +85,7 @@ export default {
     }
   },
   methods: {
-
+    /*
     downloadFilm: function () {
       let query = `{
         film(id: ` + this.id + `) {
@@ -128,12 +128,26 @@ export default {
           console.log('Film is NOT downloaded.')
           console.log(e)
         })
-    }
+    } */
 
   }, // methots
 
-  created: function () {
-    this.downloadFilm()
+  mounted: function () {
+    // this.downloadFilm()
+
+    // Ziskani filmu
+    this.$myStore.backend.Films.getById(this.id)
+      .then(res => {
+        console.log('Film is:', res)
+        if (res.id === undefined) {
+          throw new Error({ msg: 'Empty Film.', res })
+        }
+        this.film = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.film = undefined
+      })
   }
 }
 </script>

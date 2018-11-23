@@ -37,7 +37,7 @@
         :items="projectionsProvider()"
         sort-by="date">
         <template slot="event" slot-scope="data">
-          <b-button v-if="!!store.user"
+          <b-button v-if="!!$myStore.user"
             @click="showDialog = true">
             Rezervovat
           </b-button>
@@ -97,7 +97,7 @@
 <script>
 import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
-import store from '@/utils/Store.js'
+// import store from '@/utils/Store.js'
 import ReservationDialog from '@/components/ReservationDialog.vue'
 
 export default {
@@ -136,7 +136,7 @@ export default {
         { key: 'price', label: 'Základní cena', sortable: true },
         { key: 'event', label: 'Akce' }
       ],
-      store: store,
+      // store: store,
       DateTime: DateTime
     }
   },
@@ -146,15 +146,11 @@ export default {
         return DateTime.date2string(this.mydate, 'input')
       },
       set (value) {
-        console.log('----------------------------')
-        console.log('String Date: ', value)
         let newDate = new Date(value)
         if (isNaN(newDate.getTime())) {
           newDate = new Date()
         }
         this.mydate = newDate
-
-        console.log('New Date: ', this.mydate)
       }
     }
   },
@@ -272,7 +268,7 @@ export default {
           }
         }
       }`
-      axios.post('http://dev.mwarcz.cz', {
+      axios.post(this.$myStore.backend.url/* 'http://dev.mwarcz.cz' */, {
         query: query
       })
         .then(res => {

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 // import DateTime from '@/utils/DateTime.js'
 
 // import Film from '@/components/Film.vue'
@@ -80,6 +80,7 @@ export default {
     }
   },
   methods: {
+
     filterFilms: function () {
       let films = this.films
 
@@ -103,8 +104,8 @@ export default {
       })
 
       return films
-    },
-
+    }
+    /*
     downloadFilms: function () {
       let query = `{
         films {
@@ -151,11 +152,39 @@ export default {
           console.log(e)
         })
     }
+    */
   },
 
   mounted: function () {
-    this.downloadFilms()
-    this.downloadGenres()
+    // this.downloadFilms()
+    // this.downloadGenres()
+
+    // Stazeni filmu
+    this.$myStore.backend.Films.getAll()
+      .then(res => {
+        console.log('Films are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Films.', res })
+        }
+        this.films = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.films = []
+      })
+    // Stazeni zanru
+    this.$myStore.backend.Genres.getAll()
+      .then(res => {
+        console.log('Genres are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Genres.', res })
+        }
+        this.genres = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.genres = []
+      })
   }
 }
 </script>

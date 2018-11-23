@@ -23,33 +23,10 @@
     </b-card>
   </div>
 
-<!--
-  <div class="cinemas-wrapper">
-    <div class="cinemas-box">
-
-      <router-link :to="'/cinema/'+cinema.id"
-         class="cinemas-item"
-         v-for="(cinema, index) in cinemas"
-         :key="index"
-         >
-
-        <img class="cinemas-cinema-img" src="@/assets/logo.png" :alt="cinema.name"/>
-        <div class="cinemas-cinema-info">
-          <h3>Kino:</h3>
-          {{cinema.name}}
-          <h3>Adresa:</h3>
-          {{cinema.address}}
-        </div>
-
-      </router-link>
-
-    </div>
-  </div>
--->
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 // import Cinema from '@/components/Cinema.vue'
 
 export default {
@@ -65,6 +42,7 @@ export default {
     }
   },
   methods: {
+    /*
     downloadCinemas: function () {
       let query = `{
         cinemas {
@@ -85,11 +63,26 @@ export default {
           console.log('Cinemas are NOT downloaded.')
           console.log(e)
         })
-    }
+    } */
   },
 
   mounted: function () {
-    this.downloadCinemas()
+    // this.downloadCinemas()
+
+    // Stazeni kin
+
+    this.$myStore.backend.Cinemas.getAll()
+      .then(res => {
+        console.log('Cinemas are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Cinemas.', res })
+        }
+        this.cinemas = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.cinemas = []
+      })
   }
 }
 </script>

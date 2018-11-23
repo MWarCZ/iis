@@ -12,8 +12,9 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 
+Vue.prototype.$myStore = store
+
 new Vue({
-  store,
   router,
   render: h => h(App)
 }).$mount('#app')

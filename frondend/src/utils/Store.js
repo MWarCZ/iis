@@ -1,8 +1,10 @@
-
-// const store = new Vuex.Store({
+import backend from './Backend.js'
 
 const store = {
   xxx: 'Toto je sklad.',
+
+  backend: backend,
+
   user: undefined,
 
   save: function (storage = localStorage) {
