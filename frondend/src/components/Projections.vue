@@ -49,53 +49,12 @@
         :showDialog="showDialog"
         @close="showDialog = false" />
 
-      <!--
-      <table class="table b-table table-bordered table-striped table-hover">
-        <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Čas</th>
-          <th>Film</th>
-          <th>Kino</th>
-          <th>Sál</th>
-          <th>Základní cena</th>
-          <th>Akce</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(projection, index) in filterProjections()" :key="index">
-          <td>
-            {{DateTime.date2string(new Date(projection.datetime))}}
-          </td>
-          <td>
-            {{DateTime.time2string(new Date(projection.datetime))}}
-          </td>
-          <td>
-            {{projection.type.film.name}}
-          </td>
-          <td>
-            {{projection.room.cinema.name}}
-          </td>
-          <td>
-            {{projection.room.name}}
-          </td>
-          <td>
-            {{projection.price}}
-          </td>
-          <td>
-            <button>Rezervovat</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      -->
-
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
 // import store from '@/utils/Store.js'
 import ReservationDialog from '@/components/ReservationDialog.vue'
@@ -163,11 +122,12 @@ export default {
         res.datetime = new Date(item.datetime)
         res.date = DateTime.date2string(res.datetime, 'input')
         res.time = DateTime.time2string(res.datetime)
-        res.film = item.type.film.name
-        res.idFilm = item.type.film.id
-        res.cinema = item.room.cinema.name
-        res.idCinema = item.room.cinema.id
-        res.room = item.room.name
+        res.film = item.film
+        res.idFilm = item.idFilm
+        res.cinema = item.cinema
+        res.idCinema = item.idCinema
+        res.room = item.room
+        res.idRoom = item.idRoom
         res.price = item.price
 
         return res
@@ -179,18 +139,18 @@ export default {
       let projections = this.projections
       // Filtr: Film start with ...
       if (this.idFilm === undefined) {
-        projections = projections.filter(projection => projection.type.film.name.toLowerCase().startsWith(this.filmStartName.toLowerCase()))
+        projections = projections.filter(projection => projection.film.toLowerCase().startsWith(this.filmStartName.toLowerCase()))
       } else {
-        projections = projections.filter(projection => projection.type.film.id === this.idFilm)
+        projections = projections.filter(projection => projection.idFilm === this.idFilm)
       }
 
       // Filtr: Kino
       if (this.idCinema === undefined) {
         if (typeof (this.selectIdCinema) === 'number') {
-          projections = projections.filter(projection => projection.room.cinema.id === this.selectIdCinema)
+          projections = projections.filter(projection => projection.idCinema === this.selectIdCinema)
         }
       } else {
-        projections = projections.filter(projection => projection.room.cinema.id === this.idCinema)
+        projections = projections.filter(projection => projection.idCinema === this.idCinema)
       }
 
       // Filtr: Od data
@@ -205,86 +165,53 @@ export default {
         return 0
       })
 
+      console.log('>PROJ:', projections)
       return projections
-    },
-
-    downloadCinemas: function () {
-      let query = `{
-        cinemas {
-          id
-          name
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          this.cinemas = res.data.data.cinemas
-          console.log('Cinemas are downloaded.', this.cinemas)
-        })
-        .catch(e => {
-          console.log('Cinemas are NOT downloaded.')
-          console.log(e)
-        })
-    },
-    downloadFilms: function () {
-      let query = `{
-        films {
-          id
-          name
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          this.films = res.data.data.films
-          console.log('Films are downloaded.', this.films)
-        })
-        .catch(e => {
-          console.log('Films are NOT downloaded.')
-          console.log(e)
-        })
-    },
-    downloadProjections: function () {
-      let query = `{
-        projections {
-          id
-          price
-          datetime
-          type {
-            film {
-              id
-              name
-            }
-          }
-          room {
-            id
-            name
-            cinema {
-              id
-              name
-            }
-          }
-        }
-      }`
-      axios.post(this.$myStore.backend.url/* 'http://dev.mwarcz.cz' */, {
-        query: query
-      })
-        .then(res => {
-          this.projections = res.data.data.projections
-          console.log('Projections are downloaded.', this.projections)
-        })
-        .catch(e => {
-          console.log('Projections are NOT downloaded.')
-          console.log(e)
-        })
     }
+
   },
   mounted: function () {
-    this.downloadCinemas()
-    this.downloadFilms()
-    this.downloadProjections()
+    // Stazeni kin
+    this.$myStore.backend.Cinemas.getAll()
+      .then(res => {
+        console.log('Cinemas are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Cinemas.', res })
+        }
+        this.cinemas = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.cinemas = []
+      })
+
+    // Stazeni filmu
+    this.$myStore.backend.Films.getAll()
+      .then(res => {
+        console.log('Films are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Films.', res })
+        }
+        this.films = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.films = []
+      })
+
+    // Stazeni projektci
+    this.$myStore.backend.Projections.getAll()
+      .then(res => {
+        console.log('Projections are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Projections.', res })
+        }
+        this.projections = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.projections = []
+      })
   }
 /*
   // <h1>{{ msg }}</h1>
