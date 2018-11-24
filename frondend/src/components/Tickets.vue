@@ -67,6 +67,13 @@ export default {
         res.idCinema = ticket.idCinema
         res.room = ticket.room
         res.idRoom = ticket.idRoom
+
+        res.price = this.getFinalPrice(
+          ticket.price,
+          ticket.salePrice,
+          ticket.salePrecentage)
+
+        /*
         res.price =
           (ticket.sale)
             ? this.getFinalPrice(
@@ -74,6 +81,7 @@ export default {
               ticket.salePrice,
               ticket.salePrecentage)
             : ticket.price
+            */
 
         return res
       })
@@ -84,6 +92,7 @@ export default {
       sale += (salePrice) || 0
       sale += (salePercent) ? (price * salePercent) : 0
       let finalPrice = (price < sale) ? 0 : (price - sale)
+      console.log('PRICE:', finalPrice)
       return finalPrice
     }
     /*

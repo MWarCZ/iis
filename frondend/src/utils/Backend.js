@@ -7,6 +7,7 @@ import Rooms from './Rooms.js'
 import Projections from './Projections.js'
 import Tickets from './Tickets.js'
 import Reservations from './Reservations.js'
+import Clients from './Clients.js'
 
 const backend = {
   Cinemas,
@@ -16,6 +17,7 @@ const backend = {
   Projections,
   Tickets,
   Reservations,
+  Clients,
 
   url: BACKEND_URL
 }

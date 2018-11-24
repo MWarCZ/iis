@@ -74,22 +74,17 @@ export default {
         res.time = DateTime.time2string(res.registrated)
         res.dateAndTime = res.date + ' ' + res.time
         res.tickets = item.tickets
-        console.log('PPPP>>', res.tickets)
 
         if (res.tickets) {
           res.total_price = res.tickets.reduce((sum, item) => {
-            let price =
-            (item.sale)
-              ? this.getFinalPrice(
-                item.price,
-                item.salePrice,
-                item.salePrecentage)
-              : item.price
+            let price = this.getFinalPrice(
+              item.price,
+              item.salePrice,
+              item.salePrecentage)
 
             return sum + price
           }, 0)
-        }
-        else {
+        } else {
           res.total_price = Number('NaN')
         }
         res.state = 'STAV'
@@ -104,8 +99,6 @@ export default {
 
   },
   mounted: function () {
-    // this.downloadReservations()
-
     // Stazeni rezervaci a listku
     this.$myStore.backend.Reservations.getByIdClient(this.idClient)
       .then(res => {
@@ -141,7 +134,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 
 .clickable {

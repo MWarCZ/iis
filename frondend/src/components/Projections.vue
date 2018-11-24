@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: auto">
     <div class="projections-filter-box">
 
       <b-input-group v-if="idCinema === undefined"

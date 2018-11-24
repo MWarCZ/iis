@@ -1,6 +1,6 @@
 <template>
   <Dialog v-if="showDialog" @close="$emit('close')">
-    <b-card>
+    <b-card style="overflow:auto">
       <Reservation
         @fail="$emit('fail');$emit('close')"
         @success="$emit('success');$emit('close')" />

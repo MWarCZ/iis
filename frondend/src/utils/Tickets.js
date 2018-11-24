@@ -260,6 +260,37 @@ const Tickets = {
       .catch(e => {
         return {}
       })
+  },
+  /* [{
+   *   id
+   *   seat
+   * }]
+   */
+  getByIdProjection (id) {
+    let query = `{
+      values: projectionTickets(idProjection: ${id}) {
+          id
+          seat
+        }
+    }`
+    return axios.post(BACKEND_URL, {
+      query: query
+    })
+      .then(res => {
+        return res.data.data.values
+      })
+      .then(res => {
+        return res.map((item) => {
+          let newItem = {}
+          newItem.id = item.id
+          newItem.seat = item.seat
+
+          return newItem
+        })
+      })
+      .catch(e => {
+        return {}
+      })
   }
 
 }

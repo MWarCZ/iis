@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import store from '@/utils/Store.js'
 
 export default {
@@ -50,21 +50,11 @@ export default {
   },
   methods: {
     loginClient: function () {
-      let query = `{
-        clientLogin(login: "${this.login}", password: "${this.password}") {
-          id
-          firstname
-          lastname
-          login
-        }
-      }`
-      console.log('Query: ', query)
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
+      this.$myStore.backend.Clients.auth(this.login, this.password)
         .then(res => {
-          this.user = res.data.data.clientLogin
-          this.loginFailed = !this.user
+          this.user = res
+          this.loginFailed = !res
+
           console.log('Client is:', this.user)
           if (!this.loginFailed) {
             this.store.user = this.user
@@ -83,12 +73,6 @@ export default {
   },
   mounted: function () {
   }
-/*
-  // <h1>{{ msg }}</h1>
-  props: {
-    msg: String
-  },
-  */
 }
 </script>
 

@@ -91,6 +91,7 @@ const Projections = {
    *   cinema
    *   idRoom
    *   room
+   *   roomCapacity
    * }
    */
   getById (id) {
@@ -108,6 +109,7 @@ const Projections = {
           room {
             id
             name
+            capacity
             cinema {
               id
               name
@@ -132,6 +134,7 @@ const Projections = {
         newItem.cinema = item.room.cinema.name
         newItem.idRoom = item.room.id
         newItem.room = item.room.name
+        newItem.roomCapacity = item.room.capacity
 
         return newItem
       })

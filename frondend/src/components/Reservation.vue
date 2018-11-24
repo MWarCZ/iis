@@ -1,7 +1,7 @@
 <template>
-  <b-card v-if="!!projection" :title="projection.type.film.name">
+  <b-card v-if="!!projection" :title="projection.film">
     <table>
-      <template v-for="(row, index) in seatsProvider(projection.room.capacity, 10, disabledSeats)">
+      <template v-for="(row, index) in seatsProvider(projection.roomCapacity, 10, disabledSeats)">
         <tr :key="index">
           <td v-for="(seat, jindex) in row" :key="jindex">
             <b-button
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import Tickets from '@/components/Tickets.vue'
 
 export default {
@@ -65,8 +65,10 @@ export default {
       tickets = this.seats.map((seat) => {
         return {
           seat: seat,
-          projection: this.projection,
-          sale: undefined
+          ...this.projection,
+          // TODO: Sale
+          salePrice: 0,
+          salePrecentage: 0
         }
       })
       console.log('TTT', tickets)
@@ -88,68 +90,40 @@ export default {
         }
       }
       return seats
-    },
-    downloadProjectionTickets: function () {
-      let query = `{
-        projectionTickets(idProjection: ${this.idProjection}) {
-          seat
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          this.disabledSeats = res.data.data.projectionTickets.map((ticket) => {
-            return ticket.seat
-          })
-          console.log('disabledSeats  are downloaded.', this.disabledSeats)
-        })
-        .catch(e => {
-          console.log('disabledSeats  are NOT downloaded.')
-          console.log(e)
-        })
-    },
-
-    downloadProjection: function () {
-      let query = `{
-        projection(id: ${this.idProjection}) {
-          id
-          price
-          datetime
-          type {
-            film {
-              id
-              name
-            }
-          }
-          room {
-            id
-            name
-            capacity
-            cinema {
-              id
-              name
-            }
-          }
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          this.projection = res.data.data.projection
-          console.log('Projections are downloaded.', this.projection)
-        })
-        .catch(e => {
-          console.log('Projections are NOT downloaded.')
-          console.log(e)
-        })
     }
   }, // methots
 
   mounted: function () {
-    this.downloadProjection()
-    this.downloadProjectionTickets()
+    // Ziskani projektce
+    this.$myStore.backend.Projections.getById(this.idProjection)
+      .then(res => {
+        console.log('Projection is:', res)
+        if (res.id === undefined) {
+          throw new Error({ msg: 'Empty Projection.', res })
+        }
+
+        this.projection = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.projection = undefined
+      })
+
+    // Ziskani listku
+    this.$myStore.backend.Tickets.getByIdProjection(this.idProjection)
+      .then(res => {
+        console.log('Tickets are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Tickets.', res })
+        }
+        this.disabledSeats = res.map((ticket) => {
+          return ticket.seat
+        })
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.disabledSeats = []
+      })
   }
 }
 </script>
