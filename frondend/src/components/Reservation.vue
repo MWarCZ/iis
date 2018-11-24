@@ -17,7 +17,7 @@
 
     <Tickets :x="seats" :tickets="ticketsProvider()"/>
     <b-button variant="primary"
-      @click="$emit('success')">
+      @click="sendReservation(); $emit('success')">
       Rezervovat
     </b-button>
     <b-button variant="secondary"
@@ -51,6 +51,11 @@ export default {
     }
   },
   methods: {
+    sendReservation () {
+      console.log('RESERVATION')
+      // TODO
+    },
+
     toggleSeat (seatNumber) {
       let index = this.seats.indexOf(seatNumber)
       if (index > -1) {

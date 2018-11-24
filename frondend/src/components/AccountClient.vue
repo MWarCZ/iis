@@ -28,15 +28,95 @@
         </b-form-input>
       </b-input-group>
 
+      <br />
+
+      <b-button-group>
+        <b-button v-b-toggle="'account_update'">
+          Upravit profil
+        </b-button>
+        <b-button v-b-toggle="'password_update'">
+          Změnit helso
+        </b-button>
+      </b-button-group>
+
+      <b-collapse id="account_update" :visible="false">
+        <b-card title="Upravit účet">
+
+          <b-input-group prepend="Jméno:">
+            <b-form-input v-model="newUser.firstname"
+                      type="text"
+                      label="firstname"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+          <b-input-group prepend="Příjmení:">
+            <b-form-input v-model="newUser.lastname"
+                      type="text"
+                      label="lastname"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+         <b-input-group prepend="Login:">
+            <b-form-input v-model="newUser.login"
+                      type="text"
+                      label="login"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+          <b-button variant="primary"
+            @click="updateAccount()">
+            Ulozit
+          </b-button>
+
+        </b-card>
+      </b-collapse>
+
+      <b-collapse id="password_update" :visible="false">
+        <b-card title="Změnit heslo">
+
+         <b-input-group prepend="Nové heslo:">
+            <b-form-input v-model="newPassword"
+                      type="password"
+                      label="newPassword"
+                      :state="checkNewPassword()"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+         <b-input-group prepend="Znovu heslo:">
+            <b-form-input v-model="newPassword2"
+              type="password"
+              label="newPassword2"
+              :state="checkRepeatNewPassword()"
+              >
+            </b-form-input>
+          </b-input-group>
+
+         <b-input-group prepend="Staré heslo:">
+            <b-form-input v-model="oldPassword"
+                      type="password"
+                      label="oldPassword"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+          <b-button variant="primary"
+            @click="updatePassword()">
+            Ulozit
+          </b-button>
+
+        </b-card>
+      </b-collapse>
+
     </b-card>
 
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import store from '@/utils/Store.js'
-
 export default {
   name: 'AccountClient',
   props: {
@@ -48,44 +128,64 @@ export default {
   data: function () {
     return {
       user: undefined,
-      store: store
+      newUser: {},
+      newPassword: '',
+      newPassword2: '',
+      oldPassword: ''
     }
   },
   computed: {
   },
   methods: {
-    downloadClient: function () {
-      let query = `{
-        client(id: ${this.idClient}) {
-          id
-          firstname
-          lastname
-          login
-        }
-      }`
-      console.log('Query: ', query)
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
+    checkNewPassword () {
+      return !!this.newPassword
+    },
+    checkRepeatNewPassword () {
+      return !!this.newPassword && (this.newPassword === this.newPassword2)
+    },
+    updateAccount () {
+      let user = {
+        ...this.newUser
+      }
+      console.log('======================')
+      console.log('OLD USER:', this.user)
+      console.log('NEW USER:', this.newUser)
+      console.log('USER:', user)
+
+      // TODO
+      /*
+      this.$myStore.Clients.updateAccount(user.id, user.firstname, user.lastname, user.login)
         .then(res => {
-          this.user = res.data.data.client
-          console.log('Client is:', this.user)
+          console.log('USER RES', res)
         })
-        .catch(e => {
-          console.log('Client problem.')
-          console.log(e)
-        })
+        */
+    },
+    updatePassword () {
+      console.log('OLD PASSWORD:', this.oldPassword)
+      console.log('NEW PASSWORD:', this.newPassword)
+
+      if (this.checkNewPassword() && this.checkRepeatNewPassword()) {
+        // TODO
+        console.log('OK')
+      }
     }
   },
   mounted: function () {
-    this.downloadClient()
+    // Ziskani klienta
+    this.$myStore.backend.Clients.getById(this.idClient)
+      .then(res => {
+        console.log('Client is:', res)
+        if (res.id === undefined) {
+          throw new Error({ msg: 'Empty Client.', res })
+        }
+        this.user = res
+        this.newUser = { ...res }
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.user = undefined
+      })
   }
-/*
-  // <h1>{{ msg }}</h1>
-  props: {
-    msg: String
-  },
-  */
 }
 </script>
 
