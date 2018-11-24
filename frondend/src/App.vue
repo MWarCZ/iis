@@ -6,7 +6,7 @@
       <router-link to="/cinemas">Kina</router-link> |
       <router-link to="/about">HokusPokus</router-link> |
 
-      <template v-if="store.user === undefined">
+      <template v-if="$myStore.user === undefined">
         <!--<router-link to="/login">Přihlasit se</router-link>-->
         <a href="#" @click="loginVisible = true">Přihlásit se</a>
       </template>
@@ -18,6 +18,8 @@
       <Dialog v-if="loginVisible" @close="loginVisible = false">
         <h1>Přihlášení:</h1>
         <Login @success="loginVisible = false; " />
+        <h1>Registrace:</h1>
+        <Register />
       </Dialog>
 
     </div>
@@ -32,28 +34,28 @@
 <script>
 import Dialog from '@/components/Dialog.vue'
 import Login from '@/components/Login.vue'
-import store from '@/utils/Store.js'
+import Register from '@/components/Register.vue'
+// import store from '@/utils/Store.js'
 
 export default {
   name: 'App',
   components: {
     Dialog,
-    Login
+    Login,
+    Register
   },
   data: function () {
     return {
-      loginVisible: false,
-      store: store
+      loginVisible: false
     }
   },
   created: function () {
-    this.store.load()
+    this.$myStore.load()
   },
   methods: {
     logout: function () {
-      this.store.user = undefined
-      this.store.save()
-      console.log('localStorage', localStorage)
+      this.$myStore.user = undefined
+      this.$myStore.save()
       this.$router.push('/')
     }
   }

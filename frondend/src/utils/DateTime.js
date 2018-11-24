@@ -26,4 +26,10 @@ export default class DateTime {
     strTime = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
     return strTime
   }
+
+  static getAge (birthday, nowDate = new Date()) {
+    let ageDifMs = Date.now() - birthday.getTime()
+    let ageDate = new Date(ageDifMs) // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
+  }
 }
