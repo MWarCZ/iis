@@ -28,11 +28,11 @@ const Cinemas = {
       })
   },
   /* {
-     *   id
-     *   name
-     *   address
-     * }
-     */
+   *   id
+   *   name
+   *   address
+   * }
+   */
   getById (id) {
     let query = `{
         values: cinema(id: ${id}) {
@@ -50,7 +50,81 @@ const Cinemas = {
       .catch(e => {
         return {}
       })
+  },
+
+  /// /////// ///
+  //  ADD NEW  //
+  /// /////// ///
+
+  /* OK:
+   * {
+   *   id
+   *   name
+   *   address
+   * }
+   *
+   * KO:
+   *   null | false
+   */
+  add (name, address) {
+    // TODO
+    return axios.post(BACKEND_URL, {
+    })
+      .then(res => {
+        return res.data
+      })
+      .catch(e => {
+        return undefined
+      })
+  },
+
+  /// ////// ///
+  //  UPDATE  //
+  /// ////// ///
+
+  /* OK:
+   * {
+   *   id
+   *   name
+   *   address
+   * }
+   *
+   * KO:
+   *   null | false
+   */
+  update (id, name, address) {
+    // TODO
+    return axios.post(BACKEND_URL, {
+    })
+      .then(res => {
+        return res.data
+      })
+      .catch(e => {
+        return undefined
+      })
+  },
+
+  /// ////// ///
+  //  REMOVE  //
+  /// ////// ///
+
+  /* OK:
+   *   true
+   *
+   * KO:
+   *   null | false
+   */
+  remove (id) {
+    // TODO
+    return axios.post(BACKEND_URL, {
+    })
+      .then(res => {
+        return res.data
+      })
+      .catch(e => {
+        return undefined
+      })
   }
-}// Cinemas
+}
 
 export default Cinemas

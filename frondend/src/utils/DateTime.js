@@ -1,5 +1,11 @@
-
+/**
+ * Trida pro praci s typen Date.
+ *
+ */
 export default class DateTime {
+  /**
+   *  Prevod Date na textovou reprezentaci datumu
+   */
   static date2string (date, version) {
     let strDate = ''
     if (version === 'input') {
@@ -12,6 +18,9 @@ export default class DateTime {
     return strDate
   }
 
+  /**
+   * Prevod Date na textovou reprezentaci casu
+   */
   static time2string (date, version) {
     let strTime = ''
     strTime = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
