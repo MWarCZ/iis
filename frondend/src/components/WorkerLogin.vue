@@ -23,7 +23,7 @@
         </b-form-input>
       </b-input-group>
 
-      <b-button variant="primary" @click="loginClient()">
+      <b-button variant="primary" @click="loginWorker()">
         Přihlásit se
       </b-button>
     </b-card>
@@ -32,16 +32,14 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import store from '@/utils/Store.js'
 
 export default {
-  name: 'Login',
+  name: 'WorkerLogin',
   props: {
   },
   data: function () {
     return {
-      user: undefined,
+      worker: undefined,
       login: '',
       password: '',
       loginFailed: false
@@ -50,22 +48,22 @@ export default {
   computed: {
   },
   methods: {
-    loginClient: function () {
-      this.$myStore.backend.Clients.auth(this.login, this.password)
+    loginWorker: function () {
+      this.$myStore.backend.Workers.auth(this.login, this.password)
         .then(res => {
-          this.user = res
+          this.worker = res
           this.loginFailed = !res
 
-          console.log('Client is:', this.user)
+          console.log('Worker is:', this.worker)
           if (!this.loginFailed) {
-            this.$myStore.user = this.user
+            this.$myStore.worker = this.worker
             this.$myStore.save()
             this.$emit('success')
           }
           this.$emit('failed')
         })
         .catch(e => {
-          console.log('Client problem.')
+          console.log('Worker problem.')
           console.log(e)
           this.loginFailed = true
           this.$emit('failed')

@@ -2,17 +2,31 @@
 import axios from 'axios'
 import BACKEND_URL from './constant.js'
 
-const Clients = {
+const Workers = {
   /* [{
    *   id
    *   login
+   *   firstname
+   *   lastname
+   *   job  // prodavac, vedouci
+   *   salary
+   *   idCinema
+   *   cinema
    * }]
    */
   getAll () {
     let query = `{
-      values: clients {
+      values: workers {
         id
         login
+        firstname
+        lastname
+        job
+        salary
+        cinema {
+          id
+          name
+        }
       }
     }`
     return axios.post(BACKEND_URL, {
@@ -30,15 +44,25 @@ const Clients = {
    *   login
    *   firstname
    *   lastname
+   *   job
+   *   salary
+   *   idCinema
+   *   cinema
    * }
    */
   getById (id) {
     let query = `{
-      values: client(id: ${id}) {
+      values: worker(id: ${id}) {
         id
         login
         firstname
         lastname
+        job
+        salary
+        cinema {
+          id
+          name
+        }
       }
     }`
     return axios.post(BACKEND_URL, {
@@ -46,6 +70,58 @@ const Clients = {
     })
       .then(res => {
         return res.data.data.values
+      })
+      .then(res => {
+        return {
+          ...res,
+          cinema: res.cinema.name,
+          idCinema: res.cinema.id
+        }
+      })
+      .catch(e => {
+        return {}
+      })
+  },
+  /* [{
+   *   id
+   *   login
+   *   firstname
+   *   lastname
+   *   job
+   *   salary
+   *   idCinema
+   *   cinema
+   * }]
+   */
+  getByIdCinema (id) {
+    let query = `{
+      values: cinemaWorker(idCinema: ${id}) {
+        id
+        login
+        firstname
+        lastname
+        job
+        salary
+        cinema {
+          id
+          name
+        }
+      }
+    }`
+    return axios.post(BACKEND_URL, {
+      query: query
+    })
+      .then(res => {
+        return res.data.data.values
+      })
+      .then(res => {
+        return res.map(item => {
+          return {
+            ...item,
+            cinema: res.cinema.name,
+            idCinema: res.cinema.id
+          }
+        })
       })
       .catch(e => {
         return {}
@@ -56,15 +132,20 @@ const Clients = {
    *   login
    *   firstname
    *   lastname
+   *   idCinema
    * }
    */
   auth (login, password) {
     let query = `{
-      values: clientLogin(login: "${login}", password: "${password}") {
+      values: workerLogin(login: "${login}", password: "${password}") {
         id
         login
         firstname
         lastname
+        cinema {
+          id
+          name
+        }
       }
     }`
     return axios.post(BACKEND_URL, {
@@ -72,6 +153,14 @@ const Clients = {
     })
       .then(res => {
         return res.data.data.values
+      })
+      .then(res => {
+        let newItem = {
+          ...res,
+          cinema: res.cinema.name,
+          idCinema: res.cinema.id
+        }
+        return newItem
       })
       .catch(e => {
         return {}
@@ -89,7 +178,7 @@ const Clients = {
    *   lastname
    * }
    */
-  add (firstname, lastname, login, password) {
+  add (firstname, lastname, login, password, idCinema, job, salary) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
@@ -110,9 +199,10 @@ const Clients = {
    *   login
    *   firstname
    *   lastname
+   *
    * }
    */
-  update (id, firstname, lastname, login) {
+  update (id, firstname, lastname, login, password, idCinema, job, salary) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
@@ -166,4 +256,4 @@ const Clients = {
 
 }
 
-export default Clients
+export default Workers

@@ -6,12 +6,19 @@
       <router-link to="/cinemas">Kina</router-link> |
       <router-link to="/about">HokusPokus</router-link> |
 
-      <template v-if="$myStore.user === undefined">
+      <template v-if="$myStore.user !== undefined">
+        <router-link to="/myaccount">Můj účet</router-link> |
+      </template>
+
+      <template v-if="$myStore.worker !== undefined">
+        <router-link to="/sell">Prodej</router-link> |
+      </template>
+
+      <template v-if="$myStore.user === undefined && $myStore.worker === undefined">
         <!--<router-link to="/login">Přihlasit se</router-link>-->
         <a href="#" @click="loginVisible = true">Přihlásit se</a>
       </template>
       <template v-else>
-        <router-link to="/myaccount">Můj účet</router-link> |
         <a href="#" @click="logout()">Odhlásit se</a>
       </template>
 
@@ -20,6 +27,13 @@
         <Login @success="loginVisible = false; " />
         <h1>Registrace:</h1>
         <Register />
+        <a href="#" v-b-toggle="'worker_login'">
+          Vstup pro zaměstance
+        </a>
+        <b-collapse id="worker_login">
+          <h2>Přihlášení zaměstance:</h2>
+          <WorkerLogin @success="loginVisible = false; " />
+        </b-collapse>
       </Dialog>
 
     </div>
@@ -35,6 +49,7 @@
 import Dialog from '@/components/Dialog.vue'
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
+import WorkerLogin from '@/components/WorkerLogin.vue'
 // import store from '@/utils/Store.js'
 
 export default {
@@ -42,7 +57,8 @@ export default {
   components: {
     Dialog,
     Login,
-    Register
+    Register,
+    WorkerLogin
   },
   data: function () {
     return {
@@ -55,8 +71,10 @@ export default {
   methods: {
     logout: function () {
       this.$myStore.user = undefined
+      this.$myStore.worker = undefined
       this.$myStore.save()
       this.$router.push('/')
+      this.$forceUpdate()
     }
   }
 }
