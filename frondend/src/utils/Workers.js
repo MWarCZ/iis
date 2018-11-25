@@ -163,7 +163,7 @@ const Workers = {
         return newItem
       })
       .catch(e => {
-        return {}
+        return null
       })
   },
 

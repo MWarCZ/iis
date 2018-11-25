@@ -59,8 +59,9 @@ export default {
             this.$myStore.worker = this.worker
             this.$myStore.save()
             this.$emit('success')
+          } else {
+            this.$emit('failed')
           }
-          this.$emit('failed')
         })
         .catch(e => {
           console.log('Worker problem.')

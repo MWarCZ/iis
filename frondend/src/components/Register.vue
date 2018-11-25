@@ -9,6 +9,7 @@
         <b-form-input v-model="client.firstname"
                       type="text"
                       label="firstname"
+                      :state="checkName(client.firstname)"
                       placeholder="Váše křestní jméno.">
         </b-form-input>
       </b-input-group>
@@ -17,6 +18,7 @@
         <b-form-input v-model="client.lastname"
                       type="text"
                       label="lastname"
+                      :state="checkName(client.lastname)"
                       placeholder="Váše příjmení.">
         </b-form-input>
       </b-input-group>
@@ -25,6 +27,7 @@
         <b-form-input v-model="client.login"
                       type="text"
                       label="login"
+                      :state="checkLogin(client.login)"
                       placeholder="Váše přihlašovací jméno.">
         </b-form-input>
       </b-input-group>
@@ -33,14 +36,16 @@
         <b-form-input v-model="password"
                       type="password"
                       label="heslo"
+                      :state="checkNewPassword(password)"
                       placeholder="Váše přihlašovací heslo.">
         </b-form-input>
       </b-input-group>
 
       <b-input-group prepend="Heslo znovu:">
         <b-form-input v-model="password2"
-                      type="password2"
+                      type="password"
                       label="heslo"
+                      :state="checkRepeatNewPassword(password, password2)"
                       placeholder="Váše přihlašovací heslo znovu.">
         </b-form-input>
       </b-input-group>
@@ -79,7 +84,48 @@ export default {
   computed: {
   },
   methods: {
-    loginClient: function () {
+    checkName (name) {
+      return !!name
+    },
+    checkLogin (login) {
+      // TODO test s backendem
+      return !!login
+    },
+    checkNewPassword (password1) {
+      return !!password1
+    },
+    checkRepeatNewPassword (password1, password2) {
+      return !!password1 && (password1 === password2)
+    },
+    checkBirthday (date) {
+      // TODO
+      return true
+    },
+
+    registerClient: function () {
+      console.log('Register client.')
+      if (this.checkName(this.client.firstname) &&
+        this.checkName(this.client.lastname) &&
+        this.checkLogin(this.client.login) &&
+        this.checkNewPassword(this.password) &&
+        this.checkRepeatNewPassword(this.password, this.password2)
+      ) {
+        this.client.password = this.password
+        // TODO
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+            this.$emit('success', { client: this.client })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.registerFailed = true
+            this.$emit('fail')
+          })
+      } else {
+        this.registerFailed = true
+        this.$emit('fail')
+      }
       /*
       this.$myStore.backend.Clients.auth(this.login, this.password)
         .then(res => {

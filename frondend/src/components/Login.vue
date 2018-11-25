@@ -61,8 +61,9 @@ export default {
             this.$myStore.user = this.user
             this.$myStore.save()
             this.$emit('success')
+          } else {
+            this.$emit('failed')
           }
-          this.$emit('failed')
         })
         .catch(e => {
           console.log('Client problem.')
