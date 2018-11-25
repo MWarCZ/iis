@@ -29,6 +29,39 @@
           </b-card>
         </b-card-group>
 
+        <b-card-group v-if="!!$myStore.worker">
+          <b-card>
+            <h2>Akce:</h2>
+            <b-button-group vertical>
+              <b-button variant="outline-primary"
+                @click="showDialogEditCinema = true">
+                Upravit informace
+              </b-button>
+              <b-button variant="outline-primary"
+                @click="showDialogAddRoom = true">
+                Přidat místnost
+              </b-button>
+            </b-button-group>
+
+            <Dialog v-if="showDialogEditCinema"
+              @close="showDialogEditCinema = false">
+              <CinemaEdit :cinema="cinema"
+                @success="cinemaRefresh(...arguments); showDialogEditCinema = false" />
+            </Dialog>
+            <Dialog v-if="showDialogAddRoom"
+              @close="showDialogAddRoom = false">
+              <RoomAdd :idCinema="cinema.id"
+                @success="roomRefresh(...arguments); showDialogAddRoom = false" />
+            </Dialog>
+
+          </b-card>
+          <b-card>
+            <h2>Místnosti:</h2>
+            <RoomsList :rooms="cinema.rooms"
+              @success="roomsRefresh(...arguments)" />
+          </b-card>
+        </b-card-group>
+
         <b-card>
           <h2>Projekce</h2>
           <Projections :idCinema="id" />
@@ -46,15 +79,25 @@
 <script>
 // import axios from 'axios'
 import Projections from '@/components/Projections.vue'
+import RoomsList from '@/components/RoomsList.vue'
+import CinemaEdit from '@/components/CinemaEdit.vue'
+import RoomAdd from '@/components/RoomAdd.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'Cinema',
   components: {
-    Projections
+    Projections,
+    RoomsList,
+    CinemaEdit,
+    RoomAdd,
+    Dialog
   },
   data: function () {
     return {
-      cinema: undefined
+      cinema: undefined,
+      showDialogEditCinema: false,
+      showDialogAddRoom: false
     }
   },
   props: {
@@ -64,35 +107,21 @@ export default {
     }
   },
   methods: {
-    /*
-    downloadCinema: function () {
-      let query = `{
-        cinema(id: ${this.id}) {
-          id
-          name
-          address
-          rooms {
-            id
-            name
-            capacity
-          }
-        }
-      }`
-
-      console.log('GraphQL query:', query)
-
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          console.log('Cinema is downloading.')
-          this.cinema = res.data.data.cinema
-        })
-        .catch(e => {
-          console.log('Cinema is NOT downloaded.')
-          console.log(e)
-        })
-    } */
+    debug (...values) {
+      console.log(...values)
+    },
+    roomsRefresh (args) {
+      let { rooms } = args
+      this.cinema.rooms = rooms
+    },
+    roomRefresh (args) {
+      let { room } = args
+      this.cinema.rooms.push(room)
+    },
+    cinemaRefresh (args) {
+      let { cinema } = args
+      this.cinema = cinema
+    }
 
   }, // methots
 

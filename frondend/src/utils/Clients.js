@@ -74,7 +74,7 @@ const Clients = {
         return res.data.data.values
       })
       .catch(e => {
-        return {}
+        return null
       })
   },
 

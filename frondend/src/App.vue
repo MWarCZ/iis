@@ -24,7 +24,7 @@
 
       <Dialog v-if="loginVisible" @close="loginVisible = false">
         <h1>Přihlášení:</h1>
-        <Login @success="loginVisible = false; " />
+        <Login @success="loginVisible = false;" />
         <h1>Registrace:</h1>
         <Register />
         <a href="#" v-b-toggle="'worker_login'">
@@ -32,7 +32,7 @@
         </a>
         <b-collapse id="worker_login">
           <h2>Přihlášení zaměstance:</h2>
-          <WorkerLogin @success="loginVisible = false; " />
+          <WorkerLogin @success="loginVisible = false; forceUpdate ()" />
         </b-collapse>
       </Dialog>
 
@@ -69,6 +69,11 @@ export default {
     this.$myStore.load()
   },
   methods: {
+    forceUpdate () {
+      console.log(this.$router)
+      console.log(this.$route)
+      this.$forceUpdate()
+    },
     logout: function () {
       this.$myStore.user = undefined
       this.$myStore.worker = undefined

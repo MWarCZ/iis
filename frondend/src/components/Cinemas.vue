@@ -1,24 +1,48 @@
 <template>
   <div>
+    <b-card v-if="!!$myStore.worker">
+      <h2>Akce:</h2>
+      <b-button variant="outline-primary"
+        @click="showDialogAddCinema = true">
+        Přidat kino
+      </b-button>
+
+      <Dialog v-if="showDialogAddCinema"
+        @close="showDialogAddCinema = false">
+        <CinemaAdd
+          @success="cinemaRefresh(...arguments); showDialogAddCinema = false" />
+      </Dialog>
+    </b-card>
+
     <b-card>
-      <router-link class="link-as-text" :to="'/cinema/'+cinema.id"
-        v-for="(cinema, index) in cinemas"
-        :key="index">
-        <b-card-group>
-          <b-card>
-            <img src="@/assets/logo.png" :alt="cinema.name"/>
-          </b-card>
-          <b-card :title="'<b>Název: </b>' + cinema.name">
-            <b-list-group flush>
 
-              <b-list-group-item>
-                <b>Adresa:</b> {{cinema.address}}
-              </b-list-group-item>
+      <b-card v-for="(cinema, index) in cinemasProvider()"
+          :key="index"
+          >
+        <router-link class="link-as-text" :to="'/cinema/'+cinema.id"
+          >
+          <b-card-group>
+            <b-card>
+              <img src="@/assets/logo.png" :alt="cinema.name"/>
+            </b-card>
+            <b-card :title="'<b>Název: </b>' + cinema.name">
+              <b-list-group flush>
 
-            </b-list-group>
-          </b-card>
-        </b-card-group>
-      </router-link>
+                <b-list-group-item>
+                  <b>Adresa:</b> {{cinema.address}}
+                </b-list-group-item>
+
+              </b-list-group>
+            </b-card>
+          </b-card-group>
+        </router-link>
+
+        <b-button v-if="!!$myStore.worker"
+          variant="outline-danger"
+          @click="removeCinema(cinema.id)">
+          Smazat kino: '{{cinema.name}}'
+        </b-button>
+      </b-card>
 
     </b-card>
   </div>
@@ -26,46 +50,59 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import Cinema from '@/components/Cinema.vue'
+import CinemaAdd from '@/components/CinemaAdd.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'Cinemas',
   components: {
-    // Cinema
+    CinemaAdd,
+    Dialog
   },
   props: {
   },
   data: function () {
     return {
-      cinemas: []
+      cinemas: [],
+      showDialogAddCinema: false
     }
   },
   methods: {
-    /*
-    downloadCinemas: function () {
-      let query = `{
-        cinemas {
-          id
-          name
-          address
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
+    cinemasProvider () {
+      let cinemas = this.cinemas.map(item => item)
+      cinemas.sort((a, b) => {
+        let nameA = a.name
+        let nameB = b.name
+        return nameA.localeCompare(nameB)
       })
-        .then(res => {
-          console.log('Cinemas are downloading.')
-          console.log(res.data.data.cinemas)
-          this.cinemas = res.data.data.cinemas
-        })
-        .catch(e => {
-          console.log('Cinemas are NOT downloaded.')
-          console.log(e)
-        })
-    } */
-  },
+      return cinemas
+    },
 
+    cinemaRefresh (args) {
+      let { cinema } = args
+      this.cinemas.push(cinema)
+    },
+
+    removeCinema (idCinema) {
+      console.log('Remove room.')
+      if (idCinema !== undefined) {
+        // TODO
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+            this.cinemas = this.cinemas.filter(cinema => {
+              return cinema.id !== idCinema
+            })
+            this.$emit('success', { cinemas: this.cinemas })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.$emit('fail')
+          })
+      }
+    }
+
+  },
   mounted: function () {
     // this.downloadCinemas()
 
