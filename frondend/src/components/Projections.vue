@@ -1,5 +1,23 @@
 <template>
   <div style="overflow: auto">
+
+    <div v-if="!!$myStore.worker">
+      <b-button-group>
+        <b-button variant="outline-primary"
+          @click="showDialogAddProjection = true">
+          Přidat projekci
+        </b-button>
+      </b-button-group>
+
+      <Dialog v-if="showDialogAddProjection"
+        @close="showDialogAddProjection = false">
+        <ProjectionAdd :idCinema="idCinema"
+          :cinemas="cinemas"
+          :films="films"
+          @success="projectionRefresh(...arguments); showDialogAddProjection = false" />
+      </Dialog>
+    </div>
+
     <div class="projections-filter-box">
 
       <b-input-group v-if="idCinema === undefined"
@@ -41,6 +59,11 @@
             @click="showDialog = true">
             Rezervovat
           </b-button>
+          <b-button v-else-if="!!$myStore.worker"
+            variant="outline-danger"
+            @click="removeProjection(data.item.id)">
+            Smazat
+          </b-button>
           <span v-else>Rezervace jen pro přihlašené.</span>
         </template>
       </b-table>
@@ -54,15 +77,18 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
-// import store from '@/utils/Store.js'
 import ReservationDialog from '@/components/ReservationDialog.vue'
+
+import Dialog from '@/components/Dialog.vue'
+import ProjectionAdd from '@/components/ProjectionAdd.vue'
 
 export default {
   name: 'Projections',
   components: {
-    ReservationDialog
+    ReservationDialog,
+    Dialog,
+    ProjectionAdd
   },
   props: {
     idCinema: {
@@ -95,7 +121,7 @@ export default {
         { key: 'price', label: 'Základní cena', sortable: true },
         { key: 'event', label: 'Akce' }
       ],
-      // store: store,
+      showDialogAddProjection: false,
       DateTime: DateTime
     }
   },
@@ -114,6 +140,30 @@ export default {
     }
   },
   methods: {
+    projectionRefresh (args) {
+      let { projection } = args
+      console.log('>>XX:', projection)
+      this.projections.push(projection)
+      console.log('>>YY:', this.projections)
+    },
+    removeProjection (idProjection) {
+      console.log('Remove room.')
+      if (idProjection !== undefined) {
+        // TODO
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+            this.projections = this.projections.filter(proj => {
+              return proj.id !== idProjection
+            })
+            this.$emit('success', { projections: this.projections })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.$emit('fail')
+          })
+      }
+    },
     projectionsProvider () {
       let projections = this.filterProjections()
       projections = projections.map((item) => {
@@ -143,7 +193,7 @@ export default {
       } else {
         projections = projections.filter(projection => projection.idFilm === this.idFilm)
       }
-
+      console.log('>1>', projections)
       // Filtr: Kino
       if (this.idCinema === undefined) {
         if (typeof (this.selectIdCinema) === 'number') {
@@ -153,6 +203,7 @@ export default {
         projections = projections.filter(projection => projection.idCinema === this.idCinema)
       }
 
+      console.log('>2>', projections)
       // Filtr: Od data
       console.log('date:', this.mydate)
       projections = projections.filter(projection => new Date(projection.datetime) >= this.mydate)

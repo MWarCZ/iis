@@ -7,6 +7,7 @@ const Rooms = {
    *   id
    *   name
    *   capacity
+   *   idCinema
    * }]
    */
   getAll () {
@@ -15,6 +16,9 @@ const Rooms = {
         id
         name
         capacity
+        cinema {
+          id
+        }
       }
     }`
     return axios.post(BACKEND_URL, {
@@ -22,6 +26,13 @@ const Rooms = {
     })
       .then(res => {
         return res.data.data.values
+      })
+      .then(res => {
+        let values = res.map(value => {
+          value.idCinema = value.cinema.id
+          return value
+        })
+        return values
       })
       .catch(e => {
         return {}
@@ -31,6 +42,7 @@ const Rooms = {
    *   id
    *   name
    *   capacity
+   *   idCinema
    * }
    */
   getById (id) {
@@ -39,6 +51,9 @@ const Rooms = {
         id
         name
         capacity
+        cinema {
+          id
+        }
       }
     }`
     return axios.post(BACKEND_URL, {
@@ -46,6 +61,13 @@ const Rooms = {
     })
       .then(res => {
         return res.data.data.values
+      })
+      .then(res => {
+        let values = res.map(value => {
+          value.idCinema = value.cinema.id
+          return value
+        })
+        return values
       })
       .catch(e => {
         return {}
