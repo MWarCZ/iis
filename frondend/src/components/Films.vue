@@ -1,5 +1,18 @@
 <template>
   <div>
+    <b-card v-if="!!$myStore.worker">
+      <h2>Akce:</h2>
+      <b-button variant="outline-primary"
+        @click="showDialogAddFilm = true">
+        Přidat film
+      </b-button>
+
+      <Dialog v-if="showDialogAddFilm"
+        @close="showDialogAddFilm = false">
+        <FilmAdd
+          @success="filmRefresh(...arguments); showDialogAddFilm = false" />
+      </Dialog>
+    </b-card>
 
     <b-card>
       <b-input-group prepend="Název:">
@@ -23,31 +36,39 @@
     </b-card>
 
     <b-card class="films-box">
-      <router-link class="link-as-text" :to="'/film/'+film.id"
-        v-for="(film, index) in filterFilms()"
-        :key="index">
-        <b-card-group>
-          <b-card :title="'<b>Název: </b>' + film.name">
-            <img src="@/assets/logo.png" :alt="film.name"/>
-            <b-list-group flush>
+      <b-card v-for="(film, index) in filterFilms()"
+          :key="index"
+          >
+        <router-link class="link-as-text" :to="'/film/'+film.id">
+          <b-card-group>
+            <b-card :title="'<b>Název: </b>' + film.name">
+              <img src="@/assets/logo.png" :alt="film.name"/>
+              <b-list-group flush>
 
-              <b-list-group-item>
-                {{new Date(film.premiere).getFullYear()}}
-              </b-list-group-item>
+                <b-list-group-item>
+                  {{new Date(film.premiere).getFullYear()}}
+                </b-list-group-item>
 
-              <b-list-group-item>
-                <b-badge class="badge-genre"
-                  variant="dark"
-                  v-for="(genre, index) in film.genres"
-                  :key="index">
-                  {{genre.name}}
-                </b-badge>
-              </b-list-group-item>
+                <b-list-group-item>
+                  <b-badge class="badge-genre"
+                    variant="dark"
+                    v-for="(genre, index) in film.genres"
+                    :key="index">
+                    {{genre.name}}
+                  </b-badge>
+                </b-list-group-item>
 
-            </b-list-group>
-          </b-card>
-        </b-card-group>
-      </router-link>
+              </b-list-group>
+            </b-card>
+          </b-card-group>
+        </router-link>
+
+        <b-button v-if="!!$myStore.worker"
+          variant="outline-danger"
+          @click="removeFilm(film.id)">
+          Smazat film: '{{film.name}}'
+        </b-button>
+      </b-card>
 
     </b-card>
   </div>
@@ -59,13 +80,14 @@
 // import DateTime from '@/utils/DateTime.js'
 
 // import Film from '@/components/Film.vue'
-// import Dialog from '@/components/Dialog.vue'
+import FilmAdd from '@/components/FilmAdd.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'Films',
   components: {
-    // Film,
-    // Dialog
+    Dialog,
+    FilmAdd
   },
   props: {
     filterForGenre: { type: Array, default: () => [] },
@@ -76,10 +98,15 @@ export default {
       filterStartName: this.filterForName,
       filterGenre: this.filterForGenre,
       genres: [],
-      films: []
+      films: [],
+      showDialogAddFilm: false
     }
   },
   methods: {
+    filmRefresh (args) {
+      let { film } = args
+      this.films.push(film)
+    },
 
     filterFilms: function () {
       let films = this.films
@@ -104,6 +131,25 @@ export default {
       })
 
       return films
+    },
+
+    removeFilm (idFilm) {
+      console.log('Remove room.')
+      if (idFilm !== undefined) {
+        // TODO
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+            this.films = this.films.filter(film => {
+              return film.id !== idFilm
+            })
+            this.$emit('success', { films: this.films })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.$emit('fail')
+          })
+      }
     }
     /*
     downloadFilms: function () {

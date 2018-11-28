@@ -21,11 +21,11 @@
               </b-list-group-item>
 
               <b-list-group-item>
-                <b>Studio:</b> {{film.studio.name}}
+                <b>Studio:</b> {{film.studio}}
               </b-list-group-item>
 
               <b-list-group-item>
-                <b>Režisér:</b> {{film.director.lastname + ' ' + film.director.firstname}}
+                <b>Režisér:</b> {{film.lastnameDirector + ' ' + film.firstnameDirector}}
               </b-list-group-item>
 
               <b-list-group-item>
@@ -51,6 +51,44 @@
           </b-card>
         </b-card-group>
 
+        <b-card-group v-if="!!$myStore.worker">
+          <b-card>
+            <h2>Akce:</h2>
+            <b-button-group vertical>
+              <b-button variant="outline-primary"
+                @click="showDialogEditFilm = true">
+                Upravit informace
+              </b-button>
+              <b-button variant="outline-primary"
+                @click="showDialogAddActor = true">
+                Přidat herce
+              </b-button>
+              <b-button variant="outline-primary"
+                @click="true">
+                TODO: Upravit zanry
+              </b-button>
+            </b-button-group>
+
+            <Dialog v-if="showDialogEditFilm"
+              @close="showDialogEditFilm = false">
+              <FilmEdit :film="film"
+                @success="filmRefresh(...arguments); showDialogEditFilm = false" />
+            </Dialog>
+            <Dialog v-if="showDialogAddActor"
+              @close="showDialogAddActor = false">
+              <ActorAdd :idFilm="film.id"
+                        :disabledActors="film.actors"
+                @success="actorRefresh(...arguments); showDialogAddActor = false" />
+            </Dialog>
+
+          </b-card>
+          <b-card>
+            <h2>Herci:</h2>
+            <ActorsList :actors="film.actors"
+              @success="actorsRefresh(...arguments)" />
+          </b-card>
+        </b-card-group>
+
         <b-card>
           <h2>Projekce</h2>
           <Projections :idFilm="id" />
@@ -67,15 +105,26 @@
 <script>
 // import axios from 'axios'
 import Projections from '@/components/Projections.vue'
+// ActorsList
+import ActorsList from '@/components/ActorsList.vue'
+import FilmEdit from '@/components/FilmEdit.vue'
+import ActorAdd from '@/components/ActorAdd.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'Film',
   components: {
-    Projections
+    Projections,
+    Dialog,
+    ActorsList,
+    FilmEdit,
+    ActorAdd
   },
   data: function () {
     return {
-      film: undefined
+      film: undefined,
+      showDialogEditFilm: false,
+      showDialogAddActor: false
     }
   },
   props: {
@@ -85,56 +134,22 @@ export default {
     }
   },
   methods: {
-    /*
-    downloadFilm: function () {
-      let query = `{
-        film(id: ` + this.id + `) {
-          id
-          name
-          duration
-          premiere
-          rating
-          genres {
-            id
-            name
-          }
-          studio {
-            id
-            name
-          }
-          director {
-            id
-            firstname
-            lastname
-          }
-          actors {
-            id
-            firstname
-            lastname
-          }
-        }
-      }`
-
-      console.log('GraphQL query:', query)
-
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          console.log('Film is downloaded.')
-          this.film = res.data.data.film
-        })
-        .catch(e => {
-          console.log('Film is NOT downloaded.')
-          console.log(e)
-        })
-    } */
+    actorsRefresh (args) {
+      let { actors } = args
+      this.film.actors = actors
+    },
+    actorRefresh (args) {
+      let { actor } = args
+      this.film.actors.push(actor)
+    },
+    filmRefresh (args) {
+      let { film } = args
+      this.film = film
+    }
 
   }, // methots
 
   mounted: function () {
-    // this.downloadFilm()
-
     // Ziskani filmu
     this.$myStore.backend.Films.getById(this.id)
       .then(res => {

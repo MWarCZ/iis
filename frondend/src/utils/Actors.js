@@ -2,21 +2,24 @@
 import axios from 'axios'
 import BACKEND_URL from './constant.js'
 
-const Rooms = {
+const Actors = {
   /* [{
    *   id
-   *   name
-   *   capacity
-   *   idCinema
+   *   firstname
+   *   lastname
+   *   lastname
+   *   birthday
+   *   films [idFilm, ...]
    * }]
    */
   getAll () {
     let query = `{
-      values: rooms {
+      values: actors {
         id
-        name
-        capacity
-        cinema {
+        firstname
+        lastname
+        birthday
+        films {
           id
         }
       }
@@ -29,9 +32,12 @@ const Rooms = {
       })
       .then(res => {
         let values = res.map(value => {
-          value.idCinema = value.cinema.id
+          value.films = value.films.map(film => {
+            return film.id
+          })
           return value
         })
+        console.log('ACTORS:', values)
         return values
       })
       .catch(e => {
@@ -40,18 +46,21 @@ const Rooms = {
   },
   /* {
    *   id
-   *   name
-   *   capacity
-   *   idCinema
+   *   firstname
+   *   lastname
+   *   lastname
+   *   birthday
+   *   films :[idFilm, ...]
    * }
    */
   getById (id) {
     let query = `{
-      values: room(id: ${id}) {
+      values: actor(id:${id}) {
         id
-        name
-        capacity
-        cinema {
+        firstname
+        lastname
+        birthday
+        films {
           id
         }
       }
@@ -63,35 +72,12 @@ const Rooms = {
         return res.data.data.values
       })
       .then(res => {
-        let values = res.map(value => {
-          value.idCinema = value.cinema.id
-          return value
+        let values = res
+        let films = res.films.map(value => {
+          return value.id
         })
+        values.films = films
         return values
-      })
-      .catch(e => {
-        return {}
-      })
-  },
-  /* {
-   *   id
-   *   name
-   *   capacity
-   * }
-   */
-  getByIdCinema (id) {
-    let query = `{
-      values: cinemaRooms(idCinema: ${id}) {
-        id
-        name
-        capacity
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
       })
       .catch(e => {
         return {}
@@ -100,4 +86,4 @@ const Rooms = {
 
 }
 
-export default Rooms
+export default Actors

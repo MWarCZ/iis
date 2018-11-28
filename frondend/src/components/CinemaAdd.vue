@@ -3,6 +3,12 @@
 
     <b-card title="Přidat kino">
 
+      <b-alert variant="danger" dismissible
+        @dismissed="failed = false"
+        :show="failed">
+        Nepodařilo se.
+      </b-alert>
+
       <b-input-group prepend="Název:">
         <b-form-input v-model="newCinema.name"
                   type="text"
