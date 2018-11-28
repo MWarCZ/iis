@@ -198,7 +198,7 @@ export default {
     }
   },
   mounted: function () {
-    // Ziskani mistnosti kina
+    // Ziskani mistnosti mistnosti
     this.$myStore.backend.Rooms.getAll()
       .then(res => {
         console.log('Rooms are:', res)

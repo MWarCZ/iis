@@ -11,7 +11,7 @@
 
       <Dialog v-if="showDialogAddProjection"
         @close="showDialogAddProjection = false">
-        <ProjectionAdd :idCinema="idCinema"
+        <ProjectionAdd :idCinema="idCinema" :idFilm="idFilm"
           :cinemas="cinemas"
           :films="films"
           @success="projectionRefresh(...arguments); showDialogAddProjection = false" />
@@ -142,9 +142,7 @@ export default {
   methods: {
     projectionRefresh (args) {
       let { projection } = args
-      console.log('>>XX:', projection)
       this.projections.push(projection)
-      console.log('>>YY:', this.projections)
     },
     removeProjection (idProjection) {
       console.log('Remove room.')
@@ -193,7 +191,7 @@ export default {
       } else {
         projections = projections.filter(projection => projection.idFilm === this.idFilm)
       }
-      console.log('>1>', projections)
+
       // Filtr: Kino
       if (this.idCinema === undefined) {
         if (typeof (this.selectIdCinema) === 'number') {
@@ -203,9 +201,8 @@ export default {
         projections = projections.filter(projection => projection.idCinema === this.idCinema)
       }
 
-      console.log('>2>', projections)
       // Filtr: Od data
-      console.log('date:', this.mydate)
+      //
       projections = projections.filter(projection => new Date(projection.datetime) >= this.mydate)
 
       // Sort: Date Time
@@ -216,7 +213,7 @@ export default {
         return 0
       })
 
-      console.log('>PROJ:', projections)
+      // console.log('>PROJ:', projections)
       return projections
     }
 

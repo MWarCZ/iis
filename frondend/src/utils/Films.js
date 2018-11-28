@@ -7,10 +7,10 @@ const Films = {
    *   id
    *   name
    *   premiere
-   *   genres {
+   *   genres [{
    *     id
    *     name
-   *   }
+   *   }]
    * }]
    */
   getAll () {
@@ -39,21 +39,24 @@ const Films = {
    *   id
    *   name
    *   premiere
-   *   genres {
+   *   genres [{
    *     id
    *     name
-   *   }
+   *   }]
    *   director {
+   *     id
    *     firstname
    *     lastname
    *   }
    *   studio {
+   *     id
    *     name
    *   }
-   *   actors {
+   *   actors [{
+   *     id
    *     firstname
    *     lastname
-   *   }
+   *   }]
    * }
    */
   getById (id) {
@@ -67,13 +70,16 @@ const Films = {
           name
         }
         director {
+          id
           firstname
           lastname
         }
         studio {
+          id
           name
         }
         actors {
+          id
           firstname
           lastname
         }
@@ -84,6 +90,15 @@ const Films = {
     })
       .then(res => {
         return res.data.data.values
+      })
+      .then(res => {
+        let value = res
+        value.idDirector = res.director.id
+        value.firstnameDirector = res.director.firstname
+        value.lastnameDirector = res.director.lastname
+        value.idStudio = res.studio.id
+        value.studio = res.studio.name
+        return value
       })
       .catch(e => {
         return {}
