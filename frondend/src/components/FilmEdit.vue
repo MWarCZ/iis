@@ -44,6 +44,8 @@
         </b-form-select>
       </b-input-group>
 
+      <Genres @input="changeGenres" :selectedGenres="newFilm.genres"/>
+
       <b-button variant="primary"
         @click="updateFilm()">
         Uložit
@@ -55,8 +57,13 @@
 </template>
 
 <script>
+import Genres from '@/components/Genres.vue'
+
 export default {
   name: 'FilmEdit',
+  components: {
+    Genres
+  },
   props: {
     idFilm: {
       type: Number,
@@ -110,6 +117,10 @@ export default {
         this.failed = true
         this.$emit('fail')
       }
+    },
+    changeGenres (args) {
+      let { genres } = args
+      this.newFilm.genres = genres
     }
   },
   mounted: function () {

@@ -51,6 +51,8 @@
         </b-form-select>
       </b-input-group>
 
+      <Genres @input="changeGenres"/>
+
       <b-button variant="primary"
         @click="addFilm()">
         Přidat
@@ -63,9 +65,13 @@
 
 <script>
 import DateTime from '@/utils/DateTime.js'
+import Genres from '@/components/Genres.vue'
 
 export default {
   name: 'FilmAdd',
+  components: {
+    Genres
+  },
   props: {
   },
   data: function () {
@@ -74,6 +80,8 @@ export default {
       studios: [],
       directors: [],
       premiere: new Date(),
+      genres: [],
+      idGenreArr: [],
       failed: false
     }
   },
@@ -121,6 +129,12 @@ export default {
         this.failed = true
         this.$emit('fail')
       }
+    },
+    changeGenres (args) {
+      let { idGenreArr, genres } = args
+      this.idGenreArr = idGenreArr
+      this.genres = genres
+      this.newFilm.genres = genres
     }
   },
   mounted: function () {
