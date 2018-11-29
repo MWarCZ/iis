@@ -69,6 +69,28 @@ const Reservations = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (idClient) {
+
+  },
+  createForTickets (idClient, idTicketsArr) {
+
+  },
+
+  /**/
+  addTicket (idReservation, idTicket) {
+
+  },
+  /**/
+  addTickets (idReservation, idTicketsArr) {
+
+  },
+
+  /**/
+  createAndSell (idTicketsArr) {
+
   }
 
 }

@@ -39,6 +39,7 @@
     <b-card class="films-box">
       <b-card v-for="(film, index) in filterFilms()"
           :key="index"
+          class="films-box-item"
           >
         <router-link class="link-as-text" :to="'/film/'+film.id">
           <b-card-group>
@@ -202,6 +203,10 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
+.films-box .films-box-item {
+  max-width: 450px;
+}
+
 .link-as-text {
   color: #2c3e50;
   text-decoration: none;

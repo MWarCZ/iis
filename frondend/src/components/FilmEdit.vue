@@ -92,6 +92,9 @@ export default {
     checkId (id) {
       return typeof (id) === 'number'
     },
+    checkDuration (duration) {
+      return duration > 0
+    },
     updateFilm () {
       console.log('Update film.')
       if (this.checkName(this.newFilm.name)

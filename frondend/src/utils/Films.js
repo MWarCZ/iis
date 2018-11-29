@@ -103,6 +103,31 @@ const Films = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (name, premiere, idDirector, idStudio) {
+
+  },
+  /**/
+  update (id, name, premiere, idDirector, idStudio) {
+
+  },
+  /**/
+  remove (id) {
+
+  },
+  /**/
+  addActor (idFilm, idActor) {
+
+  },
+  /**/
+  add2Genre (idFilm, idGenre) {
+
+  },
+  /**/
+  add2Genres (idFilm, idGenresArr) {
+
   }
 
 }

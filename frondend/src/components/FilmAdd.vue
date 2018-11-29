@@ -18,6 +18,15 @@
         </b-form-input>
       </b-input-group>
 
+      <b-input-group prepend="Délka:" append="minut">
+        <b-form-input v-model="newFilm.duration"
+                  type="number"
+                  label="duration"
+                  :state="checkDuration(newFilm.duration)"
+                  >
+        </b-form-input>
+      </b-input-group>
+
       <b-input-group prepend="Premiéra:">
         <b-form-input v-model="_date"
                   type="date"
@@ -105,6 +114,9 @@ export default {
     },
     checkPremiere (date) {
       return !!date
+    },
+    checkDuration (duration) {
+      return duration > 0
     },
     addFilm () {
       console.log('Add film.')

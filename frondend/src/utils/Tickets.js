@@ -291,6 +291,19 @@ const Tickets = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (seat, idProjection, idSale) {
+
+  },
+  /**/
+  update (id, seat, idProjection, idSale) {
+
+  },
+  /**/
+  remove (id) {
+
   }
 
 }

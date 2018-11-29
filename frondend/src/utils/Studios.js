@@ -46,6 +46,23 @@ const Studios = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (name) {
+
+  },
+  /**/
+  update (id, name) {
+
+  },
+  /**/
+  remove (id) {
+
+  },
+  /**/
+  add2Film (idStudio, idFilm) {
+
   }
 
 }

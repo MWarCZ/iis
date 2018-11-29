@@ -66,7 +66,7 @@ const Cinemas = {
    * KO:
    *   null | false
    */
-  add (name, address) {
+  create (name, address, imgUrl) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
@@ -92,7 +92,7 @@ const Cinemas = {
    * KO:
    *   null | false
    */
-  update (id, name, address) {
+  update (id, name, address, imgUrl) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
@@ -125,6 +125,7 @@ const Cinemas = {
         return undefined
       })
   }
+
 }
 
 export default Cinemas

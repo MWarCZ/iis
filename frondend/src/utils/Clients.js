@@ -87,9 +87,10 @@ const Clients = {
    *   login
    *   firstname
    *   lastname
+   *   birthday
    * }
    */
-  add (firstname, lastname, login, password) {
+  create (firstname, lastname, login, password, birthday) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
@@ -110,9 +111,10 @@ const Clients = {
    *   login
    *   firstname
    *   lastname
+   *   birthday
    * }
    */
-  update (id, firstname, lastname, login) {
+  update (id, firstname, lastname, login, birthday) {
     // TODO
     return axios.post(BACKEND_URL, {
     })

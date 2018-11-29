@@ -50,6 +50,23 @@ const Directors = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (name, premiere, idDirector, idStudio) {
+
+  },
+  /**/
+  update (id, name, premiere, idDirector, idStudio) {
+
+  },
+  /**/
+  remove (id) {
+
+  },
+  /**/
+  add2Film (idDirector, idFilm) {
+
   }
 
 }

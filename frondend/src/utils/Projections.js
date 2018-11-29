@@ -195,6 +195,19 @@ const Projections = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (datetime, price, idFilm, idRoom) {
+
+  },
+  /**/
+  update (id, datetime, price, idFilm, idRoom) {
+
+  },
+  /**/
+  remove (id) {
+
   }
 
 }
