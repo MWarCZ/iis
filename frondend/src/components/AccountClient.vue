@@ -152,13 +152,24 @@ export default {
       console.log('NEW USER:', this.newUser)
       console.log('USER:', user)
 
-      // TODO
-      /*
-      this.$myStore.Clients.updateAccount(user.id, user.firstname, user.lastname, user.login)
-        .then(res => {
-          console.log('USER RES', res)
-        })
-        */
+      if (user) {
+        // TODO
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+            this.user = user
+
+            this.$emit('success', { user: user })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.failed = true
+            this.$emit('fail')
+          })
+      } else {
+        this.failed = true
+        this.$emit('fail')
+      }
     },
     updatePassword () {
       console.log('OLD PASSWORD:', this.oldPassword)
@@ -166,7 +177,20 @@ export default {
 
       if (this.checkNewPassword() && this.checkRepeatNewPassword()) {
         // TODO
-        console.log('OK')
+        Promise.resolve(0)
+          .then(res => {
+            console.log('OK')
+
+            this.$emit('success', { password: this.newPassword })
+          })
+          .catch(e => {
+            console.log('KO')
+            this.failed = true
+            this.$emit('fail')
+          })
+      } else {
+        this.failed = true
+        this.$emit('fail')
       }
     }
   },

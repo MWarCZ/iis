@@ -1,12 +1,19 @@
 <template>
   <div class="about">
-    {{store}}
+
     <h1>This is an about page</h1>
+
+    <Genres @input="showTest(...arguments)" />
+    IDs: {{arr}}
+    <br />
+    Genres: {{genres}}
+
     <!--<Filter v-model="select" :listOfValues="list" />-->
     <!-- <Reservations :idClient="1" /> -->
     <!--<Tickets :idClient="1" />-->
     <!-- <Reservation /> -->
-    add
+
+    <!-- add
     <CinemaAdd />
     edit
     <CinemaEdit :idCinema="1"/>
@@ -21,7 +28,8 @@
     <ReservationDialog
       :showDialog="showDialog"
       @close="showDialog = false"
-    />
+    /> -->
+
     <!--
     <Dialog v-if="showDialog" @close="showDialog = false">
       <b-card>
@@ -52,12 +60,10 @@ import CinemaEdit from '@/components/CinemaEdit.vue'
 import RoomAdd from '@/components/RoomAdd.vue'
 import RoomsList from '@/components/RoomsList.vue'
 
+import Genres from '@/components/Genres.vue'
+
 export default {
   name: 'About',
-  data: () => ({
-    store: store,
-    showDialog: false
-  }),
   components: {
     ReservationDialog,
     Film,
@@ -70,7 +76,24 @@ export default {
     CinemaAdd,
     CinemaEdit,
     RoomAdd,
-    RoomsList
+    RoomsList,
+
+    Genres
+  },
+  data: function () {
+    return {
+      store: store,
+      showDialog: false,
+      arr: [],
+      genres: []
+    }
+  },
+  methods: {
+    showTest (args) {
+      let { idGenreArr, genres } = args
+      this.arr = idGenreArr
+      this.genres = genres
+    }
   },
   created: function () {
     console.log('Query filter: ', this.$route.query.filter)

@@ -178,7 +178,7 @@ const Workers = {
    *   lastname
    * }
    */
-  add (firstname, lastname, login, password, idCinema, job, salary) {
+  create (firstname, lastname, login, password, idCinema, job, salary) {
     // TODO
     return axios.post(BACKEND_URL, {
     })

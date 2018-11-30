@@ -9,6 +9,8 @@ import CinemaPage from './views/CinemaPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import AccountPage from './views/AccountPage.vue'
 
+import SellPage from './views/SellPage.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +49,11 @@ export default new Router({
       path: '/cinema/:id',
       name: 'Kino',
       component: CinemaPage
+    },
+    {
+      path: '/sell',
+      name: 'Prodej',
+      component: SellPage
     },
     {
       path: '/login',

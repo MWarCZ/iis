@@ -16,9 +16,15 @@
     </table>
 
     <Tickets :x="seats" :tickets="ticketsProvider()"/>
-    <b-button variant="primary"
+    <h3>Ceklem: {{summaryPrice()}}</h3>
+
+    <b-button v-if="!!$myStore.user" variant="primary"
       @click="sendReservation(); $emit('success')">
       Rezervovat
+    </b-button>
+    <b-button v-else-if="!!$myStore.worker" variant="primary"
+      @click="sendAndSellReservation(); $emit('success')">
+      Prodat
     </b-button>
     <b-button variant="secondary"
       @click="$emit('fail')">
@@ -54,6 +60,25 @@ export default {
     sendReservation () {
       console.log('RESERVATION')
       // TODO
+    },
+    sendAndSellReservation () {
+
+    },
+    summaryPrice () {
+      let tickets = this.ticketsProvider()
+      let summ = 0
+      tickets.forEach(ticket => {
+        summ += this.getFinalPrice(ticket.price, ticket.salePrice, ticket.salePrecentage)
+      })
+      return summ
+    },
+    getFinalPrice: function (price, salePrice, salePercent) {
+      let sale = 0
+      sale += (salePrice) || 0
+      sale += (salePercent) ? (price * salePercent) : 0
+      let finalPrice = (price < sale) ? 0 : (price - sale)
+      console.log('PRICE:', finalPrice)
+      return finalPrice
     },
 
     toggleSeat (seatNumber) {

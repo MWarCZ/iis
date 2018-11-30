@@ -23,7 +23,8 @@
         </b-form-input>
       </b-input-group>
 
-      <b-input-group prepend="Žánry:">
+      <Genres @input="changeGenres(...arguments)" />
+      <!-- <b-input-group prepend="Žánry:">
         <b-form-checkbox-group style="flex-wrap: wrap;" buttons v-model="filterGenre" >
           <b-form-checkbox class="checkbox-genre"
             v-for="(genre, index) in genres"
@@ -32,12 +33,13 @@
             {{genre.name}}
           </b-form-checkbox>
         </b-form-checkbox-group>
-      </b-input-group>
+      </b-input-group>  -->
     </b-card>
 
     <b-card class="films-box">
       <b-card v-for="(film, index) in filterFilms()"
           :key="index"
+          class="films-box-item"
           >
         <router-link class="link-as-text" :to="'/film/'+film.id">
           <b-card-group>
@@ -82,12 +84,14 @@
 // import Film from '@/components/Film.vue'
 import FilmAdd from '@/components/FilmAdd.vue'
 import Dialog from '@/components/Dialog.vue'
+import Genres from '@/components/Genres.vue'
 
 export default {
   name: 'Films',
   components: {
     Dialog,
-    FilmAdd
+    FilmAdd,
+    Genres
   },
   props: {
     filterForGenre: { type: Array, default: () => [] },
@@ -150,55 +154,12 @@ export default {
             this.$emit('fail')
           })
       }
-    }
-    /*
-    downloadFilms: function () {
-      let query = `{
-        films {
-          id
-          name
-          duration
-          premiere
-          rating
-          genres {
-            id
-            name
-          }
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          console.log('Films are downloaded.')
-          this.films = res.data.data.films
-        })
-        .catch(e => {
-          console.log('Films are NOT downloaded.')
-          console.log(e)
-        })
     },
-
-    downloadGenres: function () {
-      let query = `{
-        genres {
-          id
-          name
-        }
-      }`
-      axios.post('http://dev.mwarcz.cz', {
-        query: query
-      })
-        .then(res => {
-          console.log('Genres are downloaded.')
-          this.genres = res.data.data.genres
-        })
-        .catch(e => {
-          console.log('Genres are NOT downloaded.')
-          console.log(e)
-        })
+    changeGenres (args) {
+      // let { idGenreArr, genres } = args
+      let { idGenreArr } = args
+      this.filterGenre = idGenreArr
     }
-    */
   },
 
   mounted: function () {
@@ -242,6 +203,10 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
+.films-box .films-box-item {
+  max-width: 450px;
+}
+
 .link-as-text {
   color: #2c3e50;
   text-decoration: none;

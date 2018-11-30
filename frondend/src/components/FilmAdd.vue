@@ -18,6 +18,15 @@
         </b-form-input>
       </b-input-group>
 
+      <b-input-group prepend="Délka:" append="minut">
+        <b-form-input v-model="newFilm.duration"
+                  type="number"
+                  label="duration"
+                  :state="checkDuration(newFilm.duration)"
+                  >
+        </b-form-input>
+      </b-input-group>
+
       <b-input-group prepend="Premiéra:">
         <b-form-input v-model="_date"
                   type="date"
@@ -51,6 +60,8 @@
         </b-form-select>
       </b-input-group>
 
+      <Genres @input="changeGenres"/>
+
       <b-button variant="primary"
         @click="addFilm()">
         Přidat
@@ -63,9 +74,13 @@
 
 <script>
 import DateTime from '@/utils/DateTime.js'
+import Genres from '@/components/Genres.vue'
 
 export default {
   name: 'FilmAdd',
+  components: {
+    Genres
+  },
   props: {
   },
   data: function () {
@@ -74,6 +89,8 @@ export default {
       studios: [],
       directors: [],
       premiere: new Date(),
+      genres: [],
+      idGenreArr: [],
       failed: false
     }
   },
@@ -98,6 +115,9 @@ export default {
     checkPremiere (date) {
       return !!date
     },
+    checkDuration (duration) {
+      return duration > 0
+    },
     addFilm () {
       console.log('Add film.')
       if (this.checkName(this.newFilm.name) &&
@@ -121,6 +141,12 @@ export default {
         this.failed = true
         this.$emit('fail')
       }
+    },
+    changeGenres (args) {
+      let { idGenreArr, genres } = args
+      this.idGenreArr = idGenreArr
+      this.genres = genres
+      this.newFilm.genres = genres
     }
   },
   mounted: function () {

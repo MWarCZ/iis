@@ -14,6 +14,16 @@
           <Tickets :tickets="row.item.tickets"/>
         </b-card>
       </template>
+      <template slot="state" slot-scope="row">
+        <template v-if="!!$myStore.worker">
+          <b-button variant="primary">
+            Prodat
+          </b-button>
+        </template>
+        <template v-else-if="!!$myStore.user">
+          {{row.item.state}}
+        </template>
+      </template>
     </b-table>
 
   </div>
@@ -40,8 +50,8 @@ export default {
       selectIdClient: this.idClient,
       reservations: [],
       fields: [
-        { key: 'dateAndTime', label: 'Zarezervováno' },
-        { key: 'code', label: 'Kód' },
+        { key: 'dateAndTime', label: 'Zarezervováno', sortable: true },
+        { key: 'code', label: 'Kód', sortable: true },
         { key: 'total_price', label: 'Celková cena' },
         { key: 'show_details', label: 'Zobrazit' },
         { key: 'state', label: 'Stav' }
@@ -99,37 +109,71 @@ export default {
 
   },
   mounted: function () {
-    // Stazeni rezervaci a listku
-    this.$myStore.backend.Reservations.getByIdClient(this.idClient)
-      .then(res => {
-        console.log('Reservations are:', res)
-        if (res[0] === undefined) {
-          throw new Error({ msg: 'Empty Reservations.', res })
-        }
-        // this.reservations = res
-        return res
-      })
-      .then(res => {
-        this.reservations = res
-        return Promise.all(res.map(reservation => {
-          return this.$myStore.backend.Tickets.getByIdReservation(reservation.id)
-            .then(res2 => {
-              reservation.tickets = res2
-              return res2
-            })
-            .catch(e => {
-              reservation.tickets = []
-              return undefined
-            })
-        }))
-      })
-      .then(res => {
-        this.$forceUpdate()
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-        this.reservations = []
-      })
+    if (this.idClient !== undefined) {
+      // Stazeni klientovych rezervaci a listku
+      this.$myStore.backend.Reservations.getByIdClient(this.idClient)
+        .then(res => {
+          console.log('Reservations are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Reservations.', res })
+          }
+          // this.reservations = res
+          return res
+        })
+        .then(res => {
+          this.reservations = res
+          return Promise.all(res.map(reservation => {
+            return this.$myStore.backend.Tickets.getByIdReservation(reservation.id)
+              .then(res2 => {
+                reservation.tickets = res2
+                return res2
+              })
+              .catch(e => {
+                reservation.tickets = []
+                return undefined
+              })
+          }))
+        })
+        .then(res => {
+          this.$forceUpdate()
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.reservations = []
+        })
+    } else {
+      // Stazeni vsech rezervaci a listku
+      this.$myStore.backend.Reservations.getAll()
+        .then(res => {
+          console.log('Reservations are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Reservations.', res })
+          }
+          // this.reservations = res
+          return res
+        })
+        .then(res => {
+          this.reservations = res
+          return Promise.all(res.map(reservation => {
+            return this.$myStore.backend.Tickets.getByIdReservation(reservation.id)
+              .then(res2 => {
+                reservation.tickets = res2
+                return res2
+              })
+              .catch(e => {
+                reservation.tickets = []
+                return undefined
+              })
+          }))
+        })
+        .then(res => {
+          this.$forceUpdate()
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.reservations = []
+        })
+    }
   }
 }
 </script>

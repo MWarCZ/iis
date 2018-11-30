@@ -82,6 +82,119 @@ const Actors = {
       .catch(e => {
         return {}
       })
+  },
+  /* OK:
+   * {
+   *   id
+   *   firstname
+   *   lastname
+   *   lastname
+   *   birthday
+   * }
+   * KO: null
+   */
+  create (firstname, lastname, birthday) {
+    // TODO
+    let query = `{
+      values: actor(id:1) {
+        id
+        firstname
+        lastname
+        birthday
+        films {
+          id
+        }
+      }
+    }`
+    return axios.post(BACKEND_URL, {
+      query: query
+    })
+      .then(res => {
+        return res.data.data.values
+      })
+      .then(res => {
+        let values = res
+        let films = res.films.map(value => {
+          return value.id
+        })
+        values.films = films
+        return values
+      })
+      .catch(e => {
+        return {}
+      })
+  },
+
+  update (id, firstname, lastname, birthday) {
+    // TODO
+    let query = `{
+      values: actor(id:${id}) {
+        id
+        firstname
+        lastname
+        birthday
+        films {
+          id
+        }
+      }
+    }`
+    return axios.post(BACKEND_URL, {
+      query: query
+    })
+      .then(res => {
+        return res.data.data.values
+      })
+      .then(res => {
+        let values = res
+        let films = res.films.map(value => {
+          return value.id
+        })
+        values.films = films
+        return values
+      })
+      .catch(e => {
+        return {}
+      })
+  },
+
+  /*
+   */
+  remove (id) {
+    // TODO
+    let query = `{
+      values: actor(id:${id}) {
+        id
+        firstname
+        lastname
+        birthday
+        films {
+          id
+        }
+      }
+    }`
+    return axios.post(BACKEND_URL, {
+      query: query
+    })
+      .then(res => {
+        return res.data.data.values
+      })
+      .then(res => {
+        let values = res
+        let films = res.films.map(value => {
+          return value.id
+        })
+        values.films = films
+        return values
+      })
+      .catch(e => {
+        return {}
+      })
+  },
+  /*
+
+   */
+  add2Film (idActor, idFilm) {
+
   }
 
 }

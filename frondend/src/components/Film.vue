@@ -17,7 +17,7 @@
               </b-list-group-item>
 
               <b-list-group-item>
-                <b>Premiéra:</b> {{film.premiere}}
+                <b>Premiéra:</b> {{DateTime.date2string(new Date(film.premiere))}}
               </b-list-group-item>
 
               <b-list-group-item>
@@ -63,10 +63,6 @@
                 @click="showDialogAddActor = true">
                 Přidat herce
               </b-button>
-              <b-button variant="outline-primary"
-                @click="true">
-                TODO: Upravit zanry
-              </b-button>
             </b-button-group>
 
             <Dialog v-if="showDialogEditFilm"
@@ -105,11 +101,11 @@
 <script>
 // import axios from 'axios'
 import Projections from '@/components/Projections.vue'
-// ActorsList
 import ActorsList from '@/components/ActorsList.vue'
 import FilmEdit from '@/components/FilmEdit.vue'
 import ActorAdd from '@/components/ActorAdd.vue'
 import Dialog from '@/components/Dialog.vue'
+import DateTime from '@/utils/DateTime.js'
 
 export default {
   name: 'Film',
@@ -124,7 +120,8 @@ export default {
     return {
       film: undefined,
       showDialogEditFilm: false,
-      showDialogAddActor: false
+      showDialogAddActor: false,
+      DateTime: DateTime
     }
   },
   props: {

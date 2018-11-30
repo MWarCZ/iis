@@ -59,11 +59,18 @@
             @click="showDialog = true">
             Rezervovat
           </b-button>
-          <b-button v-else-if="!!$myStore.worker"
-            variant="outline-danger"
-            @click="removeProjection(data.item.id)">
-            Smazat
-          </b-button>
+          <template v-else-if="!!$myStore.worker">
+            <b-button v-if="!!$myStore.worker"
+              variant="outline-primary"
+              @click="showDialog = true">
+              Prodat
+            </b-button>
+            <b-button v-if="!!$myStore.worker"
+              variant="outline-danger"
+              @click="removeProjection(data.item.id)">
+              Smazat
+            </b-button>
+          </template>
           <span v-else>Rezervace jen pro přihlašené.</span>
         </template>
       </b-table>

@@ -96,6 +96,23 @@ const Rooms = {
       .catch(e => {
         return {}
       })
+  },
+
+  /**/
+  create (name, capacity, idCinema) {
+
+  },
+  /**/
+  update (id, name, capacity) {
+
+  },
+  /**/
+  remove (id) {
+
+  },
+  /**/
+  add2Cinema (idRoom, idCinema) {
+
   }
 
 }

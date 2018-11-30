@@ -62,7 +62,7 @@ const Genres = {
    * KO:
    *   null | false
    */
-  add (name) {
+  create (name) {
     // TODO
     return axios.post(BACKEND_URL, {
     })
