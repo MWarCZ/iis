@@ -66,4 +66,34 @@ URL : employees.php
     LOGGED : -> min acces level 2
         <- NULL
         -> JSON{"error":ERROR,"data":{"id":"1","login":"test","name":"test","surname":"test","ssn":"tes@test.test","access":1}}
+
+    CHANGE_WORKPLACE : -> min acces level 3
+        <- "login":"test","idCinema":"id"
+        -> JSON{"error": ERROR, "data":true/NULL}
+    
+    CHANGE_ACCESS : -> acc lvl 3 -> max 3, acc lvl 4 -> max 4
+        <- "login":"test","idCinema":"id"
+        -> JSON{"error": ERROR, "data":true/NULL}
+--------------------------------------------------------------------------------
+
+URL : employees.php
+    INSERT : -> min acces level 3
+        <- "name":"xx","addres":"xx"
+        -> JSON{"error": ERROR, "data":ID}
+
+    UPDATE : -> min acces level 3
+        <- "id":"xx","name":"xx","addres":"xx"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE : -> min acces level 3
+        <- "id":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    SELECT_ALL : ->
+        <- NULL
+        -> JSON{"error": ERROR, "data":array("id":"xx","name":"xx","addres":"xx")}
+
+    SELECT_ALL : -> 
+        <- "id":"xx"
+        -> JSON{"error": ERROR, "data":"id":"xx","name":"xx","addres":"xx"}
 --------------------------------------------------------------------------------

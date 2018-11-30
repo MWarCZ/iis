@@ -242,7 +242,7 @@ if(isset($input['request'])) {
 
 //Data output
 header("Content-Type: application/json");
-if($out != NULL) {
+if(isset($out)) {
     debug_print("DATA");
     echo json_encode($out);    
 }

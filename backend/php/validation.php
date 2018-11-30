@@ -20,7 +20,8 @@ function validate_ssn($ssn) {
 }
 
 function validate_passw($passw) {
-    
+    //Validate or not to validate ? That is the question...
+    //if(!preg_match("/^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[0-9])(?=\S{8,})\S*$/", $passw)) return false;
     
     return true;
 }

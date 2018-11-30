@@ -99,7 +99,7 @@ if(isset($input['request'])) {
                         "name"=>    $data["name"],
                         "surname"=> $data["surname"],
                         "ssn"=>     $data["ssn"],
-                        "access"=>  $data["access"]
+                        "access"=>  $data["access_level"]
                     );
                     $out["data"] = true;
                     
@@ -273,7 +273,7 @@ if(isset($input['request'])) {
 
 //Data output
 header("Content-Type: application/json");
-if($out != NULL) {
+if(isset($out)) {
     debug_print("DATA");
     echo json_encode($out);    
 }
