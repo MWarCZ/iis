@@ -1,0 +1,121 @@
+INPUT DATA:
+var request : <REQUESTS>
+var data : JSON(<DATA>)
+
+URL: xxx.php
+    <REQUEST> :
+        <- <DATA>
+        -> JSON{"error": null, "data":[]}
+--------------------------------------------------------------------------------
+
+URL : users.php
+    INSERT : 
+        <- "login":"test","name":"test","surname":"test","email":"test","pass":"test","pass_verifi":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGIN :
+        <- "login":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGOUT :
+        <- NULL
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    CHANGE_PASSW :
+        <- "login":"test","old_pass":"test","new_pass":"aaa","new_verifi":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    UPDATE :
+        <- "login":"test","name":"test","surname":"test","email":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE :
+        <- "login":"test","pass":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    LOGGED :
+        <- NULL
+        -> JSON{"error":ERROR,"data":{"id":"1","login":"test","name":"test","surname":"test","email":"tes@test.test","access":1}}
+--------------------------------------------------------------------------------
+
+URL : employees.php
+    INSERT : -> min acces level 3
+        <- "login":"test","name":"test","surname":"test","ssn":"test","pass":"test","pass_verifi":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGIN :
+        <- "login":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGOUT : -> min acces level 2
+        <- NULL
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    CHANGE_PASSW : -> min acces level 2
+        <- "login":"test","old_pass":"test","new_pass":"aaa","new_verifi":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    UPDATE : -> min acces level 2
+        <- "login":"test","name":"test","surname":"test","ssn":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE : -> min acces level 3
+        <- "login":"test","pass":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    LOGGED : -> min acces level 2
+        <- NULL
+        -> JSON{"error":ERROR,"data":{"id":"1","login":"test","name":"test","surname":"test","ssn":"tes@test.test","access":1}}
+
+    CHANGE_WORKPLACE : -> min acces level 3
+        <- "login":"test","idCinema":"id"
+        -> JSON{"error": ERROR, "data":true/NULL}
+    
+    CHANGE_ACCESS : -> acc lvl 3 -> max 3, acc lvl 4 -> max 4
+        <- "login":"test","idCinema":"id"
+        -> JSON{"error": ERROR, "data":true/NULL}
+--------------------------------------------------------------------------------
+
+URL : cinemas.php
+    INSERT : -> min acces level 3
+        <- "name":"xx","addres":"xx"
+        -> JSON{"error": ERROR, "data":ID}
+
+    UPDATE : -> min acces level 3
+        <- "id":"xx","name":"xx","addres":"xx"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE : -> min acces level 3
+        <- "id":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    SELECT_ALL : ->
+        <- NULL
+        -> JSON{"error": ERROR, "data":array("id":"xx","name":"xx","addres":"xx")}
+
+    SELECT_ALL : -> 
+        <- "id":"xx"
+        -> JSON{"error": ERROR, "data":"id":"xx","name":"xx","addres":"xx"}
+--------------------------------------------------------------------------------
+
+URL : halls.php
+    INSERT : -> min acces level 3
+        <- "mark":"test","cap":"10","idCinema":"1"
+        -> JSON{"error": ERROR, "data":ID}
+
+    UPDATE : -> min acces level 3
+        <- "id":"xx","name":"xx","addres":"xx"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE : -> min acces level 3
+        <- "id":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    SELECT_ALL : ->
+        <- NULL
+        -> JSON{"error": ERROR, "data":array("idHall":"16","cinemaMark":"test","capacity":"10","idCinema":"1")}
+
+    SELECT_ALL : -> 
+        <- "id":"xx"
+        -> JSON{"error": ERROR, "data":"idHall":"16","cinemaMark":"test","capacity":"10","idCinema":"1"}
+--------------------------------------------------------------------------------
