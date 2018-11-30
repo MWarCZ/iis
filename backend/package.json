@@ -1,0 +1,17 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "xxx",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MWarCZ",
+  "license": "ISC",
+  "dependencies": {
+    "graphql-import": "^0.7.1",
+    "graphql-yoga": "^1.16.7",
+    "sync-mysql": "^3.0.1"
+  }
+}

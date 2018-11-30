@@ -1,0 +1,291 @@
+#### import * from '.graphql'
+
+scalar Date
+scalar DateTime
+
+input LimitInput {
+  first: Int!
+  after: Int
+}
+
+type Query {
+  cinema(id: Int!): Cinema
+  cinemas(limit: LimitInput): [Cinema!]!
+
+  actor(id: Int!): Actor
+  actors(limit: LimitInput): [Actor!]!
+
+  director(id: Int!): Director
+  directors(limit: LimitInput): [Director!]!
+
+  genre(id: Int!): Genre
+  genres(limit: LimitInput): [Genre!]!
+
+  film(id: Int!): Film
+  films(limit: LimitInput): [Film!]!
+
+  #  tag(id: Int!): Tag
+  #  tags(limit: LimitInput): [Tag!]!
+
+  studio(id: Int!): Studio
+  studios(limit: LimitInput): [Studio!]!
+
+  room(id: Int!): Room
+  rooms(limit: LimitInput): [Room!]!
+  cinemaRooms(idCinema: Int!): [Room!]
+
+  #  projectionType(id: Int!): ProjectionType
+  #  projectionTypes(limit: LimitInput): [ProjectionType!]!
+
+  projection(id: Int!): Projection
+  projections(limit: LimitInput): [Projection!]!
+
+  clientLogin(login: String!, password: String!): Client
+  client(id: Int!): Client
+
+  sale(id: Int!): Sale
+  sales(limit: LimitInput): [Sale!]!
+
+  ticket(id: Int!): Ticket
+  tickets(limit: LimitInput): [Ticket!]
+  clientTickets(idClient: Int!): [Ticket!]
+  reservationTickets(idReservation: Int!): [Ticket!]
+  projectionTickets(idProjection: Int!): [Ticket!]
+
+  reservation(id: Int!): Reservation
+  reservations(limit: LimitInput): [Reservation!]
+  clientReservations(idClient: Int!): [Reservation!]
+
+  state(id: Int!): State
+  states(limit: LimitInput): [State!]
+
+  job(id: Int!): Job
+  jobs(limit: LimitInput): [Job!]
+
+  workerLogin(login: String!, password: String!): Worker
+  worker(id: Int!): Worker
+  workers(limit: LimitInput): [Worker!]
+  cinemaWorker(idCinema: Int!): [Worker!]
+
+}
+
+type Mutation {
+  createCinema(name: String!, address: String!): Boolean!
+  create: MutationCreate
+  update: MutationUpdate
+  remove: MutationRemove
+}
+
+type MutationCreate {
+  test(text: String!): String!
+  cinema(input: InputCinemaCreate): Cinema
+  actor: Actor
+  director: Director
+}
+type MutationUpdate {
+  cinema(input: InputCinemaUpdate): Cinema
+}
+type MutationRemove {
+  cinema(input: InputCinemaRemove): Cinema
+}
+
+# FIN
+type Cinema {
+  id: Int!
+  """Nazev/Jmeno/Oznaceni kina."""
+  name: String!
+  """Adresa kina / Kdo se kino nachazi."""
+  address: String!
+  """Seznam mistnosti pro promitani."""
+  rooms: [Room]
+  """Url adresa obrazku"""
+  img: String
+}
+input InputCinemaCreate {
+  name: String!
+  address: String!
+  img: String
+}
+input InputCinemaUpdate {
+  id: Int!
+  name: String
+  address: String
+  img: String
+}
+input InputCinemaRemove {
+  id: Int!
+}
+
+# FIN
+type Actor {
+  id: Int!
+  firstname: String!
+  lastname: String!
+  """Datum narozeni."""
+  birthday: Date
+  films: [Film]
+}
+input InputActorCreate {
+  firstname: String!
+  lastname: String!
+  birthday: Date
+}
+input InputActorUpdate {
+  id: Int!
+  firstname: String
+  lastname: String
+  birthday: Date
+}
+input InputActorRemove {
+  id: Int!
+}
+
+# FIN
+type Director {
+  id: Int!
+  firstname: String!
+  lastname: String!
+  """Datum narozeni."""
+  birthday: Date
+}
+input InputDirectorCreate {
+  firstname: String!
+  lastname: String!
+  birthday: Date
+}
+input InputDirectorUpdate {
+  id: Int!
+  firstname: String
+  lastname: String
+  birthday: Date
+}
+input InputDirectorRemove {
+  id: Int!
+}
+
+# type DivisionInto { }
+
+# FIN
+type Film {
+  id: Int!
+  name: String!
+  duration: Int
+  #premiere: String
+  premiere: Date
+  rating: Float
+
+  director: Director
+  studio: Studio
+  actors: [Actor]
+  genres: [Genre]
+}
+
+# FIN
+type Genre {
+  id: Int!
+  name: String!
+}
+
+# type PlayIn {}
+
+# FIN
+type Projection {
+  id: Int!
+  #datetime: String!
+  datetime: DateTime!
+  price: Int!
+
+  room: Room
+  film: Film
+  #  type: ProjectionType!
+}
+
+# FIN
+#type ProjectionType {
+  #  id: Int!
+  #  film: Film!
+  #}
+
+# FIN
+type Room {
+  id: Int!
+  name: String!
+  capacity: Int!
+  cinema: Cinema!
+}
+
+# FIN
+type Studio {
+  id: Int!
+  name: String!
+}
+
+# FIN
+#type Tag {
+  #  id: Int!
+  #  name: String!
+  #}
+
+# type Taged {}
+
+type Sale {
+  id: Int!
+  price: Int
+  precentage: Float
+  description: String
+}
+
+# Skoro
+type Client {
+  id: Int!
+  firstname: String!
+  lastname: String!
+  login: String!
+  # Neni reservace zatim
+  reservations: [Reservation]
+  tickets: [Ticket]
+}
+
+type State {
+  id: Int!
+  name: String!
+}
+
+type Reservation {
+  id: Int!
+  code: String!
+  registrated: DateTime!
+  client: Client!
+
+  state: State
+  tickets: [Ticket]
+}
+
+# Skoro
+type Ticket {
+  id: Int!
+  seat: Int!
+  # Neni reservace zatim
+  reservation: Reservation
+  projection: Projection
+  # Kdo si listek koupil
+  buyer: Client
+  sale: Sale
+}
+
+type Job {
+  id: Int!
+  name: String!
+}
+
+type Worker {
+  id: Int!
+  firstname: String!
+  lastname: String!
+  login: String!
+  salary: Int!
+  job: Job!
+
+  cinema: Cinema
+}
+
