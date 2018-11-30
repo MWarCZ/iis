@@ -163,7 +163,23 @@ function selectAll($db) {
         return FALSE;
     }
     
-    return $query->fetchAll(PDO::FETCH_ASSOC);
+    //Parse data from all tables
+    while (($row = $query->fetch(PDO::FETCH_ASSOC)) != false) {
+                
+        $data[] = array(
+            "idFilm" =>     $row["idFilm"],
+            "name" =>       $row["name"],
+            "duration" =>   $row["duration"],
+            "released" =>   $row["released"],
+            "ratings" =>    $row["ratings"],
+            "director" =>   getDirector($db, $row["idDirector"]),
+            "studio" =>     getStudio($db, $row["idStudio"]),
+            "actors" =>     getActors($db, $row["idFilm"]),
+            "genres" =>     getGenres($db, $row["idFilm"])
+            );
+    }
+    
+    return $data;
 }
 
 function selectId($db, $id) {
@@ -185,7 +201,21 @@ function selectId($db, $id) {
         return FALSE;
     }
     
-    return $query->fetch(PDO::FETCH_ASSOC);
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+    
+    $data[] = array(
+            "idFilm" =>     $row["idFilm"],
+            "name" =>       $row["name"],
+            "duration" =>   $row["duration"],
+            "released" =>   $row["released"],
+            "ratings" =>    $row["ratings"],
+            "director" =>   getDirector($db, $row["idDirector"]),
+            "studio" =>     getStudio($db, $row["idStudio"]),
+            "actors" =>     getActors($db, $row["idFilm"]),
+            "genres" =>     getGenres($db, $row["idFilm"])
+            );
+    
+    return $data;
 }
 
 function addActor($db, $id, $idActor) {
@@ -324,7 +354,7 @@ function getActors($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT *  FROM `film_actor` WHERE `idFilm` = ?");
+        $query = $db->prepare("SELECT idFilm, idActor  FROM `film_actor` WHERE `idFilm` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -346,7 +376,7 @@ function getGenres($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT * FROM `film_genre` WHERE `idFilm` = ?");
+        $query = $db->prepare("SELECT idFilm, idGenre FROM `film_genre` WHERE `idFilm` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -362,4 +392,48 @@ function getGenres($db, $id) {
     }
     
     return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getDirector($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT * FROM `directors` WHERE `idDirector` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getStudio($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT * FROM `studios` WHERE `idStudio` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return $query->fetch(PDO::FETCH_ASSOC);
 }

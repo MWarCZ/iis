@@ -245,8 +245,7 @@ if(isset($input['request'])) {
                 $out["data"] = true;
             } else $out["error"] = "SQL Error";
             
-            break;
-        
+            break;        
             
         case "DEL_GENRE" : 
             debug_print("SELECT_ALL");
