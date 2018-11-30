@@ -78,18 +78,51 @@ type Mutation {
 
 type MutationCreate {
   test(text: String!): String!
-  cinema(input: InputCinemaCreate): Cinema
-  actor: Actor
-  director: Director
+  cinema(input: InputCinemaCreate!): Cinema
+  actor(input: InputActorCreate!): Actor
+  director(input: InputDirectorCreate!): Director
+  client(input: InputClientCreate!): Client
+  genre(input: InputGenreCreate!): Genre
+  film(input: InputFilmCreate!, add: InputFilmAddSome): Film
+  projection(input: InputProjectionCreate!): Projection
+  reservation(input: InputReservationCreate!, add: InputReservationAddSome): Reservation
+  room(input: InputRoomCreate!): Room
+  studio(input: InputStudioCreate!): Studio
+  ticket(input: InputTicketCreate!): Ticket
+  worker(input: InputWorkerCreate!): Worker
 }
 type MutationUpdate {
   cinema(input: InputCinemaUpdate): Cinema
+  actor(input: InputActorUpdate): Actor
+  director(input: InputDirectorUpdate): Director
+  client(input: InputClientUpdate): Client
+  genre(input: InputGenreUpdate): Genre
+  film(input: InputFilmUpdate, add: InputFilmAddSome, remove: InputFilmRemoveSome): Film
+  projection(input: InputProjectionUpdate): Projection
+  reservation(input: InputReservationUpdate, add: InputReservationAddSome, remove: InputReservationRemoveSome): Reservation
+  room(input: InputRoomUpdate): Room
+  studio(input: InputStudioUpdate): Studio
+  ticket(input: InputTicketUpdate): Ticket
+  worker(input: InputWorkerUpdate): Worker
 }
 type MutationRemove {
-  cinema(input: InputCinemaRemove): Cinema
+  cinema(input: InputCinemaRemove!): Cinema
+  actor(input: InputActorRemove!): Actor
+  director(input: InputDirectorRemove!): Director
+  client(input: InputClientRemove!): Client
+  genre(input: InputGenreRemove!): Genre
+  film(input: InputFilmRemove!): Film
+  projection(input: InputProjectionRemove!): Projection
+  reservation(input: InputReservationRemove!): Reservation
+  room(input: InputRoomRemove!): Room
+  studio(input: InputStudioRemove!): Studio
+  ticket(input: InputTicketRemove!): Ticket
+  worker(input: InputWorkerRemove!): Worker
 }
 
-# FIN
+###############################################
+# Cinema
+#
 type Cinema {
   id: Int!
   """Nazev/Jmeno/Oznaceni kina."""
@@ -116,7 +149,9 @@ input InputCinemaRemove {
   id: Int!
 }
 
-# FIN
+###############################################
+# Actor
+#
 type Actor {
   id: Int!
   firstname: String!
@@ -140,7 +175,10 @@ input InputActorRemove {
   id: Int!
 }
 
-# FIN
+
+###############################################
+# Director
+#
 type Director {
   id: Int!
   firstname: String!
@@ -163,14 +201,14 @@ input InputDirectorRemove {
   id: Int!
 }
 
-# type DivisionInto { }
 
-# FIN
+###############################################
+# Film
+#
 type Film {
   id: Int!
   name: String!
   duration: Int
-  #premiere: String
   premiere: Date
   rating: Float
 
@@ -180,15 +218,58 @@ type Film {
   genres: [Genre]
 }
 
-# FIN
+input InputFilmCreate {
+  name: String!
+  duration: Int
+  premiere: Date
+  rating: Float
+  idDirector: Int
+  idStudio: Int
+}
+input InputFilmUpdate {
+  id: Int!
+  duration: Int
+  premiere: Date
+  rating: Float
+  idDirector: Int
+  idStudio: Int
+}
+input InputFilmRemove {
+  id: Int!
+}
+input InputFilmAddSome {
+  id: Int!
+  idsActor: [Int!]
+  idsGenre: [Int!]
+}
+input InputFilmRemoveSome {
+  id: Int!
+  idsActor: [Int!]
+  idsGenre: [Int!]
+}
+
+###############################################
+# Genre
+#
 type Genre {
   id: Int!
   name: String!
 }
+input InputGenreCreate {
+  name: String!
+}
+input InputGenreUpdate {
+  id: Int!
+  name: String
+}
+input InputGenreRemove {
+  id: Int!
+}
 
-# type PlayIn {}
 
-# FIN
+###############################################
+# Projection
+#
 type Projection {
   id: Int!
   #datetime: String!
@@ -197,37 +278,70 @@ type Projection {
 
   room: Room
   film: Film
-  #  type: ProjectionType!
+}
+input InputProjectionCreate {
+  datetime: Date!
+  price: Int!
+  idRoom: Int!
+  idFilm: Int!
+}
+input InputProjectionUpdate {
+  id: Int!
+  datetime: Date!
+  price: Int!
+  idRoom: Int!
+  idFilm: Int!
+}
+input InputProjectionRemove {
+  id: Int!
 }
 
-# FIN
-#type ProjectionType {
-  #  id: Int!
-  #  film: Film!
-  #}
-
-# FIN
+###############################################
+# Room
+#
 type Room {
   id: Int!
   name: String!
   capacity: Int!
   cinema: Cinema!
 }
+input InputRoomCreate {
+  name: String!
+  capacity: Int!
+  idCinema: Int!
+}
+input InputRoomUpdate {
+  id: Int!
+  name: String
+  capacity: Int
+  idCinema: Int
+}
+input InputRoomRemove {
+  id: Int!
+}
 
-# FIN
+
+###############################################
+# Studio
+#
 type Studio {
   id: Int!
   name: String!
 }
+input InputStudioCreate {
+  name: String!
+}
+input InputStudioUpdate {
+  id: Int!
+  name: String
+}
+input InputStudioRemove {
+  id: Int!
+}
 
-# FIN
-#type Tag {
-  #  id: Int!
-  #  name: String!
-  #}
-
-# type Taged {}
-
+###############################################
+# Sale
+#
 type Sale {
   id: Int!
   price: Int
@@ -235,22 +349,64 @@ type Sale {
   description: String
 }
 
-# Skoro
+
+###############################################
+# Client
+#
 type Client {
   id: Int!
   firstname: String!
   lastname: String!
   login: String!
-  # Neni reservace zatim
+  birthday: Date
+
   reservations: [Reservation]
   tickets: [Ticket]
 }
+input InputClientCreate {
+  firstname: String!
+  lastname: String!
+  login: String!
+  password: String!
+  birthday: Date
+}
+input InputClientUpdate {
+  id: Int!
+  firstname: String!
+  lastname: String!
+  login: String!
+  birthday: Date
+}
+input InputClientRemove {
+  id: Int!
+}
+input InputClientUpdatePassword {
+  id: Int!
+  oldPassword: String!
+  newPassword: String!
+}
 
+###############################################
+# State
+#
 type State {
   id: Int!
   name: String!
 }
+input InputStateCreate {
+  name: String!
+}
+input InputStateUpdate {
+  id: Int!
+  name: String
+}
+input InputStateRemove {
+  id: Int!
+}
 
+###############################################
+# Reservation
+#
 type Reservation {
   id: Int!
   code: String!
@@ -260,8 +416,34 @@ type Reservation {
   state: State
   tickets: [Ticket]
 }
+input InputReservationCreate {
+  code: String
+  registrated: Date
+  idClient: Int
+}
+input InputReservationUpdate {
+  id: Int!
+  registrated: Date
+  idClient: Int
+  idSale: Int
+}
+input InputReservationRemove {
+  id: Int!
+}
+# Pridani listku k rezervaci
+input InputReservationAddSome {
+  id: Int!
+  idsTicket: [Int!]
+}
+# Odebrani listku z rezervace
+input InputReservationRemoveSome {
+  id: Int!
+  idsTicket: [Int!]
+}
 
-# Skoro
+###############################################
+# Ticket
+#
 type Ticket {
   id: Int!
   seat: Int!
@@ -272,12 +454,47 @@ type Ticket {
   buyer: Client
   sale: Sale
 }
+input InputTicketCreate {
+  seat: Int!
+  idProjection: Int!
+  idReservation: Int
+  idClient: Int
+  idSale: Int
+}
+input InputTicketUpdate {
+  id: Int!
+  seat: Int
+  idProjection: Int
+  idReservation: Int
+  idClient: Int
+  idSale: Int
+}
+input InputTicketRemove {
+  id: Int!
+}
 
+
+###############################################
+# Job
+#
 type Job {
   id: Int!
   name: String!
 }
+input InputJobCreate {
+  name: String!
+}
+input InputJobUpdate {
+  id: Int!
+  name: String
+}
+input InputJobRemove {
+  id: Int!
+}
 
+###############################################
+# Worker
+#
 type Worker {
   id: Int!
   firstname: String!
@@ -288,4 +505,29 @@ type Worker {
 
   cinema: Cinema
 }
-
+input InputWorkerCreate {
+  firstname: String!
+  lastname: String!
+  login: String!
+  salary: Int!
+  idJob: Int!
+  idCinema: Int
+  password: String!
+}
+input InputWorkerUpdate {
+  id: Int!
+  firstname: String
+  lastname: String
+  login: String
+  salary: Int
+  idJob: Int
+  idCinema: Int
+}
+input InputWorkerRemove {
+  id: Int!
+}
+input InputWorkerUpdatePassword {
+  id: Int!
+  newPassword: String!
+  oldPassword: String!
+}

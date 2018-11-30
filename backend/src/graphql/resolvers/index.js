@@ -1,11 +1,11 @@
 
-const Query = require('./Query.js')
+const Query = require('./query.js')
 const {
   Mutation,
   MutationCreate,
   MutationUpdate,
   MutationRemove,
-} = require('./Mutations.js')
+} = require('./mutations.js')
 
 var GLOBAL_VALUE_X = 0;
 
