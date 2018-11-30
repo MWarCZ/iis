@@ -14,7 +14,7 @@ require_once './php/validation.php';
 require_once './php/parse_input.php';
 
 //SQL specific reguires
-require_once './php/sql/halls.php';
+require_once './php/sql/films.php';
 
 $out["error"] = NULL;
 $out["data"] = NULL;
@@ -30,26 +30,38 @@ if(isset($input['request'])) {
             }
             
             //All input set check
-            if( !isset($input["data"]["mark"]) &&
-                !isset($input["data"]["cap"]) &&
-                !isset($input["data"]["idCinema"])) {
+            if( !isset($input["data"]["name"]) &&
+                !isset($input["data"]["duration"]) &&
+                !isset($input["data"]["released"]) &&
+                !isset($input["data"]["rating"]) ) {
                 $out["error"] = "Missing some input";
                 break;
             }
             
+            if(!isset($input["data"]["idDirector"])) $input["data"]["idDirector"] = null;
+            if(!isset($input["data"]["idStudio"])) $input["data"]["idStudio"] = null;
+            
             //Get data from inputs
-            $mark = htmlspecialchars($input["data"]["mark"]);
-            $cap = intval(htmlspecialchars($input["data"]["cap"]));
-            $idCinema = htmlspecialchars($input["data"]["idCinema"]);
+            $name = htmlspecialchars($input["data"]["name"]);
+            $duration = intval(htmlspecialchars($input["data"]["duration"]));
+            $released = date('Y-m-d', strtotime(htmlspecialchars($input["data"]["released"])));
+            $rating = htmlspecialchars($input["data"]["rating"]);
+            $idDirector = htmlspecialchars($input["data"]["idDirector"]);
+            $idStudio = htmlspecialchars($input["data"]["idStudio"]);
             
-            if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
-                break;
-            }
-            
-            if(($id = insert($db, $mark, $cap, $idCinema))) {
+            if(($id = insert($db, $name, $duration, $released, $rating))) {
               $out["data"] = $id;
             } else $out["error"] = "SQL Error";
+            
+            //Bind Sstudio
+            if($idStudio != null){                
+                if(!bindStudio($db, $id, $idStudio)) $out["error"] = "Wrong studio or director";
+            } else unbindStudio($db, $id);
+            
+            //Bind director
+            if($idDirector != null){                
+                if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
+            } else unbindDirector($db, $id);
             
             break;
             
@@ -62,27 +74,38 @@ if(isset($input['request'])) {
             }
             
             //All input set check
-            if( !isset($input["data"]["id"]) &&
-                !isset($input["data"]["mark"]) &&
-                !isset($input["data"]["cap"]) &&
-                !isset($input["data"]["idCinema"])) {
+            if( !isset($input["data"]["name"]) &&
+                !isset($input["data"]["duration"]) &&
+                !isset($input["data"]["released"]) &&
+                !isset($input["data"]["rating"]) ) {
                 $out["error"] = "Missing some input";
                 break;
             }
             
+            if(!isset($input["data"]["idDirector"])) $input["data"]["idDirector"] = null;
+            if(!isset($input["data"]["idStudio"])) $input["data"]["idStudio"] = null;
+            
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
-            $mark = htmlspecialchars($input["data"]["mark"]);
-            $cap = intval(htmlspecialchars($input["data"]["cap"]));
-            $idCinema = htmlspecialchars($input["data"]["idCinema"]);
+            $name = htmlspecialchars($input["data"]["name"]);
+            $duration = intval(htmlspecialchars($input["data"]["duration"]));
+            $released = date('Y-m-d', strtotime(htmlspecialchars($input["data"]["released"])));
+            $rating = htmlspecialchars($input["data"]["rating"]);
+            $idDirector = htmlspecialchars($input["data"]["idDirector"]);
+            $idStudio = htmlspecialchars($input["data"]["idStudio"]);
             
-            if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
-                break;
-            }
-            
-            if(!update($db, $id, $mark, $cap, $idCinema)) $out["error"] = "Update error";
+            if(!update($db, $id, $name, $duration, $released, $rating)) $out["error"] = "Update error";
             else $out["data"] = true;
+            
+            //Bind Sstudio
+            if($idStudio != null){                
+                if(!bindStudio($db, $id, $idStudio)) $out["error"] = "Wrong studio or director";
+            } else unbindStudio($db, $id);
+            
+            //Bind director
+            if($idDirector != null){                
+                if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
+            } else unbindDirector($db, $id);
             
             break;
         
