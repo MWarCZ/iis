@@ -12,11 +12,9 @@ const Tickets = {
           id
           price
           datetime
-          type {
-            film {
-              id
-              name
-            }
+          film {
+            id
+            name
           }
           room {
             id
@@ -40,8 +38,8 @@ const Tickets = {
           newItem.id = item.id
           newItem.datetime = item.datetime
           newItem.price = item.price
-          newItem.idFilm = item.type.film.id
-          newItem.film = item.type.film.name
+          newItem.idFilm = item.film.id
+          newItem.film = item.film.name
           newItem.idCinema = item.room.cinema.id
           newItem.cinema = item.room.cinema.name
           newItem.idRoom = item.room.id
@@ -63,11 +61,9 @@ const Tickets = {
           id
           price
           datetime
-          type {
-            film {
-              id
-              name
-            }
+          film {
+            id
+            name
           }
           room {
             id
@@ -90,8 +86,8 @@ const Tickets = {
         newItem.id = item.id
         newItem.datetime = item.datetime
         newItem.price = item.price
-        newItem.idFilm = item.type.film.id
-        newItem.film = item.type.film.name
+        newItem.idFilm = item.film.id
+        newItem.film = item.film.name
         newItem.idCinema = item.room.cinema.id
         newItem.cinema = item.room.cinema.name
         newItem.idRoom = item.room.id
@@ -136,12 +132,11 @@ const Tickets = {
                 name
               }
             }
-            type {
-              film {
-                id
-                name
-              }
+            film {
+              id
+              name
             }
+
           }
           sale {
             price
@@ -161,8 +156,8 @@ const Tickets = {
           newItem.id = item.id
           newItem.seat = item.seat
           newItem.datetime = item.projection.datetime
-          newItem.idFilm = item.projection.type.film.id
-          newItem.film = item.projection.type.film.name
+          newItem.idFilm = item.projection.film.id
+          newItem.film = item.projection.film.name
           newItem.idCinema = item.projection.room.cinema.id
           newItem.cinema = item.projection.room.cinema.name
           newItem.idRoom = item.projection.room.id
@@ -214,11 +209,9 @@ const Tickets = {
                 name
               }
             }
-            type {
-              film {
-                id
-                name
-              }
+            film {
+              id
+              name
             }
           }
           sale {
@@ -239,8 +232,8 @@ const Tickets = {
           newItem.id = item.id
           newItem.seat = item.seat
           newItem.datetime = item.projection.datetime
-          newItem.idFilm = item.projection.type.film.id
-          newItem.film = item.projection.type.film.name
+          newItem.idFilm = item.projection.film.id
+          newItem.film = item.projection.film.name
           newItem.idCinema = item.projection.room.cinema.id
           newItem.cinema = item.projection.room.cinema.name
           newItem.idRoom = item.projection.room.id

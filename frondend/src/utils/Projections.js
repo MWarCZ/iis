@@ -39,11 +39,9 @@ const Projections = {
           id
           price
           datetime
-          type {
-            film {
-              id
-              name
-            }
+          film {
+            id
+            name
           }
           room {
             id
@@ -67,8 +65,8 @@ const Projections = {
           newItem.id = item.id
           newItem.datetime = item.datetime
           newItem.price = item.price
-          newItem.idFilm = item.type.film.id
-          newItem.film = item.type.film.name
+          newItem.idFilm = item.film.id
+          newItem.film = item.film.name
           newItem.idCinema = item.room.cinema.id
           newItem.cinema = item.room.cinema.name
           newItem.idRoom = item.room.id
@@ -100,11 +98,9 @@ const Projections = {
           id
           price
           datetime
-          type {
-            film {
-              id
-              name
-            }
+          film {
+            id
+            name
           }
           room {
             id
@@ -128,8 +124,8 @@ const Projections = {
         newItem.id = item.id
         newItem.datetime = item.datetime
         newItem.price = item.price
-        newItem.idFilm = item.type.film.id
-        newItem.film = item.type.film.name
+        newItem.idFilm = item.film.id
+        newItem.film = item.film.name
         newItem.idCinema = item.room.cinema.id
         newItem.cinema = item.room.cinema.name
         newItem.idRoom = item.room.id
@@ -154,11 +150,9 @@ const Projections = {
           id
           price
           datetime
-          type {
-            film {
-              id
-              name
-            }
+          film {
+            id
+            name
           }
           room {
             id
@@ -182,8 +176,8 @@ const Projections = {
           newItem.id = item.id
           newItem.datetime = item.datetime
           newItem.price = item.price
-          newItem.idFilm = item.type.film.id
-          newItem.film = item.type.film.name
+          newItem.idFilm = item.film.id
+          newItem.film = item.film.name
           newItem.idCinema = item.room.cinema.id
           newItem.cinema = item.room.cinema.name
           newItem.idRoom = item.room.id
