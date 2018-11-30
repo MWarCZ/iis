@@ -1,0 +1,69 @@
+INPUT DATA:
+var request : <REQUESTS>
+var data : JSON(<DATA>)
+
+URL: xxx.php
+    <REQUEST> :
+        <- <DATA>
+        -> JSON{"error": null, "data":[]}
+--------------------------------------------------------------------------------
+
+URL : users.php
+    INSERT : 
+        <- "login":"test","name":"test","surname":"test","email":"test","pass":"test","pass_verifi":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGIN :
+        <- "login":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGOUT :
+        <- NULL
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    CHANGE_PASSW :
+        <- "login":"test","old_pass":"test","new_pass":"aaa","new_verifi":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    UPDATE :
+        <- "login":"test","name":"test","surname":"test","email":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE :
+        <- "login":"test","pass":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    LOGGED :
+        <- NULL
+        -> JSON{"error":ERROR,"data":{"id":"1","login":"test","name":"test","surname":"test","email":"tes@test.test","access":1}}
+--------------------------------------------------------------------------------
+
+URL : employees.php
+    INSERT : -> min acces level 3
+        <- "login":"test","name":"test","surname":"test","ssn":"test","pass":"test","pass_verifi":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGIN :
+        <- "login":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    LOGOUT : -> min acces level 2
+        <- NULL
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    CHANGE_PASSW : -> min acces level 2
+        <- "login":"test","old_pass":"test","new_pass":"aaa","new_verifi":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    UPDATE : -> min acces level 2
+        <- "login":"test","name":"test","surname":"test","ssn":"test","pass":"test"
+        -> JSON{"error": ERROR, "data":true/NULL}
+
+    DELETE : -> min acces level 3
+        <- "login":"test","pass":"aaa"
+        -> JSON{"error": ERROR, "data":true/NULL}
+        
+    LOGGED : -> min acces level 2
+        <- NULL
+        -> JSON{"error":ERROR,"data":{"id":"1","login":"test","name":"test","surname":"test","ssn":"tes@test.test","access":1}}
+--------------------------------------------------------------------------------
