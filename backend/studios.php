@@ -14,7 +14,7 @@ require_once './php/validation.php';
 require_once './php/parse_input.php';
 
 //SQL specific reguires
-require_once './php/sql/halls.php';
+require_once './php/sql/studios.php';
 
 $out["error"] = NULL;
 $out["data"] = NULL;
@@ -30,24 +30,15 @@ if(isset($input['request'])) {
             }
             
             //All input set check
-            if( !isset($input["data"]["mark"]) &&
-                !isset($input["data"]["cap"]) &&
-                !isset($input["data"]["idCinema"])) {
+            if( !isset($input["data"]["name"])) {
                 $out["error"] = "Missing some input";
                 break;
             }
             
             //Get data from inputs
-            $mark = htmlspecialchars($input["data"]["mark"]);
-            $cap = intval(htmlspecialchars($input["data"]["cap"]));
-            $idCinema = htmlspecialchars($input["data"]["idCinema"]);
+            $name = htmlspecialchars($input["data"]["name"]);
             
-            if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
-                break;
-            }
-            
-            if(($id = insert($db, $mark, $cap, $idCinema))) {
+            if(($id = insert($db, $name))) {
               $out["data"] = $id;
             } else $out["error"] = "SQL Error";
             
@@ -63,25 +54,16 @@ if(isset($input['request'])) {
             
             //All input set check
             if( !isset($input["data"]["id"]) &&
-                !isset($input["data"]["mark"]) &&
-                !isset($input["data"]["cap"]) &&
-                !isset($input["data"]["idCinema"])) {
+                !isset($input["data"]["id"])) {
                 $out["error"] = "Missing some input";
                 break;
             }
             
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
-            $mark = htmlspecialchars($input["data"]["mark"]);
-            $cap = intval(htmlspecialchars($input["data"]["cap"]));
-            $idCinema = htmlspecialchars($input["data"]["idCinema"]);
+            $name = htmlspecialchars($input["data"]["name"]);
             
-            if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
-                break;
-            }
-            
-            if(!update($db, $id, $mark, $cap, $idCinema)) $out["error"] = "Update error";
+            if(!update($db, $id, $name)) $out["error"] = "Update error";
             else $out["data"] = true;
             
             break;

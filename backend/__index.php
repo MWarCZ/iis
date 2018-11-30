@@ -11,7 +11,7 @@ and open the template in the editor.
     </head>
     <body>
        <fieldset>
-           <form action='./halls.php' method='POST'>                
+           <form action='./actors.php' method='POST'>                
                 Request type <input type='text' name='request' style="width: 90%"><br>
                 JSON data <input type='text' name='data' style="width: 90%"><br>
                 <input type='submit' name='run' value='Run'>

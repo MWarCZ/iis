@@ -67,9 +67,8 @@ if(isset($input['request'])) {
             $name = htmlspecialchars($input["data"]["name"]);
             $address = htmlspecialchars($input["data"]["address"]);
             
-            if(($id = update($db, $id, $name, $address))) {
-              $out["data"] = TRUE;
-            } else $out["error"] = "SQL Error";
+            if(!update($db, $id, $name, $address)) $out["error"] = "Update error";
+            else $out["data"] = true;
             
             break;
         
