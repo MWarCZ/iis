@@ -53,15 +53,15 @@ if(isset($input['request'])) {
               $out["data"] = $id;
             } else $out["error"] = "SQL Error";
             
-            //Bind Sstudio
+            //Bind Studio
             if($idStudio != null){                
                 if(!bindStudio($db, $id, $idStudio)) $out["error"] = "Wrong studio or director";
-            } else unbindStudio($db, $id);
+            } else if(!unbindStudio($db, $id)) $out["error"] = "Wrong studio or director";
             
             //Bind director
             if($idDirector != null){                
                 if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
-            } else unbindDirector($db, $id);
+            } else if(!unbindDirector($db, $id)) $out["error"] = "Wrong studio or director";
             
             break;
             
@@ -126,7 +126,17 @@ if(isset($input['request'])) {
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
             
-            //Delete hall
+            //Delete all actors in film
+            if(delActors($db, $id)) {
+                $out["data"] = true;
+            } else $out["error"] = "SQL Error";
+            
+            //Delete all genres in film
+            if(delGenres($db, $id)) {
+                $out["data"] = true;
+            } else $out["error"] = "SQL Error";
+            
+            //Delete films
             if(delete($db, $id)) {
                 $out["data"] = true;
             } else $out["error"] = "SQL Error";
@@ -158,6 +168,108 @@ if(isset($input['request'])) {
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
             } else $out["error"] = "Not found";
+            
+            break;
+            
+        case "ADD_ACTOR" : 
+            debug_print("ADD_ACTOR");
+            //Check acces level
+            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+                $out["error"] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["id"]) &&
+                !isset($input["data"]["idActor"])) {
+                $out["error"] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            $idActor = htmlspecialchars($input["data"]["idActor"]);
+            
+            if(($id = addActor($db, $id, $idActor))) {
+              $out["data"] = $id;
+            } else $out["error"] = "SQL Error";
+            
+            break;
+        
+            
+        case "ADD_GENRE" : 
+            debug_print("ADD_GENRE");
+            //Check acces level
+            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+                $out["error"] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["id"]) &&
+                !isset($input["data"]["idGenre"])) {
+                $out["error"] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            $idGenre = htmlspecialchars($input["data"]["idGenre"]);
+            
+            if(($id = addGenre($db, $id, $idGenre))) {
+              $out["data"] = $id;
+            } else $out["error"] = "SQL Error";
+            
+            break;
+            
+        case "DEL_ACTOR" : 
+            debug_print("SELECT_ALL");
+            //Check acces level
+            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+                $out["error"] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["id"]) &&
+                !isset($input["data"]["idActor"])) {
+                $out["error"] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            $idActor = htmlspecialchars($input["data"]["idActor"]);
+            
+            if(delActor($db, $id, $idActor)) {
+                $out["data"] = true;
+            } else $out["error"] = "SQL Error";
+            
+            break;
+        
+            
+        case "DEL_GENRE" : 
+            debug_print("SELECT_ALL");
+            //Check acces level
+            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+                $out["error"] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["id"]) &&
+                !isset($input["data"]["idGenre"])) {
+                $out["error"] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            $idGenre = htmlspecialchars($input["data"]["idGenre"]);
+            
+            if(delGenre($db, $id, $idGenre)) {
+                $out["data"] = true;
+            } else $out["error"] = "SQL Error";
             
             break;
             

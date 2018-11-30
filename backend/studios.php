@@ -85,6 +85,9 @@ if(isset($input['request'])) {
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
             
+            //unbind studio from film
+            if(!unbindStudio($db, $id)) $out["error"] = "Wrong studio or director";
+            
             //Delete hall
             if(delete($db, $id)) {
                 $out["data"] = true;

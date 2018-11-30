@@ -200,7 +200,6 @@ if(isset($input['request'])) {
         
         case "DELETE" : 
             debug_print("DELETE");
-            //TODO acces
             
             //All input set check
             if( !isset($input["data"]["login"]) && 
@@ -211,11 +210,29 @@ if(isset($input['request'])) {
             
             //Get data from inputs
             $login = htmlspecialchars($input["data"]["login"]);
-            $pass = $input["data"]["pass"];            
+            $pass = $input["data"]["pass"];
+            
+            //Are u deleting own acc?
+            if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
+                //Or admin?
+                if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 4)){
+                    $out["error"] = "You can't delete this user";
+                    break;
+                }
+            }
             
             //If user exist, verifi passwd and delete
             if(user_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
+                    //First sign out
+                    if(isset($_SESSION["id"])) {
+                        session_unset();
+                        session_destroy();
+
+                        debug_print("Logged out");
+                        $out["data"] = true;
+                    }
+                    
                     if(!delete_user($db, $login)) $out["error"] = "Delete error";
                     else $out["data"] = true;                   
                 } else $out["error"] = "Wrong password";

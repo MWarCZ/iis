@@ -103,3 +103,25 @@ function selectId($db, $id) {
     
     return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function delActors($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("DELETE FROM `film_actor` WHERE `idActor` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return TRUE;
+}

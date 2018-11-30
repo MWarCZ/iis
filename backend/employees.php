@@ -234,11 +234,29 @@ if(isset($input['request'])) {
             
             //Get data from inputs
             $login = htmlspecialchars($input["data"]["login"]);
-            $pass = $input["data"]["pass"];            
+            $pass = $input["data"]["pass"];
+
+            //Are u deleting own acc?
+            if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
+                //Or have acces?
+                if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)){
+                    $out["error"] = "You can't delete this user";
+                    break;
+                }
+            }            
             
             //If employee exist, verifi passwd and delete
             if(employee_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
+                    //First sign out
+                    if(isset($_SESSION["id"])) {
+                        session_unset();
+                        session_destroy();
+
+                        debug_print("Logged out");
+                        $out["data"] = true;
+                    }
+                    
                     if(!delete_employee($db, $login)) $out["error"] = "Delete error";
                     else $out["data"] = true;                   
                 } else {

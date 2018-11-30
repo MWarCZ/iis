@@ -93,7 +93,12 @@ if(isset($input['request'])) {
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
             
-            //Delete hall
+            //Delete all actors in film
+            if(delActors($db, $id)) {
+                $out["data"] = true;
+            } else $out["error"] = "SQL Error";
+            
+            //Delete
             if(delete($db, $id)) {
                 $out["data"] = true;
             } else $out["error"] = "SQL Error";

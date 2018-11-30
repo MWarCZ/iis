@@ -103,3 +103,24 @@ function selectId($db, $id) {
     
     return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function unbindDirector($db, $id) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("UPDATE `films` SET `idDirector` = null WHERE `idDirector` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array( $id);
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return TRUE;
+}
