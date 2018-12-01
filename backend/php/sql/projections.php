@@ -1,15 +1,15 @@
 <?php
-function insert($db, $date, $idFilm, $idHall, $idPrice, $idAccess) {
+function insert($db, $date, $idFilm, $idHall, $price, $idAccess) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("INSERT INTO `projections`(`date`, `idFilm`, `idHall`, `idPrice`, `idAccess`) VALUES (?, ?, ?, ?, ?)");
+        $query = $db->prepare("INSERT INTO `projections`(`date`, `idFilm`, `idHall`, `price`, `idAccess`) VALUES (?, ?, ?, ?, ?)");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($date, $idFilm, $idHall, $idPrice, $idAccess);
+    $params = array($date, $idFilm, $idHall, $price, $idAccess);
     try {
         $query->execute(array_values($params));
     } catch (PDOException $e) {
@@ -20,17 +20,17 @@ function insert($db, $date, $idFilm, $idHall, $idPrice, $idAccess) {
     return $db->lastInsertId();
 }
 
-function update($db, $id, $date, $idFilm, $idHall, $idPrice, $idAccess){
+function update($db, $id, $date, $idFilm, $idHall, $price, $idAccess){
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("UPDATE `projections` SET `date` = ?,`idFilm` = ?,`idHall` = ?,`idPrice` = ?,`idAccess` = ?  WHERE `idProjection` = ?");
+        $query = $db->prepare("UPDATE `projections` SET `date` = ?,`idFilm` = ?,`idHall` = ?,`price` = ?,`idAccess` = ?  WHERE `idProjection` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($date, $idFilm, $idHall, $idPrice, $idAccess, $id);
+    $params = array($date, $idFilm, $idHall, $price, $idAccess, $id);
     try {
         $query->execute(array_values($params));
     } catch (PDOException $e) {
@@ -79,22 +79,6 @@ function selectAll($db) {
         return FALSE;
     }
     
-//    //Parse data from all tables
-//    while (($row = $query->fetch(PDO::FETCH_ASSOC)) != false) {
-//                
-//        $data[] = array(
-//            "idFilm" =>     $row["idFilm"],
-//            "name" =>       $row["name"],
-//            "duration" =>   $row["duration"],
-//            "released" =>   $row["released"],
-//            "ratings" =>    $row["ratings"],
-//            "director" =>   getDirector($db, $row["idDirector"]),
-//            "studio" =>     getStudio($db, $row["idStudio"]),
-//            "actors" =>     getActors($db, $row["idFilm"]),
-//            "genres" =>     getGenres($db, $row["idFilm"])
-//            );
-//    }
-    
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -118,15 +102,6 @@ function selectId($db, $id) {
     }
     
     $row = $query->fetch(PDO::FETCH_ASSOC);
-    
-//    $data[] = array(
-//            "idProjection" =>     $row["idProjection"],
-//            "date" =>           $row["date"],
-//            "hall" =>           getHall($db, $row["idFilm"]),
-//            "access" =>         getAccess($db, $row["idFilm"]),
-//            "price" =>          getPrice($db, $row["idFilm"]),
-//            "film" =>           getFilm($db, $row["idFilm"])
-//            );
     
     return $row;
 }

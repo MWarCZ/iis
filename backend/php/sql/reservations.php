@@ -212,7 +212,7 @@ function projectionPrice($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT prices.price FROM projections JOIN prices ON projections.idPrice = prices.idPrice WHERE `idProjection` = ?");
+        $query = $db->prepare("SELECT prices FROM projections WHERE `idProjection` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;

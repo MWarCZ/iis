@@ -30,7 +30,7 @@ if(isset($input['request'])) {
             if( !isset($input["data"]["date"]) &&
                 !isset($input["data"]["idFilm"]) &&
                 !isset($input["data"]["idHall"]) &&
-                !isset($input["data"]["idPrice"]) &&
+                !isset($input["data"]["price"]) &&
                 !isset($input["data"]["idAccess"])  ) {
                 $out["error"][] = "Missing some input";
                 break;
@@ -39,10 +39,15 @@ if(isset($input['request'])) {
             $date = date('Y-m-d H:i:s', strtotime(htmlspecialchars($input["data"]["date"])));
             $idFilm = htmlspecialchars($input["data"]["idFilm"]);
             $idHall = htmlspecialchars($input["data"]["idHall"]);
-            $idPrice = htmlspecialchars($input["data"]["idPrice"]);
+            $price = intval(htmlspecialchars($input["data"]["price"]));
             $idAccess = htmlspecialchars($input["data"]["idAccess"]);
             
-            if(($id = insert($db, $date, $idFilm, $idHall, $idPrice, $idAccess))) {
+            if(!(is_int($price) && $price > 0)) {
+                $out["error"][] = "Price must be int > 0";
+                break;
+            }
+            
+            if(($id = insert($db, $date, $idFilm, $idHall, $price, $idAccess))) {
               $out["data"] = $id;
             } else $out["error"][] = "SQL Error";
             
@@ -61,7 +66,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["date"]) &&
                 !isset($input["data"]["idFilm"]) &&
                 !isset($input["data"]["idHall"]) &&
-                !isset($input["data"]["idPrice"]) &&
+                !isset($input["data"]["price"]) &&
                 !isset($input["data"]["idAccess"])  ) {
                 $out["error"][] = "Missing some input";
                 break;
@@ -71,10 +76,15 @@ if(isset($input['request'])) {
             $date = date('Y-m-d H:i:s', strtotime(htmlspecialchars($input["data"]["date"])));
             $idFilm = htmlspecialchars($input["data"]["idFilm"]);
             $idHall = htmlspecialchars($input["data"]["idHall"]);
-            $idPrice = htmlspecialchars($input["data"]["idPrice"]);
+            $price = intval(htmlspecialchars($input["data"]["price"]));
             $idAccess = htmlspecialchars($input["data"]["idAccess"]);
             
-            if(update($db, $id, $date, $idFilm, $idHall, $idPrice, $idAccess)) {
+            if(!(is_int($price) && $price > 0)) {
+                $out["error"][] = "Price must be int > 0";
+                break;
+            }
+            
+            if(update($db, $id, $date, $idFilm, $idHall, $price, $idAccess)) {
               $out["data"] = TRUE;
             } else $out["error"][] = "SQL Error";
             
