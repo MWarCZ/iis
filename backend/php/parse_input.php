@@ -2,22 +2,13 @@
 require_once './php/debug.php';
 
 //Start session
-$currentCookieParams = session_get_cookie_params();
 
 $rootDomain = '.mwarcz.cz/'; 
-
-//session_set_cookie_params( 
-//    $currentCookieParams["lifetime"], 
-//    $currentCookieParams["path"], 
-//    $rootDomain, 
-//    $currentCookieParams["secure"], 
-//    $currentCookieParams["httponly"] 
-//); 
 
 session_name();
 session_start(); 
 
-//setcookie("session_cookie", "value", time() + 600, '/', $rootDomain); 
+setcookie("session_cookie", "value", time() + 600, '/', $rootDomain);
 
 //Parse POST data
 if(isset($_REQUEST["request"])) {

@@ -106,20 +106,20 @@ if(isset($input['request'])) {
             break;
             
         case "LOGOUT" : 
-            debug_print("LOGOUT");
-            //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                $out["error"] = "You don't have enough permissions";
-                break;
-            }
+            debug_print("LOGOUT");            
             
             if(isset($_SESSION["id"])) {
+                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
+                    $out["error"] = "You don't have enough permissions";
+                    break;
+                }
+                
                 session_unset();
                 session_destroy();
                 
                 debug_print("Logged out");
                 $out["data"] = true;
-            }
+            } else $out["error"] = "You aren't loged in";
             
             break;
         
@@ -265,14 +265,13 @@ if(isset($input['request'])) {
             
         case "LOGGED" :
             debug_print("LOGGED");
-            //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                debug_print($_SESSION["access"]);
-                $out["error"] = "You don't have enough permissions";
-                break;
-            }
             
             if(isset($_SESSION["id"])) {
+                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
+                    $out["error"] = "You don't have enough permissions";
+                    break;
+                }
+                
                 $out["data"] = $_SESSION;
             } else $out["error"] = "You aren't loged in";  
             break;

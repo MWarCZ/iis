@@ -83,8 +83,6 @@ if(isset($input['request'])) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
                     $data = get_userData($db, $login);
                     
-                    session_regenerate_id();
-                    
                     //SET data into session
                     $_SESSION = array(
                         "id"=>      $data["idUser"],
@@ -104,15 +102,20 @@ if(isset($input['request'])) {
             break;
             
         case "LOGOUT" : 
-            debug_print("LOGOUT");
+            debug_print("LOGOUT");            
             
             if(isset($_SESSION["id"])) {
+                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
+                    $out["error"] = "You don't have enough permissions";
+                    break;
+                }
+                
                 session_unset();
                 session_destroy();
                 
                 debug_print("Logged out");
                 $out["data"] = true;
-            }
+            } else $out["error"] = "You aren't loged in";
             
             break;
         
@@ -248,7 +251,7 @@ if(isset($input['request'])) {
                     break;
                 }
                 
-                $out["data"] = $_SESSION["id"];
+                $out["data"] = $_SESSION;
             } else $out["error"] = "You aren't loged in";  
             break;
         
