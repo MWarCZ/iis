@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2018 at 08:06 PM
+-- Generation Time: Dec 01, 2018 at 09:27 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -316,6 +316,7 @@ INSERT INTO `projections` (`idProjection`, `date`, `idFilm`, `idAccess`, `idPric
 CREATE TABLE `reservations` (
   `idReservation` int(11) NOT NULL,
   `reserved` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `totalPrice` int(11) NOT NULL DEFAULT '0',
   `paid` tinyint(1) NOT NULL,
   `picked` tinyint(1) NOT NULL,
   `idUser` int(11) DEFAULT NULL
@@ -325,11 +326,11 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`idReservation`, `reserved`, `paid`, `picked`, `idUser`) VALUES
-(3, '2018-12-01 18:35:35', 0, 0, 1),
-(4, '2018-12-01 18:35:35', 0, 0, 1),
-(5, '2018-12-01 18:35:35', 0, 0, 2),
-(6, '2018-12-01 18:35:35', 0, 0, 2);
+INSERT INTO `reservations` (`idReservation`, `reserved`, `totalPrice`, `paid`, `picked`, `idUser`) VALUES
+(3, '2018-12-01 18:35:35', 0, 0, 0, 1),
+(4, '2018-12-01 18:35:35', 199, 0, 0, 1),
+(5, '2018-12-01 18:35:35', 0, 0, 0, 2),
+(6, '2018-12-01 18:35:35', 796, 0, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -380,7 +381,11 @@ INSERT INTO `tickets` (`idTicket`, `price`, `idReservation`, `idDiscount`, `idPr
 (8, 199, 6, 1, 5, 1),
 (9, 199, 6, 1, 9, 1),
 (10, 199, 6, 1, 10, 1),
-(11, 199, 6, 1, 10, 1);
+(11, 199, 6, 1, 10, 1),
+(12, 200, 5, 1, 5, 5),
+(14, 250, 5, 2, 5, 20),
+(15, 5, 5, 2, 5, 20),
+(16, 75, 5, 2, 5, 20);
 
 -- --------------------------------------------------------
 
@@ -626,7 +631,7 @@ ALTER TABLE `studios`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `idTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
