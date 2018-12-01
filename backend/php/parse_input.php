@@ -4,7 +4,7 @@ require_once './php/debug.php';
 //Start session
 $currentCookieParams = session_get_cookie_params();
 
-$rootDomain = '.localhost/'; 
+$rootDomain = '.mwarcz.cz/'; 
 
 //session_set_cookie_params( 
 //    $currentCookieParams["lifetime"], 
@@ -17,7 +17,7 @@ $rootDomain = '.localhost/';
 session_name();
 session_start(); 
 
-setcookie("session_cookie", "value", time() + 600, '/', $rootDomain); 
+//setcookie("session_cookie", "value", time() + 600, '/', $rootDomain); 
 
 //Parse POST data
 if(isset($_REQUEST["request"])) {
