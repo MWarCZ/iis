@@ -68,11 +68,9 @@ if(isset($input['request'])) {
                 break;
             }
             
-            //Add genres
+            //Add genres            
             foreach ($genres as $key => &$genre) {
-                if(!isset($genre["idGenre"])) {
-                    if(!addGenre($db, $id, htmlspecialchars($genre["idGenre"]))) $out["error"] = "SQL Error";
-                } else $out["error"] = "Missing some genre id";
+                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"] = "SQL Error";
             }
             
             break;
@@ -132,9 +130,7 @@ if(isset($input['request'])) {
             
             //Add new genres
             foreach ($genres as $key => &$genre) {
-                if(!isset($genre["idGenre"])) {
-                    if(!addGenre($db, $id, htmlspecialchars($genre["idGenre"]))) $out["error"] = "SQL Error";
-                } else $out["error"] = "Missing some genre id";
+                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"] = "SQL Error";
             }
             
             break;
