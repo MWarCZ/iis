@@ -355,6 +355,7 @@ function getActors($db, $id) {
     
     try {
         $query = $db->prepare("SELECT idFilm, idActor  FROM `film_actor` WHERE `idFilm` = ?");
+        $query = $db->prepare("SELECT actors.idActor, actors.name, actors.surname , actors.birthday FROM film_actor JOIN actors ON actors.idActor = film_actor.idActor WHERE idFilm = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -376,7 +377,7 @@ function getGenres($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT idFilm, idGenre FROM `film_genre` WHERE `idFilm` = ?");
+        $query = $db->prepare("SELECT genres.idGenre, genres.name FROM film_genre JOIN genres ON genres.idGenre = film_genre.idGenre WHERE idFilm = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
