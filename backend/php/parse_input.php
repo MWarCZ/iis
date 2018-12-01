@@ -2,7 +2,7 @@
 require_once './php/debug.php';
 
 //Start session
-session_set_cookie_params(33600, '/', 'localhost.api.mydomain', FALSE, TRUE);
+session_set_cookie_params(33600, '/', '.iis.mwarcz.cz', FALSE, FALSE);
 session_start();
 
 //Parse POST data
