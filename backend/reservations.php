@@ -66,15 +66,14 @@ if(isset($input['request'])) {
                 }
                 
                 //Get ticket data
-                $idReservation = htmlspecialchars($ticket["idReservation"]);
                 $idProjection = htmlspecialchars($ticket["idProjection"]);
                 $idDiscount = htmlspecialchars($ticket["idDiscount"]);
-                $price = projectionPrice($db, $idReservation);
+                $price = projectionPrice($db, $id);
                 $discount = dicount($db, $idDiscount);
                 $seatNumber = htmlspecialchars($ticket["seatNumber"]);
                 
                 //Add ticket
-                if(!addTicket($db, $price, $discount, $idReservation, $idDiscount, $idProjection, $seatNumber)) $out["error"] = "SQL Error";
+                if(!addTicket($db, $price, $discount, $id, $idDiscount, $idProjection, $seatNumber)) $out["error"] = "SQL Error";
             }
             
             //Update totalPrice for reservation

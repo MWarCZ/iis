@@ -71,7 +71,7 @@ if(isset($input['request'])) {
             //Add genres
             foreach ($genres as $key => &$genre) {
                 if(!isset($genre["idGenre"])) {
-                    if(!addGenre($db, $id, $genre["idGenre"])) $out["error"] = "SQL Error";
+                    if(!addGenre($db, $id, htmlspecialchars($genre["idGenre"]))) $out["error"] = "SQL Error";
                 } else $out["error"] = "Missing some genre id";
             }
             
@@ -89,7 +89,8 @@ if(isset($input['request'])) {
             if( !isset($input["data"]["name"]) &&
                 !isset($input["data"]["duration"]) &&
                 !isset($input["data"]["released"]) &&
-                !isset($input["data"]["rating"]) ) {
+                !isset($input["data"]["rating"]) &&
+                !isset($input["data"]["genres"])) {
                 $out["error"] = "Missing some input";
                 break;
             }
@@ -104,7 +105,8 @@ if(isset($input['request'])) {
             $released = date('Y-m-d', strtotime(htmlspecialchars($input["data"]["released"])));
             $rating = htmlspecialchars($input["data"]["rating"]);
             $idDirector = htmlspecialchars($input["data"]["idDirector"]);
-            $idStudio = htmlspecialchars($input["data"]["idStudio"]);
+            $idStudio = htmlspecialchars($input["data"]["idStudio"]);            
+            $genres = $input["data"]["genres"];
             
             if(!update($db, $id, $name, $duration, $released, $rating)) $out["error"] = "Update error";
             else $out["data"] = true;
@@ -131,7 +133,7 @@ if(isset($input['request'])) {
             //Add new genres
             foreach ($genres as $key => &$genre) {
                 if(!isset($genre["idGenre"])) {
-                    if(!addGenre($db, $id, $genre["idGenre"])) $out["error"] = "SQL Error";
+                    if(!addGenre($db, $id, htmlspecialchars($genre["idGenre"]))) $out["error"] = "SQL Error";
                 } else $out["error"] = "Missing some genre id";
             }
             
