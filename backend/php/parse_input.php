@@ -2,8 +2,11 @@
 require_once './php/debug.php';
 
 //Start session
-//session_set_cookie_params(33600, '/', '.iis.mwarcz.cz', FALSE, FALSE);
+session_set_cookie_params(33600, '/', '.iis.mwarcz.cz', FALSE, FALSE);
 session_start();
+
+//BYPAS TODO remove
+$_SESSION["access"] = 4;
 
 //Parse POST data
 if(isset($_REQUEST["request"])) {
