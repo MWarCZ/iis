@@ -212,7 +212,7 @@ function projectionPrice($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT prices.price AS price FROM projections JOIN prices ON projections.idPrice = prices.idPrice WHERE `idProjection` = ?");
+        $query = $db->prepare("SELECT prices.price FROM projections JOIN prices ON projections.idPrice = prices.idPrice WHERE `idProjection` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -266,7 +266,7 @@ function update_totalPrice($db, $id) {
         return FALSE;
     }
     
-    $params = array($id);
+    $params = array($id, $id);
     
     try {
         $query->execute($params);
@@ -282,7 +282,7 @@ function delTicket_reservation($db, $idReservation) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("DELETE FROM `tickets` WHERE `idReservation` = ?");
+        $query = $db->prepare("DELETE tickets FROM tickets WHERE `idReservation` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -303,7 +303,7 @@ function delTicket_user($db, $idUser) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("DELETE FROM tickets JOIN reservations ON reservations.idReservation = tickets.idReservation WHERE reservations.idUser = ?");
+        $query = $db->prepare("DELETE tickets FROM tickets INNER JOIN reservations ON reservations.idReservation = tickets.idReservation WHERE reservations.idUser = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;

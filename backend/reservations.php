@@ -44,7 +44,7 @@ if(isset($input['request'])) {
                     $out["data"] = $id;
                   } else $out["error"][] = "SQL Error";
             } else {
-                if(($id = insert_null($db))) {
+                if(($id = insert_null($db, $idUser))) {
                     $out["data"] = $id;
                   } else $out["error"][] = "SQL Error";
             }
@@ -64,16 +64,23 @@ if(isset($input['request'])) {
                 //Get ticket data
                 $idProjection = htmlspecialchars($ticket["idProjection"]);
                 $idDiscount = htmlspecialchars($ticket["idDiscount"]);
-                $price = projectionPrice($db, $id);
+                $price = projectionPrice($db, $idProjection);
                 $discount = dicount($db, $idDiscount);
-                $seatNumber = htmlspecialchars($ticket["seatNumber"]);
+                $seatNumber = htmlspecialchars($ticket["seatNumber"]);                
+                
+                if($price == null) {
+                    $out["error"][] = "Price cannot be null";
+                    continue;
+                }
                 
                 //Add ticket
                 if(!addTicket($db, $price, $discount, $id, $idDiscount, $idProjection, $seatNumber)) $out["error"][] = "SQL Error";
+                
             }
             
             //Update totalPrice for reservation
             update_totalPrice($db, $id);
+            
             
             break;
             
