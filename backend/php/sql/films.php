@@ -332,7 +332,6 @@ function getActors($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT idFilm, idActor  FROM `film_actor` WHERE `idFilm` = ?");
         $query = $db->prepare("SELECT actors.idActor, actors.name, actors.surname , actors.birthday FROM film_actor JOIN actors ON actors.idActor = film_actor.idActor WHERE idFilm = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());

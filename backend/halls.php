@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/halls.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -22,7 +22,7 @@ if(isset($input['request'])) {
             debug_print("INSERT");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -30,7 +30,7 @@ if(isset($input['request'])) {
             if( !isset($input["data"]["mark"]) &&
                 !isset($input["data"]["cap"]) &&
                 !isset($input["data"]["idCinema"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -40,13 +40,13 @@ if(isset($input['request'])) {
             $idCinema = htmlspecialchars($input["data"]["idCinema"]);
             
             if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
+                $out["error"][] = "Capacity must be int > 0";
                 break;
             }
             
             if(($id = insert($db, $mark, $cap, $idCinema))) {
               $out["data"] = $id;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
@@ -54,7 +54,7 @@ if(isset($input['request'])) {
             debug_print("UPDATE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -63,7 +63,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["mark"]) &&
                 !isset($input["data"]["cap"]) &&
                 !isset($input["data"]["idCinema"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -74,11 +74,11 @@ if(isset($input['request'])) {
             $idCinema = htmlspecialchars($input["data"]["idCinema"]);
             
             if(!(is_int($cap) && $cap > 0)) {
-                $out["error"] = "Capacity must be int > 0";
+                $out["error"][] = "Capacity must be int > 0";
                 break;
             }
             
-            if(!update($db, $id, $mark, $cap, $idCinema)) $out["error"] = "Update error";
+            if(!update($db, $id, $mark, $cap, $idCinema)) $out["error"][] = "Update error";
             else $out["data"] = true;
             
             break;
@@ -87,13 +87,13 @@ if(isset($input['request'])) {
             debug_print("DELETE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -103,7 +103,7 @@ if(isset($input['request'])) {
             //Delete hall
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
@@ -114,7 +114,7 @@ if(isset($input['request'])) {
             
             if($data) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
         
@@ -122,7 +122,7 @@ if(isset($input['request'])) {
             debug_print("SELECT");
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -131,18 +131,18 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output

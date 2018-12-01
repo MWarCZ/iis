@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/users.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -27,7 +27,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["email"]) &&  
                 !isset($input["data"]["pass"]) && 
                 !isset($input["data"]["pass_verifi"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -40,21 +40,21 @@ if(isset($input['request'])) {
             
             //Verifi data
             if(!validate_email($email)) {
-                $out["error"] = "Invalid email";
+                $out["error"][] = "Invalid email";
                 break;
             }
             if(!validate_passw($pass)) {
-                $out["error"] = "Invalid password";
+                $out["error"][] = "Invalid password";
                 break;
             }
              
             //Exexute request
-            if(user_exist($db, $login)) $out["error"] = "Login already used";
+            if(user_exist($db, $login)) $out["error"][] = "Login already used";
             else {
                 if(password_verify($input["data"]["pass_verifi"], $pass)) {
-                    if(!insert_user($db, $login, $name, $surname, $email, $pass)) $out["error"] = "Insert error";
+                    if(!insert_user($db, $login, $name, $surname, $email, $pass)) $out["error"][] = "Insert error";
                     else $out["data"] = true;
-                } else $out["error"] = "Passwords don't match";
+                } else $out["error"][] = "Passwords don't match";
             }
             
             break;
@@ -62,14 +62,14 @@ if(isset($input['request'])) {
         case "LOGIN" : 
             debug_print("LOGIN");
             if(isset($_SESSION["id"])) {
-                $out["error"] = "Already logged in";
+                $out["error"][] = "Already logged in";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["login"]) && 
                 !isset($input["data"]["pass"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -95,9 +95,9 @@ if(isset($input['request'])) {
                     $out["data"] = true;
                     
                 } else {
-                    $out["error"] = "Wrong password";
+                    $out["error"][] = "Wrong password";
                 }
-            } else $out["error"] = "User don't exist";
+            } else $out["error"][] = "User don't exist";
             
             break;
             
@@ -106,7 +106,7 @@ if(isset($input['request'])) {
             
             if(isset($_SESSION["id"])) {
                 if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                    $out["error"] = "You don't have enough permissions";
+                    $out["error"][] = "You don't have enough permissions";
                     break;
                 }
                 
@@ -115,7 +115,7 @@ if(isset($input['request'])) {
                 
                 debug_print("Logged out");
                 $out["data"] = true;
-            } else $out["error"] = "You aren't loged in";
+            } else $out["error"][] = "You aren't loged in";
             
             break;
         
@@ -123,7 +123,7 @@ if(isset($input['request'])) {
             debug_print("UPDATE");
             
             if(isset($_SESSION["id"])) {
-                $out["error"] = "You aren't loged in";            
+                $out["error"][] = "You aren't loged in";            
                 break;
             }
             
@@ -133,7 +133,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["name"]) &&
                 !isset($input["data"]["surname"]) &&
                 !isset($input["data"]["email"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -147,17 +147,17 @@ if(isset($input['request'])) {
             
             //Verifi data
             if(!validate_email($email)) {
-                $out["error"] = "Wrong email";
+                $out["error"][] = "Wrong email";
                 break;
             }
             
             //If user exist, verifi passwd and update data
             if(user_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {                    
-                    if(!update_userData($db, $login, $name, $surname, $email)) $out["error"] = "Update error";
+                    if(!update_userData($db, $login, $name, $surname, $email)) $out["error"][] = "Update error";
                     else $out["data"] = true;             
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "User don't exist";
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "User don't exist";
                     
             break;
         
@@ -165,7 +165,7 @@ if(isset($input['request'])) {
             debug_print("CHANGE_PASSW");
             
             if(!isset($_SESSION["id"])) {
-                $out["error"] = "You aren't loged in";            
+                $out["error"][] = "You aren't loged in";            
                 break;
             }
             
@@ -174,7 +174,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["old_pass"]) && 
                 !isset($input["data"]["new_pass"]) && 
                 !isset($input["data"]["new_verifi"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -184,7 +184,7 @@ if(isset($input['request'])) {
             $new = password_hash($input["data"]["new_pass"], PASSWORD_DEFAULT);
             
             if(!validate_passw($new)) {
-                $out["error"] = "Invalid password";
+                $out["error"][] = "Invalid password";
                 break;
             }
             
@@ -192,11 +192,11 @@ if(isset($input['request'])) {
             if(user_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
                     if(password_verify($input["data"]["new_verifi"], $new)) {
-                        if(!update_passwd($db, $login, $new)) $out["error"] = "Insert error";
+                        if(!update_passwd($db, $login, $new)) $out["error"][] = "Insert error";
                         else $out["data"] = true;
-                    } else $out["error"] = "Passwords don't match";                     
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "User don't exist";
+                    } else $out["error"][] = "Passwords don't match";                     
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "User don't exist";
             
             break;
         
@@ -206,7 +206,7 @@ if(isset($input['request'])) {
             //All input set check
             if( !isset($input["data"]["login"]) && 
                 !isset($input["data"]["pass"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -216,7 +216,7 @@ if(isset($input['request'])) {
             
             //Are u deleting own acc?
             if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
-                $out["error"] = "You can't delete this user";
+                $out["error"][] = "You can't delete this user";
                 break;
             }
             
@@ -237,13 +237,13 @@ if(isset($input['request'])) {
                     
                     //Remove id from reservations
                     
-                    if(!null_reservations($db, $id)) $out["error"] = "Delete reservation error";
+                    if(!null_reservations($db, $id)) $out["error"][] = "Delete reservation error";
                     else $out["data"] = true;  
                     
-                    if(!delete_user($db, $login)) $out["error"] = "Delete error";
+                    if(!delete_user($db, $login)) $out["error"][] = "Delete error";
                     else $out["data"] = true;                   
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "User don't exist";
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "User don't exist";
             
             break;
             
@@ -252,22 +252,22 @@ if(isset($input['request'])) {
             
             if(isset($_SESSION["id"])) {
                 if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                    $out["error"] = "You don't have enough permissions";
+                    $out["error"][] = "You don't have enough permissions";
                     break;
                 }
                 
                 $out["data"] = $_SESSION;
-            } else $out["error"] = "You aren't loged in";  
+            } else $out["error"][] = "You aren't loged in";  
             break;
         
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output

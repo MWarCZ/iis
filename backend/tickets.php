@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/tickets.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -22,13 +22,13 @@ if(isset($input['request'])) {
             debug_print("SELECT");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -37,7 +37,7 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
@@ -45,13 +45,13 @@ if(isset($input['request'])) {
             debug_print("SELECT_PROJECTION");            
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["idProjection"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -60,7 +60,7 @@ if(isset($input['request'])) {
             
             if(($data = selectProjection($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
@@ -68,13 +68,13 @@ if(isset($input['request'])) {
             debug_print("SELECT_RESERVATION");            
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["idReservation"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -83,18 +83,18 @@ if(isset($input['request'])) {
             
             if(($data = selectReservation($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
         
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output

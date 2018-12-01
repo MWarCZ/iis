@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/reservations.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -22,13 +22,13 @@ if(isset($input['request'])) {
             debug_print("RESERVE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["tickets"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -40,17 +40,17 @@ if(isset($input['request'])) {
             
             if(($id = insert($db))) {
               $out["data"] = $id;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             //Add reservation
             if($idUser != null){                
                 if(($id = insert($db, $idUser))) {
                     $out["data"] = $id;
-                  } else $out["error"] = "SQL Error";
+                  } else $out["error"][] = "SQL Error";
             } else {
                 if(($id = insert_null($db))) {
                     $out["data"] = $id;
-                  } else $out["error"] = "SQL Error";
+                  } else $out["error"][] = "SQL Error";
             }
             
             
@@ -61,7 +61,7 @@ if(isset($input['request'])) {
                     !isset($ticket["idProjection"]) &&
                     !isset($ticket["seatNumber"])) {
                     
-                    $out["error"] = "Missing some input";
+                    $out["error"][] = "Missing some input";
                     continue;
                 }
                 
@@ -73,7 +73,7 @@ if(isset($input['request'])) {
                 $seatNumber = htmlspecialchars($ticket["seatNumber"]);
                 
                 //Add ticket
-                if(!addTicket($db, $price, $discount, $id, $idDiscount, $idProjection, $seatNumber)) $out["error"] = "SQL Error";
+                if(!addTicket($db, $price, $discount, $id, $idDiscount, $idProjection, $seatNumber)) $out["error"][] = "SQL Error";
             }
             
             //Update totalPrice for reservation
@@ -85,13 +85,13 @@ if(isset($input['request'])) {
             debug_print("CANCEL");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -99,11 +99,11 @@ if(isset($input['request'])) {
             $id = htmlspecialchars($input["data"]["id"]);
             
             //Delete tickets
-            if(!delTicket_reservation($db, $id)) $out["error"] = "Delete tickets error";
+            if(!delTicket_reservation($db, $id)) $out["error"][] = "Delete tickets error";
             else $out["data"] = true;
             
             //Delete reservation
-            if(!delete($db, $id)) $out["error"] = "Delete reservation error";
+            if(!delete($db, $id)) $out["error"][] = "Delete reservation error";
             else $out["data"] = true;
             
             break;
@@ -112,13 +112,13 @@ if(isset($input['request'])) {
             debug_print("CANCEL_ALL");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["idUser"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -126,39 +126,39 @@ if(isset($input['request'])) {
             $id = htmlspecialchars($input["data"]["idUser"]);
             
             //Delete tickets
-            if(!delTicket_user($db, $id)) $out["error"] = "Delete tickets error";
+            if(!delTicket_user($db, $id)) $out["error"][] = "Delete tickets error";
             else $out["data"] = true;
             
             //Delete reservations
             if(delete_user($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
         case "PAY" : 
             debug_print("PAY");
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             if(pay($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
         
         case "PICK" : 
             debug_print("PICK");
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -167,7 +167,7 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
@@ -175,13 +175,13 @@ if(isset($input['request'])) {
             debug_print("SELECT");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -190,7 +190,7 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
@@ -198,7 +198,7 @@ if(isset($input['request'])) {
             debug_print("SELECT_ALL");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -207,7 +207,7 @@ if(isset($input['request'])) {
             
             if(($data = selectAll($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
         
@@ -215,13 +215,13 @@ if(isset($input['request'])) {
             debug_print("SELECT_USER");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -230,18 +230,18 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
         
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output

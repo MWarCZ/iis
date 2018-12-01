@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/employees.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -22,7 +22,7 @@ if(isset($input['request'])) {
             debug_print("INSERT");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -33,7 +33,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["ssn"]) &&  
                 !isset($input["data"]["pass"]) && 
                 !isset($input["data"]["pass_verifi"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -46,21 +46,21 @@ if(isset($input['request'])) {
             
             //Verifi data
             if(!validate_ssn($ssn)) {
-                $out["error"] = "Invalid ssn";
+                $out["error"][] = "Invalid ssn";
                 break;
             }
             if(!validate_passw($pass)) {
-                $out["error"] = "Invalid password";
+                $out["error"][] = "Invalid password";
                 break;
             }
              
             //Exexute request
-            if(employee_exist($db, $login)) $out["error"] = "Login already used";
+            if(employee_exist($db, $login)) $out["error"][] = "Login already used";
             else {
                 if(password_verify($input["data"]["pass_verifi"], $pass)) {
-                    if(!insert_employee($db, $login, $name, $surname, $ssn, $pass)) $out["error"] = "Insert error";
+                    if(!insert_employee($db, $login, $name, $surname, $ssn, $pass)) $out["error"][] = "Insert error";
                     else $out["data"] = true;
-                } else $out["error"] = "Passwords don't match";
+                } else $out["error"][] = "Passwords don't match";
             }
             
             break;
@@ -68,14 +68,14 @@ if(isset($input['request'])) {
         case "LOGIN" : 
             debug_print("LOGIN");
             if(isset($_SESSION["id"])) {
-                $out["error"] = "Already logged in";
+                $out["error"][] = "Already logged in";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["login"]) && 
                 !isset($input["data"]["pass"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -100,8 +100,8 @@ if(isset($input['request'])) {
                     );
                     $out["data"] = true;
                     
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "Employee don't exist";
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "Employee don't exist";
             
             break;
             
@@ -110,7 +110,7 @@ if(isset($input['request'])) {
             
             if(isset($_SESSION["id"])) {
                 if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                    $out["error"] = "You don't have enough permissions";
+                    $out["error"][] = "You don't have enough permissions";
                     break;
                 }
                 
@@ -119,7 +119,7 @@ if(isset($input['request'])) {
                 
                 debug_print("Logged out");
                 $out["data"] = true;
-            } else $out["error"] = "You aren't loged in";
+            } else $out["error"][] = "You aren't loged in";
             
             break;
         
@@ -127,12 +127,12 @@ if(isset($input['request'])) {
             debug_print("UPDATE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             if(isset($_SESSION["id"])) {
-                $out["error"] = "You aren't loged in";            
+                $out["error"][] = "You aren't loged in";            
                 break;
             }
             
@@ -142,7 +142,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["name"]) &&
                 !isset($input["data"]["surname"]) &&
                 !isset($input["data"]["ssn"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -156,17 +156,17 @@ if(isset($input['request'])) {
             
             //Verifi data
             if(!validate_ssn($ssn)) {
-                $out["error"] = "Wrong ssn";
+                $out["error"][] = "Wrong ssn";
                 break;
             }
             
             //If employee exist, verifi passwd and update data
             if(employee_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {                    
-                    if(!update_employeeData($db, $login, $name, $surname, $ssn)) $out["error"] = "Update error";
+                    if(!update_employeeData($db, $login, $name, $surname, $ssn)) $out["error"][] = "Update error";
                     else $out["data"] = true;             
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "Employee don't exist";
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "Employee don't exist";
                     
             break;
         
@@ -174,12 +174,12 @@ if(isset($input['request'])) {
             debug_print("CHANGE_PASSW");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             if(!isset($_SESSION["id"])) {
-                $out["error"] = "You aren't loged in";            
+                $out["error"][] = "You aren't loged in";            
                 break;
             }
             
@@ -188,7 +188,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["old_pass"]) && 
                 !isset($input["data"]["new_pass"]) && 
                 !isset($input["data"]["new_verifi"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -198,7 +198,7 @@ if(isset($input['request'])) {
             $new = password_hash($input["data"]["new_pass"], PASSWORD_DEFAULT);
             
             if(!validate_passw($new)) {
-                $out["error"] = "Invalid password";
+                $out["error"][] = "Invalid password";
                 break;
             }
             
@@ -206,11 +206,11 @@ if(isset($input['request'])) {
             if(employee_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
                     if(password_verify($input["data"]["new_verifi"], $new)) {
-                        if(!update_passwd($db, $login, $new)) $out["error"] = "Insert error";
+                        if(!update_passwd($db, $login, $new)) $out["error"][] = "Insert error";
                         else $out["data"] = true;
-                    } else $out["error"] = "Passwords don't match";                     
-                } else $out["error"] = "Wrong password";
-            } else $out["error"] = "Employee don't exist";
+                    } else $out["error"][] = "Passwords don't match";                     
+                } else $out["error"][] = "Wrong password";
+            } else $out["error"][] = "Employee don't exist";
             
             break;
         
@@ -218,14 +218,14 @@ if(isset($input['request'])) {
             debug_print("DELETE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["login"]) && 
                 !isset($input["data"]["pass"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -237,7 +237,7 @@ if(isset($input['request'])) {
             if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
                 //Or have access?
                 if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)){
-                    $out["error"] = "You can't delete this user";
+                    $out["error"][] = "You can't delete this user";
                     break;
                 }
             }            
@@ -254,12 +254,12 @@ if(isset($input['request'])) {
                         $out["data"] = true;
                     }
                     
-                    if(!delete_employee($db, $login)) $out["error"] = "Delete error";
+                    if(!delete_employee($db, $login)) $out["error"][] = "Delete error";
                     else $out["data"] = true;                   
                 } else {
-                    $out["error"] = "Wrong password";
+                    $out["error"][] = "Wrong password";
                 }
-            } else $out["error"] = "employee don't exist";
+            } else $out["error"][] = "employee don't exist";
             
             break;
             
@@ -268,22 +268,22 @@ if(isset($input['request'])) {
             
             if(isset($_SESSION["id"])) {
                 if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
-                    $out["error"] = "You don't have enough permissions";
+                    $out["error"][] = "You don't have enough permissions";
                     break;
                 }
                 
                 $out["data"] = $_SESSION;
-            } else $out["error"] = "You aren't loged in";  
+            } else $out["error"][] = "You aren't loged in";  
             break;
         
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output

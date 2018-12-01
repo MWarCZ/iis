@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/films.php';
 
-$out["error"] = NULL;
+$out["error"][] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -22,7 +22,7 @@ if(isset($input['request'])) {
             debug_print("INSERT");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -32,7 +32,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["released"]) &&
                 !isset($input["data"]["rating"]) &&
                 !isset($input["data"]["genres"]) ) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -50,27 +50,27 @@ if(isset($input['request'])) {
             
             if(($id = insert($db, $name, $duration, $released, $rating))) {
               $out["data"] = $id;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             //Bind Studio
             if($idStudio != null){                
-                if(!bindStudio($db, $id, $idStudio)) $out["error"] = "Wrong studio or director";
-            } else if(!unbindStudio($db, $id)) $out["error"] = "Wrong studio or director";
+                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio or director";
+            } else if(!unbindStudio($db, $id)) $out["error"][] = "Wrong studio or director";
             
             //Bind director
             if($idDirector != null){                
-                if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
-            } else if(!unbindDirector($db, $id)) $out["error"] = "Wrong studio or director";
+                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong studio or director";
+            } else if(!unbindDirector($db, $id)) $out["error"][] = "Wrong studio or director";
             
             //Validation of array genres
             if(!is_array($genres)) {
-                $out["error"] = "Exepting array of genres";
+                $out["error"][] = "Exepting array of genres";
                 break;
             }
             
             //Add genres            
             foreach ($genres as $key => &$genre) {
-                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"] = "SQL Error";
+                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"][] = "SQL Error";
             }
             
             break;
@@ -79,7 +79,7 @@ if(isset($input['request'])) {
             debug_print("UPDATE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
@@ -89,7 +89,7 @@ if(isset($input['request'])) {
                 !isset($input["data"]["released"]) &&
                 !isset($input["data"]["rating"]) &&
                 !isset($input["data"]["genres"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -106,31 +106,31 @@ if(isset($input['request'])) {
             $idStudio = htmlspecialchars($input["data"]["idStudio"]);            
             $genres = $input["data"]["genres"];
             
-            if(!update($db, $id, $name, $duration, $released, $rating)) $out["error"] = "Update error";
+            if(!update($db, $id, $name, $duration, $released, $rating)) $out["error"][] = "Update error";
             else $out["data"] = true;
             
             //Bind Sstudio
             if($idStudio != null){                
-                if(!bindStudio($db, $id, $idStudio)) $out["error"] = "Wrong studio or director";
+                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio or director";
             } else unbindStudio($db, $id);
             
             //Bind director
             if($idDirector != null){                
-                if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
+                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong studio or director";
             } else unbindDirector($db, $id);
             
             //Validation of array genres
             if(!is_array($genres)) {
-                $out["error"] = "Exepting array of genres";
+                $out["error"][] = "Exepting array of genres";
                 break;
             }
             
             //Delete genres
-            if(!delGenres($db, $id)) $out["error"] = "Error during cleaning genres from film";
+            if(!delGenres($db, $id)) $out["error"][] = "Error during cleaning genres from film";
             
             //Add new genres
             foreach ($genres as $key => &$genre) {
-                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"] = "SQL Error";
+                if(!addGenre($db, $id, htmlspecialchars($genre))) $out["error"][] = "SQL Error";
             }
             
             break;
@@ -139,13 +139,13 @@ if(isset($input['request'])) {
             debug_print("DELETE");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -155,17 +155,17 @@ if(isset($input['request'])) {
             //Delete all actors in film
             if(delActors($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             //Delete all genres in film
             if(delGenres($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             //Delete films
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
@@ -176,7 +176,7 @@ if(isset($input['request'])) {
             
             if($data) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
         
@@ -184,7 +184,7 @@ if(isset($input['request'])) {
             debug_print("SELECT");
             //All input set check
             if( !isset($input["data"]["id"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -193,7 +193,7 @@ if(isset($input['request'])) {
             
             if(($data = selectId($db, $id))) {
                 $out["data"] = $data;
-            } else $out["error"] = "Not found";
+            } else $out["error"][] = "Not found";
             
             break;
             
@@ -201,14 +201,14 @@ if(isset($input['request'])) {
             debug_print("ADD_ACTOR");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"]) &&
                 !isset($input["data"]["idActor"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -218,7 +218,7 @@ if(isset($input['request'])) {
             
             if(($id = addActor($db, $id, $idActor))) {
               $out["data"] = $id;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
@@ -226,14 +226,14 @@ if(isset($input['request'])) {
             debug_print("SELECT_ALL");
             //Check access level
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
+                $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
             //All input set check
             if( !isset($input["data"]["id"]) &&
                 !isset($input["data"]["idActor"])) {
-                $out["error"] = "Missing some input";
+                $out["error"][] = "Missing some input";
                 break;
             }
             
@@ -243,18 +243,18 @@ if(isset($input['request'])) {
             
             if(delActor($db, $id, $idActor)) {
                 $out["data"] = true;
-            } else $out["error"] = "SQL Error";
+            } else $out["error"][] = "SQL Error";
             
             break;
             
         default :
-            $out["error"] = "Wrong request type";
+            $out["error"][] = "Wrong request type";
             break;
     }
     
     //Data and error was not set -> error
-    if(!isset($out["data"]) && !isset($out["error"])) $out["error"] = "Request wasn't fullfiled";
-} else $out["error"] = "Wrong request";
+    if(!isset($out["data"]) && !isset($out["error"])) $out["error"][] = "Request wasn't fullfiled";
+} else $out["error"][] = "Wrong request";
 
 
 //Data output
