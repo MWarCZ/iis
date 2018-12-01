@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2018 at 03:49 PM
+-- Generation Time: Dec 01, 2018 at 09:54 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -46,6 +46,14 @@ CREATE TABLE `actors` (
   `birthday` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `actors`
+--
+
+INSERT INTO `actors` (`idActor`, `name`, `surname`, `birthday`) VALUES
+(1, 'zsczsawd', 'asdasdas', '2018-11-01'),
+(2, 'qwerty', 'asdtyjhgfds', '2018-11-02');
+
 -- --------------------------------------------------------
 
 --
@@ -71,6 +79,14 @@ CREATE TABLE `directors` (
   `birthday` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `directors`
+--
+
+INSERT INTO `directors` (`idDirector`, `name`, `surname`, `birthday`) VALUES
+(1, 'asdasd', 'asdasd', '2018-11-01'),
+(2, 'xcvxcv', 'xcvxcv', '2018-11-01');
+
 -- --------------------------------------------------------
 
 --
@@ -83,6 +99,17 @@ CREATE TABLE `discounts` (
   `discount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `discounts`
+--
+
+INSERT INTO `discounts` (`idDiscount`, `description`, `discount`) VALUES
+(1, 'Žádná', 0),
+(2, 'Dítě (do 12let)', 50),
+(3, 'Student (do 26let)', 25),
+(4, 'Důchodce (nad 65)', 25),
+(5, 'ZTP', 25);
+
 -- --------------------------------------------------------
 
 --
@@ -94,10 +121,18 @@ CREATE TABLE `employees` (
   `login` varchar(100) NOT NULL,
   `name` varchar(16) NOT NULL,
   `surname` varchar(16) NOT NULL,
-  `passwd_md5` varchar(100) NOT NULL,
+  `passwd` varchar(100) NOT NULL,
   `ssn` varchar(11) NOT NULL,
-  `acces_level` int(11) NOT NULL DEFAULT '2'
+  `access_level` int(11) NOT NULL DEFAULT '2',
+  `idCinema` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`idEmployee`, `login`, `name`, `surname`, `passwd`, `ssn`, `access_level`, `idCinema`) VALUES
+(1, 'admin', 'Administrator', 'Administrator', '$2y$10$9Hbrghb4uP/q3cvgBHb85.n0whD3uN/kSwPD29vrdtYJBWliCWIk2', 'none', 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,8 +146,18 @@ CREATE TABLE `films` (
   `duration` int(11) NOT NULL,
   `released` date NOT NULL,
   `ratings` int(11) NOT NULL,
-  `idStudio` int(11) NOT NULL
+  `idDirector` int(11) DEFAULT NULL,
+  `idStudio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `films`
+--
+
+INSERT INTO `films` (`idFilm`, `name`, `duration`, `released`, `ratings`, `idDirector`, `idStudio`) VALUES
+(1, 'awesdrtfhgds', 150, '2018-11-01', 15, 1, 1),
+(2, 'asdasda', 150, '2018-11-01', 15, 2, 1),
+(3, 'free', 150, '2018-11-01', 15, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -126,17 +171,14 @@ CREATE TABLE `film_actor` (
   `idActor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `film_direct`
+-- Dumping data for table `film_actor`
 --
 
-CREATE TABLE `film_direct` (
-  `idFD` int(11) NOT NULL,
-  `idFilm` int(11) NOT NULL,
-  `idDirector` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `film_actor` (`idFA`, `idFilm`, `idActor`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -150,6 +192,15 @@ CREATE TABLE `film_genre` (
   `idGenre` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `film_genre`
+--
+
+INSERT INTO `film_genre` (`idFG`, `idFilm`, `idGenre`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -160,6 +211,14 @@ CREATE TABLE `genres` (
   `idGenre` int(11) NOT NULL,
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `genres`
+--
+
+INSERT INTO `genres` (`idGenre`, `name`) VALUES
+(1, 'Drama'),
+(2, 'Sci-Fi');
 
 -- --------------------------------------------------------
 
@@ -186,6 +245,15 @@ CREATE TABLE `prices` (
   `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `prices`
+--
+
+INSERT INTO `prices` (`idPrice`, `description`, `price`) VALUES
+(1, '2D', 99),
+(2, '3D', 149),
+(3, 'Předpremiéra', 199);
+
 -- --------------------------------------------------------
 
 --
@@ -195,7 +263,8 @@ CREATE TABLE `prices` (
 CREATE TABLE `projections` (
   `idProjection` int(11) NOT NULL,
   `idFilm` int(11) NOT NULL,
-  `idAccess` int(11) NOT NULL
+  `idAccess` int(11) NOT NULL,
+  `idPrice` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -220,19 +289,9 @@ CREATE TABLE `proj_hall` (
 CREATE TABLE `reservations` (
   `idReservation` int(11) NOT NULL,
   `reserved` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `idUser` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `seats`
---
-
-CREATE TABLE `seats` (
-  `idSeat` int(11) NOT NULL,
-  `hallMark` varchar(5) NOT NULL,
-  `idHall` int(11) NOT NULL
+  `paid` tinyint(1) NOT NULL,
+  `picked` tinyint(1) NOT NULL,
+  `idUser` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -246,6 +305,14 @@ CREATE TABLE `studios` (
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `studios`
+--
+
+INSERT INTO `studios` (`idStudio`, `name`) VALUES
+(1, 'xcvxcvxcv'),
+(2, 'asdasdasd');
+
 -- --------------------------------------------------------
 
 --
@@ -255,13 +322,10 @@ CREATE TABLE `studios` (
 CREATE TABLE `tickets` (
   `idTicket` int(11) NOT NULL,
   `price` int(11) NOT NULL,
-  `purchased` datetime DEFAULT CURRENT_TIMESTAMP,
-  `picked` tinyint(1) NOT NULL DEFAULT '0',
   `idReservation` int(11) NOT NULL,
-  `idPrice` int(11) NOT NULL,
   `idDiscount` int(11) NOT NULL,
   `idProjection` int(11) NOT NULL,
-  `idSeat` int(11) NOT NULL
+  `seatNumber` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -276,8 +340,15 @@ CREATE TABLE `users` (
   `name` varchar(16) NOT NULL,
   `surname` varchar(16) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `passwd_md5` varchar(100) NOT NULL
+  `passwd` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`idUser`, `login`, `name`, `surname`, `email`, `passwd`) VALUES
+(1, 'test', 'test', 'test', 'tes@test.test', '$2y$10$zwwWQjobBnuXBriBRkcinOq6CgRYQ05DTc7/.SCDSd8azy3do.6CW');
 
 --
 -- Indexes for dumped tables
@@ -317,14 +388,16 @@ ALTER TABLE `discounts`
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
-  ADD PRIMARY KEY (`idEmployee`);
+  ADD PRIMARY KEY (`idEmployee`),
+  ADD KEY `idCinema` (`idCinema`);
 
 --
 -- Indexes for table `films`
 --
 ALTER TABLE `films`
   ADD PRIMARY KEY (`idFilm`),
-  ADD KEY `idStudio` (`idStudio`);
+  ADD KEY `idStudio` (`idStudio`),
+  ADD KEY `idDirector` (`idDirector`);
 
 --
 -- Indexes for table `film_actor`
@@ -333,14 +406,6 @@ ALTER TABLE `film_actor`
   ADD PRIMARY KEY (`idFA`),
   ADD KEY `idFilm` (`idFilm`),
   ADD KEY `idActor` (`idActor`);
-
---
--- Indexes for table `film_direct`
---
-ALTER TABLE `film_direct`
-  ADD PRIMARY KEY (`idFD`),
-  ADD KEY `idFilm` (`idFilm`),
-  ADD KEY `idDirector` (`idDirector`);
 
 --
 -- Indexes for table `film_genre`
@@ -375,7 +440,8 @@ ALTER TABLE `prices`
 ALTER TABLE `projections`
   ADD PRIMARY KEY (`idProjection`),
   ADD KEY `idAccess` (`idAccess`),
-  ADD KEY `idFilm` (`idFilm`);
+  ADD KEY `idFilm` (`idFilm`),
+  ADD KEY `idPrice` (`idPrice`);
 
 --
 -- Indexes for table `proj_hall`
@@ -393,13 +459,6 @@ ALTER TABLE `reservations`
   ADD KEY `idUser` (`idUser`);
 
 --
--- Indexes for table `seats`
---
-ALTER TABLE `seats`
-  ADD PRIMARY KEY (`idSeat`),
-  ADD KEY `idHall` (`idHall`);
-
---
 -- Indexes for table `studios`
 --
 ALTER TABLE `studios`
@@ -410,17 +469,16 @@ ALTER TABLE `studios`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`idTicket`),
-  ADD KEY `idPrice` (`idPrice`),
   ADD KEY `idDiscount` (`idDiscount`),
   ADD KEY `idProjection` (`idProjection`),
-  ADD KEY `idSeat` (`idSeat`),
   ADD KEY `idReservation` (`idReservation`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`idUser`);
+  ADD PRIMARY KEY (`idUser`),
+  ADD UNIQUE KEY `login` (`login`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -436,7 +494,7 @@ ALTER TABLE `accesses`
 -- AUTO_INCREMENT for table `actors`
 --
 ALTER TABLE `actors`
-  MODIFY `idActor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idActor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cinemas`
@@ -448,49 +506,43 @@ ALTER TABLE `cinemas`
 -- AUTO_INCREMENT for table `directors`
 --
 ALTER TABLE `directors`
-  MODIFY `idDirector` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idDirector` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `discounts`
 --
 ALTER TABLE `discounts`
-  MODIFY `idDiscount` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idDiscount` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `idEmployee` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idEmployee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `films`
 --
 ALTER TABLE `films`
-  MODIFY `idFilm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idFilm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `film_actor`
 --
 ALTER TABLE `film_actor`
-  MODIFY `idFA` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `film_direct`
---
-ALTER TABLE `film_direct`
-  MODIFY `idFD` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `film_genre`
 --
 ALTER TABLE `film_genre`
-  MODIFY `idFG` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFG` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `idGenre` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idGenre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `halls`
@@ -502,7 +554,7 @@ ALTER TABLE `halls`
 -- AUTO_INCREMENT for table `prices`
 --
 ALTER TABLE `prices`
-  MODIFY `idPrice` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `projections`
@@ -523,16 +575,10 @@ ALTER TABLE `reservations`
   MODIFY `idReservation` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `seats`
---
-ALTER TABLE `seats`
-  MODIFY `idSeat` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `studios`
 --
 ALTER TABLE `studios`
-  MODIFY `idStudio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idStudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tickets`
@@ -544,39 +590,38 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `employees`
+--
+ALTER TABLE `employees`
+  ADD CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`idCinema`) REFERENCES `cinemas` (`idCinema`);
+
+--
 -- Constraints for table `films`
 --
 ALTER TABLE `films`
-  ADD CONSTRAINT `films_ibfk_1` FOREIGN KEY (`idFilm`) REFERENCES `projections` (`idFilm`),
-  ADD CONSTRAINT `films_ibfk_2` FOREIGN KEY (`idStudio`) REFERENCES `studios` (`idStudio`);
+  ADD CONSTRAINT `films_ibfk_2` FOREIGN KEY (`idStudio`) REFERENCES `studios` (`idStudio`),
+  ADD CONSTRAINT `films_ibfk_3` FOREIGN KEY (`idDirector`) REFERENCES `directors` (`idDirector`);
 
 --
 -- Constraints for table `film_actor`
 --
 ALTER TABLE `film_actor`
-  ADD CONSTRAINT `film_actor_ibfk_1` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`),
-  ADD CONSTRAINT `film_actor_ibfk_2` FOREIGN KEY (`idActor`) REFERENCES `actors` (`idActor`);
-
---
--- Constraints for table `film_direct`
---
-ALTER TABLE `film_direct`
-  ADD CONSTRAINT `film_direct_ibfk_1` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`),
-  ADD CONSTRAINT `film_direct_ibfk_2` FOREIGN KEY (`idDirector`) REFERENCES `directors` (`idDirector`);
+  ADD CONSTRAINT `film_actor_ibfk_2` FOREIGN KEY (`idActor`) REFERENCES `actors` (`idActor`),
+  ADD CONSTRAINT `film_actor_ibfk_3` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`);
 
 --
 -- Constraints for table `film_genre`
 --
 ALTER TABLE `film_genre`
-  ADD CONSTRAINT `film_genre_ibfk_1` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`),
-  ADD CONSTRAINT `film_genre_ibfk_2` FOREIGN KEY (`idGenre`) REFERENCES `genres` (`idGenre`);
+  ADD CONSTRAINT `film_genre_ibfk_2` FOREIGN KEY (`idGenre`) REFERENCES `genres` (`idGenre`),
+  ADD CONSTRAINT `film_genre_ibfk_3` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`);
 
 --
 -- Constraints for table `halls`
@@ -588,7 +633,9 @@ ALTER TABLE `halls`
 -- Constraints for table `projections`
 --
 ALTER TABLE `projections`
-  ADD CONSTRAINT `projections_ibfk_1` FOREIGN KEY (`idAccess`) REFERENCES `accesses` (`idAccess`);
+  ADD CONSTRAINT `projections_ibfk_1` FOREIGN KEY (`idAccess`) REFERENCES `accesses` (`idAccess`),
+  ADD CONSTRAINT `projections_ibfk_2` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`),
+  ADD CONSTRAINT `projections_ibfk_3` FOREIGN KEY (`idPrice`) REFERENCES `prices` (`idPrice`);
 
 --
 -- Constraints for table `proj_hall`
@@ -604,18 +651,10 @@ ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`);
 
 --
--- Constraints for table `seats`
---
-ALTER TABLE `seats`
-  ADD CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`idHall`) REFERENCES `halls` (`idHall`);
-
---
 -- Constraints for table `tickets`
 --
 ALTER TABLE `tickets`
   ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`idDiscount`) REFERENCES `discounts` (`idDiscount`),
-  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`idPrice`) REFERENCES `prices` (`idPrice`),
-  ADD CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`idSeat`) REFERENCES `seats` (`idSeat`),
   ADD CONSTRAINT `tickets_ibfk_4` FOREIGN KEY (`idProjection`) REFERENCES `projections` (`idProjection`),
   ADD CONSTRAINT `tickets_ibfk_6` FOREIGN KEY (`idReservation`) REFERENCES `reservations` (`idReservation`);
 COMMIT;
