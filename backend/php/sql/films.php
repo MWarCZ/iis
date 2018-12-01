@@ -284,28 +284,6 @@ function delActor($db, $id, $idActor) {
     return TRUE;
 }
 
-function delGenre($db, $id, $idGenre) {
-    if($db == NULL) return FALSE;
-    
-    try {
-        $query = $db->prepare("DELETE FROM `film_genre` WHERE `idFilm` = ? AND `idGenre` = ?");
-    } catch (PDOException $e) {
-        debug_print($e->getMessage());
-        return FALSE;
-    }
-    
-    $params = array($id, $idGenre);
-    
-    try {
-        $query->execute($params);
-    } catch (PDOException $e) {
-        debug_print($e->getMessage());
-        return FALSE;
-    }
-    
-    return TRUE;
-}
-
 function delActors($db, $id) {
     if($db == NULL) return FALSE;
     

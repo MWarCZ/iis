@@ -1,17 +1,17 @@
 <?php
-function insert($db, $mark, $cap, $idCinema) {
+function insert($db, $desc, $price) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("INSERT INTO `halls`(`cinemaMark`, `capacity`, `idCinema`) VALUES (?, ?, ?)");
+        $query = $db->prepare("INSERT INTO `prices`(`description`, `price`) VALUES (?, ?)");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($mark, $cap, $idCinema);
+    $params = array($desc, $price);
     try {
-        $query->execute($params);
+        $query->execute(array_values($params));
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -20,19 +20,19 @@ function insert($db, $mark, $cap, $idCinema) {
     return $db->lastInsertId();
 }
 
-function update($db, $id, $mark, $cap, $idCinema){
+function update($db, $id, $desc, $price){
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("UPDATE `halls` SET `cinemaMark` = ?,`capacity` = ?,`idCinema` = ? WHERE `idHall` = ?");
+        $query = $db->prepare("UPDATE `prices` SET `description` = ?, `price` = ?  WHERE `idPrice` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($mark, $cap, $idCinema, $id);
+    $params = array($desc, $price, $id);
     try {
-        $query->execute($params);
+        $query->execute(array_values($params));
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -45,7 +45,7 @@ function delete($db, $id) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("DELETE FROM `halls` WHERE `idHall` = ?");
+        $query = $db->prepare("DELETE FROM `prices` WHERE `idPrice` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -66,7 +66,7 @@ function selectAll($db) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("SELECT * FROM `halls`");
+        $query = $db->prepare("SELECT * FROM `prices`");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
@@ -86,7 +86,7 @@ function selectId($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT * FROM `halls` WHERE `idCinema` = ?");
+        $query = $db->prepare("SELECT * FROM `prices` WHERE `idPrice` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;

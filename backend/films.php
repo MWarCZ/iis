@@ -30,7 +30,8 @@ if(isset($input['request'])) {
             if( !isset($input["data"]["name"]) &&
                 !isset($input["data"]["duration"]) &&
                 !isset($input["data"]["released"]) &&
-                !isset($input["data"]["rating"]) ) {
+                !isset($input["data"]["rating"]) &&
+                !isset($input["data"]["genres"]) ) {
                 $out["error"] = "Missing some input";
                 break;
             }
@@ -45,6 +46,7 @@ if(isset($input['request'])) {
             $rating = htmlspecialchars($input["data"]["rating"]);
             $idDirector = htmlspecialchars($input["data"]["idDirector"]);
             $idStudio = htmlspecialchars($input["data"]["idStudio"]);
+            $genres = htmlspecialchars($input["data"]["genres"]);
             
             if(($id = insert($db, $name, $duration, $released, $rating))) {
               $out["data"] = $id;
@@ -59,6 +61,19 @@ if(isset($input['request'])) {
             if($idDirector != null){                
                 if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
             } else if(!unbindDirector($db, $id)) $out["error"] = "Wrong studio or director";
+            
+            //Validation of array genres
+            if(!is_array($genres)) {
+                $out["error"] = "Exepting array of genres";
+                break;
+            }
+            
+            //Add genres
+            foreach ($genres as $key => &$genre) {
+                if(!isset($genre["idGenre"])) {
+                    if(!addGenre($db, $id, $genre["idGenre"])) $out["error"] = "SQL Error";
+                } else $out["error"] = "Missing some genre id";
+            }
             
             break;
             
@@ -103,6 +118,22 @@ if(isset($input['request'])) {
             if($idDirector != null){                
                 if(!bindDirector($db, $id, $idDirector)) $out["error"] = "Wrong studio or director";
             } else unbindDirector($db, $id);
+            
+            //Validation of array genres
+            if(!is_array($genres)) {
+                $out["error"] = "Exepting array of genres";
+                break;
+            }
+            
+            //Delete genres
+            if(!delGenres($db, $id)) $out["error"] = "Error during cleaning genres from film";
+            
+            //Add new genres
+            foreach ($genres as $key => &$genre) {
+                if(!isset($genre["idGenre"])) {
+                    if(!addGenre($db, $id, $genre["idGenre"])) $out["error"] = "SQL Error";
+                } else $out["error"] = "Missing some genre id";
+            }
             
             break;
         
@@ -192,32 +223,6 @@ if(isset($input['request'])) {
             } else $out["error"] = "SQL Error";
             
             break;
-        
-            
-        case "ADD_GENRE" : 
-            debug_print("ADD_GENRE");
-            //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
-                break;
-            }
-            
-            //All input set check
-            if( !isset($input["data"]["id"]) &&
-                !isset($input["data"]["idGenre"])) {
-                $out["error"] = "Missing some input";
-                break;
-            }
-            
-            //Get data from inputs
-            $id = htmlspecialchars($input["data"]["id"]);
-            $idGenre = htmlspecialchars($input["data"]["idGenre"]);
-            
-            if(($id = addGenre($db, $id, $idGenre))) {
-              $out["data"] = $id;
-            } else $out["error"] = "SQL Error";
-            
-            break;
             
         case "DEL_ACTOR" : 
             debug_print("SELECT_ALL");
@@ -239,31 +244,6 @@ if(isset($input['request'])) {
             $idActor = htmlspecialchars($input["data"]["idActor"]);
             
             if(delActor($db, $id, $idActor)) {
-                $out["data"] = true;
-            } else $out["error"] = "SQL Error";
-            
-            break;        
-            
-        case "DEL_GENRE" : 
-            debug_print("SELECT_ALL");
-            //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
-                $out["error"] = "You don't have enough permissions";
-                break;
-            }
-            
-            //All input set check
-            if( !isset($input["data"]["id"]) &&
-                !isset($input["data"]["idGenre"])) {
-                $out["error"] = "Missing some input";
-                break;
-            }
-            
-            //Get data from inputs
-            $id = htmlspecialchars($input["data"]["id"]);
-            $idGenre = htmlspecialchars($input["data"]["idGenre"]);
-            
-            if(delGenre($db, $id, $idGenre)) {
                 $out["data"] = true;
             } else $out["error"] = "SQL Error";
             

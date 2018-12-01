@@ -216,12 +216,12 @@ if(isset($input['request'])) {
             
             //Are u deleting own acc?
             if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
-                //Or admin?
-                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 4)){
-                    $out["error"] = "You can't delete this user";
-                    break;
-                }
+                $out["error"] = "You can't delete this user";
+                break;
             }
+            
+            //Save user id for later
+            $id = $_SESSION["id"];
             
             //If user exist, verifi passwd and delete
             if(user_exist($db, $login)) {
@@ -234,6 +234,11 @@ if(isset($input['request'])) {
                         debug_print("Logged out");
                         $out["data"] = true;
                     }
+                    
+                    //Remove id from reservations
+                    
+                    if(!null_reservations($db, $id)) $out["error"] = "Delete reservation error";
+                    else $out["data"] = true;  
                     
                     if(!delete_user($db, $login)) $out["error"] = "Delete error";
                     else $out["data"] = true;                   
