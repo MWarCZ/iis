@@ -413,7 +413,7 @@ function getDirector($db, $id) {
         return FALSE;
     }
     
-    return $query->fetch(PDO::FETCH_ASSOC);
+    return ($data = $query->fetch(PDO::FETCH_ASSOC)) == false ? null : $data;
 }
 
 function getStudio($db, $id) {
@@ -435,5 +435,5 @@ function getStudio($db, $id) {
         return FALSE;
     }
     
-    return $query->fetch(PDO::FETCH_ASSOC);
+    return ($data = $query->fetch(PDO::FETCH_ASSOC)) == false ? null : $data;
 }

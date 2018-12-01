@@ -1,9 +1,6 @@
 <?php
 //Start buffering data
 ob_start();
-  
-//Start session
-session_start();
 
 //Connect to db
 require_once './php/db_connect.php';
