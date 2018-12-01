@@ -2,8 +2,22 @@
 require_once './php/debug.php';
 
 //Start session
-session_set_cookie_params(33600, '/', '.mwarcz.cz', FALSE, TRUE);
-session_start();
+$currentCookieParams = session_get_cookie_params();
+
+$rootDomain = '.mwarcz.cz/'; 
+
+session_set_cookie_params( 
+    $currentCookieParams["lifetime"], 
+    $currentCookieParams["path"], 
+    $rootDomain, 
+    $currentCookieParams["secure"], 
+    $currentCookieParams["httponly"] 
+); 
+
+session_name();
+session_start(); 
+
+setcookie("session_cookie", "value", time() + 600, '/', $rootDomain); 
 
 //BYPAS TODO remove
 //$_SESSION = array(
@@ -15,6 +29,11 @@ session_start();
 //            "email"=>   "emile@emile.com",
 //            "access"=>  4
 //        );
+
+//echo "SESSION\n";
+//var_dump($_SESSION);
+//echo "COOKIE ";
+//echo $_COOKIE["PHPSESSID"] ."\n";
 
 //Parse POST data
 if(isset($_REQUEST["request"])) {
