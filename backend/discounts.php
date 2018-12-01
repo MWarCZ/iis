@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/discounts.php';
 
-$out["error"][] = NULL;
+$out["error"] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -73,7 +73,7 @@ if(isset($input['request'])) {
             }
             
             if(update($db, $id, $desc, $discount)) {
-              $out["data"] = $id;
+              $out["data"] = true;
             } else $out["error"][] = "SQL Error";
             
             break;

@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/reservations.php';
 
-$out["error"][] = NULL;
+$out["error"] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -37,10 +37,6 @@ if(isset($input['request'])) {
             //Get data from inputs
             $idUser = htmlspecialchars($input["data"]["idUser"]);
             $tickets = $input["data"]["tickets"];
-            
-            if(($id = insert($db))) {
-              $out["data"] = $id;
-            } else $out["error"][] = "SQL Error";
             
             //Add reservation
             if($idUser != null){                

@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/accesses.php';
 
-$out["error"][] = NULL;
+$out["error"] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
@@ -59,7 +59,7 @@ if(isset($input['request'])) {
             $desc = htmlspecialchars($input["data"]["desc"]);
             
             if(update($db, $id, $desc)) {
-              $out["data"] = $id;
+              $out["data"] = true;
             } else $out["error"][] = "SQL Error";
             
             break;

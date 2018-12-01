@@ -13,7 +13,7 @@ require_once './php/parse_input.php';
 //SQL specific reguires
 require_once './php/sql/employees.php';
 
-$out["error"][] = NULL;
+$out["error"] = NULL;
 $out["data"] = NULL;
 
 if(isset($input['request'])) {
