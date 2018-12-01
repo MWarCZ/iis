@@ -12,3 +12,6 @@ try {
 } catch (PDOException $e) {
     debug_print("Connection failed to db $dbname: " . $e->getMessage());
 }
+
+//todo remove
+$_SESSION["access"] = 4;
