@@ -1,6 +1,6 @@
 <?php
 function debug_print($string){
-    if(true) {
+    if(false) {
         echo($string . "\n");
     }
 }
