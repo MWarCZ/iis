@@ -20,8 +20,8 @@ if(isset($input['request'])) {
     switch ($input['request']) {
         case "INSERT" : 
             debug_print("INSERT");
-            //Check acces level
-            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
                 $out["error"] = "You don't have enough permissions";
                 break;
             }
@@ -45,8 +45,8 @@ if(isset($input['request'])) {
         
         case "UPDATE" : 
             debug_print("UPDATE");
-            //Check acces level
-            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
                 $out["error"] = "You don't have enough permissions";
                 break;
             }
@@ -71,8 +71,8 @@ if(isset($input['request'])) {
         
         case "DELETE" : 
             debug_print("DELETE");
-            //Check acces level
-            if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 3)) {
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
                 $out["error"] = "You don't have enough permissions";
                 break;
             }

@@ -212,7 +212,7 @@ if(isset($input['request'])) {
             //Are u deleting own acc?
             if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {
                 //Or admin?
-                if(!(isset($_SESSION["acces"]) && $_SESSION["acces"] >= 4)){
+                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 4)){
                     $out["error"] = "You can't delete this user";
                     break;
                 }
