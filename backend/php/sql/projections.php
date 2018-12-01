@@ -101,7 +101,30 @@ function selectId($db, $id) {
         return FALSE;
     }
     
-    $row = $query->fetch(PDO::FETCH_ASSOC);
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+
+function selectAllWithDetails($db) {
+    if($db == NULL) return FALSE;
     
-    return $row;
+    try {
+        $query = $db->prepare("SELECT projections.*, films.name AS film, halls.cinemaMark as hall, halls.idCinema, cinemas.name as cinema
+                                FROM projections
+                                JOIN films ON films.idFilm = projections.idFilm
+                                JOIN halls ON halls.idHall = projections.idHall
+                                JOIN cinemas ON halls.idCinema = cinemas.idCinema");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    try {
+        $query->execute();
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+        
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }

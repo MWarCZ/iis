@@ -141,6 +141,17 @@ if(isset($input['request'])) {
             } else $out["error"][] = "Not found";
             
             break;
+            
+        case "SELECT_ALL_WITH_DETAILS" :
+            debug_print("SELECT_ALL");
+
+            $data = selectAllWithDetails($db);
+
+            if($data) {
+                $out["data"] = $data;
+            } else $out["error"][] = "Not found";
+
+            break;
         
         default :
             $out["error"][] = "Wrong request type";
