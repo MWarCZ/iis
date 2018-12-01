@@ -141,13 +141,18 @@ export default {
       console.log('Remove room.')
       if (idFilm !== undefined) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Films.remove(idFilm)
           .then(res => {
-            console.log('OK')
-            this.films = this.films.filter(film => {
-              return film.id !== idFilm
-            })
-            this.$emit('success', { films: this.films })
+            if(res) {
+              console.log('OK')
+              this.films = this.films.filter(film => {
+                return film.id !== idFilm
+              })
+              this.$emit('success', { films: this.films })
+            } else {
+              console.log('KO')
+              this.$emit('fail')
+            }
           })
           .catch(e => {
             console.log('KO')

@@ -18,9 +18,17 @@
         </b-form-input>
       </b-input-group>
 
+      <b-input-group prepend="Délka:" append="minut">
+        <b-form-input v-model="newFilm.duration"
+                  type="number"
+                  label="duration"
+                  :state="checkDuration(newFilm.duration)"
+                  >
+        </b-form-input>
+      </b-input-group>
+
       <b-input-group prepend="Studio:">
         <b-form-select v-model="newFilm.idStudio"
-                       :state="checkId(newFilm.idStudio)"
                        >
           <option :value="undefined" selected> ( Vyber studio )</option>
           <template v-for="(studio, index) in studios">
@@ -33,7 +41,6 @@
 
       <b-input-group prepend="Režisér:">
         <b-form-select v-model="newFilm.idDirector"
-                       :state="checkId(newFilm.idDirector)"
                        >
           <option :value="undefined" selected> ( Vyber rezisera )</option>
           <template v-for="(director, index) in directors">
@@ -100,14 +107,19 @@ export default {
       if (this.checkName(this.newFilm.name)
       ) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Films.update(this.newFilm.id, this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio )
           .then(res => {
             console.log('OK')
+
             let director = this.directors.find(dir => dir.id === this.newFilm.idDirector)
-            this.newFilm.firstnameDirector = director.firstname
-            this.newFilm.lastnameDirector = director.lastname
+            if (director) {
+              this.newFilm.firstnameDirector = director.firstname
+              this.newFilm.lastnameDirector = director.lastname
+            }
             let studio = this.studios.find(stud => stud.id === this.newFilm.idStudio)
-            this.newFilm.studio = studio.name
+            if (studio) {
+              this.newFilm.studio = studio.name
+            }
 
             this.$emit('success', { film: this.newFilm })
           })

@@ -22,7 +22,9 @@ const Actors = {
       })
       .then(res => {
         let newRes = res.data.map(value => {
-          value.id = value.idActor
+          value.id = Number(value.idActor)
+          value.firstname = value.name
+          value.lastname = value.surname
           return value
         })
         return newRes
@@ -49,8 +51,11 @@ const Actors = {
         return res.data
       })
       .then(res => {
-        res.data.id = res.data.idActor
-        return res.data
+        let value = res.data
+        value.id = Number(value.idActor)
+        value.firstname = value.name
+        value.lastname = value.surname
+        return value
       })
   },
   /* OK:

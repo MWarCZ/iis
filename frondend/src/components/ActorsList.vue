@@ -53,7 +53,7 @@ export default {
       console.log('Remove actor.')
       if (idActor !== undefined) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Films.delActor(this.idFilm, idActor)
           .then(res => {
             console.log('OK')
             this.nowActors = this.nowActors.filter(actor => {
@@ -68,18 +68,19 @@ export default {
       }
     },
     filterActor () {
-      if (this.idFilm === undefined) {
+      //if (this.idFilm === undefined) {
         return this.nowActors
-      } else {
+      //} else {
         let actors = this.nowActors.filter(actor => {
           console.log(actor)
           return actor.films.indexOf(this.idFilm) >= 0
         })
         return actors
-      }
+      //}
     }
   },
   mounted: function () {
+    /*
     if (this.idFilm !== undefined) {
       // Ziskani mistnosti hercu
       this.$myStore.backend.Actors.getAll()
@@ -93,7 +94,7 @@ export default {
         .catch(e => {
           console.log('ERR:', e)
         })
-    }
+    }*/
   }
 }
 </script>

@@ -224,7 +224,43 @@ const Films = {
   },
   /**/
   addActor (idFilm, idActor) {
-
+    return axios.post(BACKEND_URL + '/films.php',
+      'request=ADD_ACTOR' + '&data=' +
+      JSON.stringify({
+        id: idFilm,
+        idActor: idActor
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Update film add actor:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(!res.data){
+          throw new Error(res.error)
+        }
+        return res
+      })
+  },
+  /**/
+  delActor (idFilm, idActor) {
+    return axios.post(BACKEND_URL + '/films.php',
+      'request=DEL_ACTOR' + '&data=' +
+      JSON.stringify({
+        id: idFilm,
+        idActor: idActor
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Update film del actor:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(!res.data){
+          throw new Error(res.error)
+        }
+        return res
+      })
   },
   /**/
   add2Genre (idFilm, idGenre) {

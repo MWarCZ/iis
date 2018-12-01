@@ -13,19 +13,25 @@
             <b-list-group flush>
 
               <b-list-group-item>
-                <b>Délka:</b> {{film.duration}}
+                <b>Délka:</b> {{film.duration}} (minut)
               </b-list-group-item>
 
               <b-list-group-item>
                 <b>Premiéra:</b> {{DateTime.date2string(new Date(film.premiere))}}
               </b-list-group-item>
 
-              <b-list-group-item>
+              <b-list-group-item v-if="film.studio">
                 <b>Studio:</b> {{film.studio}}
               </b-list-group-item>
+              <b-list-group-item v-else>
+                <b>Studio:</b>
+              </b-list-group-item>
 
-              <b-list-group-item>
+              <b-list-group-item v-if="film.lastnameDirector">
                 <b>Režisér:</b> {{film.lastnameDirector + ' ' + film.firstnameDirector}}
+              </b-list-group-item>
+              <b-list-group-item v-else>
+                <b>Režisér:</b>
               </b-list-group-item>
 
               <b-list-group-item>
@@ -80,7 +86,7 @@
           </b-card>
           <b-card>
             <h2>Herci:</h2>
-            <ActorsList :actors="film.actors"
+            <ActorsList :idFilm="film.id" :actors="film.actors"
               @success="actorsRefresh(...arguments)" />
           </b-card>
         </b-card-group>

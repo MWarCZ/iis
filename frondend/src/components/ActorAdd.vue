@@ -66,7 +66,7 @@ export default {
       if (this.checkActor(this.newActor.id)
       ) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Films.addActor(this.newActor.idFilm, this.newActor.id)
           .then(res => {
             console.log('OK')
             this.newActor = this.actors.find(actor => actor.id === this.newActor.id)
