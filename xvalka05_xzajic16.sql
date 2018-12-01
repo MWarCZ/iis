@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2018 at 09:27 PM
+-- Generation Time: Dec 02, 2018 at 12:18 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -261,38 +261,15 @@ INSERT INTO `halls` (`idHall`, `cinemaMark`, `capacity`, `idCinema`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prices`
---
-
-CREATE TABLE `prices` (
-  `idPrice` int(11) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `price` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `prices`
---
-
-INSERT INTO `prices` (`idPrice`, `description`, `price`) VALUES
-(1, '2D', 99),
-(2, '3D', 149),
-(3, 'Předpremiéra', 199),
-(5, 'aaaa', 2000),
-(6, 'aaaa', 2000);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `projections`
 --
 
 CREATE TABLE `projections` (
   `idProjection` int(11) NOT NULL,
   `date` datetime NOT NULL,
+  `price` int(11) NOT NULL,
   `idFilm` int(11) NOT NULL,
   `idAccess` int(11) NOT NULL,
-  `idPrice` int(11) NOT NULL,
   `idHall` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -300,10 +277,10 @@ CREATE TABLE `projections` (
 -- Dumping data for table `projections`
 --
 
-INSERT INTO `projections` (`idProjection`, `date`, `idFilm`, `idAccess`, `idPrice`, `idHall`) VALUES
+INSERT INTO `projections` (`idProjection`, `date`, `price`, `idFilm`, `idAccess`, `idHall`) VALUES
 (5, '2018-01-01 18:40:00', 1, 1, 1, 1),
-(8, '2018-12-01 00:00:00', 2, 1, 1, 1),
-(9, '2018-12-01 00:00:00', 2, 1, 1, 1),
+(8, '2018-12-01 00:00:00', 1, 2, 1, 1),
+(9, '2018-12-01 00:00:00', 1, 2, 1, 1),
 (10, '2018-12-01 00:00:00', 1, 1, 1, 1),
 (11, '2018-12-01 00:00:00', 1, 1, 1, 1);
 
@@ -327,10 +304,14 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`idReservation`, `reserved`, `totalPrice`, `paid`, `picked`, `idUser`) VALUES
-(3, '2018-12-01 18:35:35', 0, 0, 0, 1),
-(4, '2018-12-01 18:35:35', 199, 0, 0, 1),
-(5, '2018-12-01 18:35:35', 0, 0, 0, 2),
-(6, '2018-12-01 18:35:35', 796, 0, 0, 2);
+(7, '2018-12-01 23:31:26', 0, 0, 0, NULL),
+(23, '2018-12-01 23:53:54', 198, 0, 0, NULL),
+(24, '2018-12-01 23:53:55', 198, 0, 0, NULL),
+(25, '2018-12-01 23:53:56', 198, 0, 0, NULL),
+(26, '2018-12-01 23:53:57', 198, 0, 0, NULL),
+(27, '2018-12-01 23:55:38', 198, 0, 0, 1),
+(28, '2018-12-01 23:55:52', 198, 0, 0, NULL),
+(29, '2018-12-01 23:56:00', 198, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -371,21 +352,20 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`idTicket`, `price`, `idReservation`, `idDiscount`, `idProjection`, `seatNumber`) VALUES
-(1, 199, 3, 1, 5, 1),
-(2, 199, 3, 1, 5, 1),
-(3, 199, 3, 1, 8, 1),
-(4, 199, 4, 1, 8, 1),
-(5, 199, 5, 1, 5, 1),
-(6, 199, 5, 1, 5, 1),
-(7, 199, 5, 1, 9, 1),
-(8, 199, 6, 1, 5, 1),
-(9, 199, 6, 1, 9, 1),
-(10, 199, 6, 1, 10, 1),
-(11, 199, 6, 1, 10, 1),
-(12, 200, 5, 1, 5, 5),
-(14, 250, 5, 2, 5, 20),
-(15, 5, 5, 2, 5, 20),
-(16, 75, 5, 2, 5, 20);
+(27, 99, 23, 1, 5, 1),
+(28, 99, 23, 1, 5, 2),
+(29, 99, 24, 1, 5, 1),
+(30, 99, 24, 1, 5, 2),
+(31, 99, 25, 1, 5, 1),
+(32, 99, 25, 1, 5, 2),
+(33, 99, 26, 1, 5, 1),
+(34, 99, 26, 1, 5, 2),
+(35, 99, 27, 1, 5, 1),
+(36, 99, 27, 1, 5, 2),
+(37, 99, 28, 1, 5, 1),
+(38, 99, 28, 1, 5, 2),
+(39, 99, 29, 1, 5, 1),
+(40, 99, 29, 1, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -489,19 +469,12 @@ ALTER TABLE `halls`
   ADD KEY `idCinema` (`idCinema`);
 
 --
--- Indexes for table `prices`
---
-ALTER TABLE `prices`
-  ADD PRIMARY KEY (`idPrice`);
-
---
 -- Indexes for table `projections`
 --
 ALTER TABLE `projections`
   ADD PRIMARY KEY (`idProjection`),
   ADD KEY `idAccess` (`idAccess`),
   ADD KEY `idFilm` (`idFilm`),
-  ADD KEY `idPrice` (`idPrice`),
   ADD KEY `idHall` (`idHall`);
 
 --
@@ -604,12 +577,6 @@ ALTER TABLE `halls`
   MODIFY `idHall` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `prices`
---
-ALTER TABLE `prices`
-  MODIFY `idPrice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT for table `projections`
 --
 ALTER TABLE `projections`
@@ -619,7 +586,7 @@ ALTER TABLE `projections`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `idReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idReservation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `studios`
@@ -631,7 +598,7 @@ ALTER TABLE `studios`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `idTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -680,10 +647,9 @@ ALTER TABLE `halls`
 -- Constraints for table `projections`
 --
 ALTER TABLE `projections`
-  ADD CONSTRAINT `projections_ibfk_1` FOREIGN KEY (`idAccess`) REFERENCES `accesses` (`idAccess`),
   ADD CONSTRAINT `projections_ibfk_2` FOREIGN KEY (`idFilm`) REFERENCES `films` (`idFilm`),
-  ADD CONSTRAINT `projections_ibfk_3` FOREIGN KEY (`idPrice`) REFERENCES `prices` (`idPrice`),
-  ADD CONSTRAINT `projections_ibfk_4` FOREIGN KEY (`idHall`) REFERENCES `halls` (`idHall`);
+  ADD CONSTRAINT `projections_ibfk_4` FOREIGN KEY (`idHall`) REFERENCES `halls` (`idHall`),
+  ADD CONSTRAINT `projections_ibfk_5` FOREIGN KEY (`idAccess`) REFERENCES `accesses` (`idAccess`);
 
 --
 -- Constraints for table `reservations`
