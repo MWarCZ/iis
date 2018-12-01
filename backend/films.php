@@ -46,7 +46,7 @@ if(isset($input['request'])) {
             $rating = htmlspecialchars($input["data"]["rating"]);
             $idDirector = htmlspecialchars($input["data"]["idDirector"]);
             $idStudio = htmlspecialchars($input["data"]["idStudio"]);
-            $genres = htmlspecialchars($input["data"]["genres"]);
+            $genres = $input["data"]["genres"];
             
             if(($id = insert($db, $name, $duration, $released, $rating))) {
               $out["data"] = $id;

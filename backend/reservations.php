@@ -36,7 +36,7 @@ if(isset($input['request'])) {
             
             //Get data from inputs
             $idUser = htmlspecialchars($input["data"]["idUser"]);
-            $tickets = htmlspecialchars($input["data"]["tickets"]);
+            $tickets = $input["data"]["tickets"];
             
             if(($id = insert($db))) {
               $out["data"] = $id;
