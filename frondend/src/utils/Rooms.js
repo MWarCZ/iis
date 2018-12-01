@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Rooms = {
   /* [{
@@ -11,31 +11,27 @@ const Rooms = {
    * }]
    */
   getAll () {
-    let query = `{
-      values: rooms {
-        id
-        name
-        capacity
-        cinema {
-          id
+    return axios.post(BACKEND_URL + '/halls.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
+      .then(res => {
+        console.log('ALL Halls:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(res.data) {
+          let newRes = res.data.map(value => {
+            value.id = Number(value.idHall)
+            value.name = value.cinemaMark
+            value.capacity = Number(value.capacity)
+            value.idCinema = Number(value.idCinema)
+            return value
+          })
+          console.log('ALL Halls2:', newRes)
+          return newRes
+        } else {
+          return []
         }
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
-      })
-      .then(res => {
-        let values = res.map(value => {
-          value.idCinema = value.cinema.id
-          return value
-        })
-        return values
-      })
-      .catch(e => {
-        return {}
       })
   },
   /* {
@@ -46,31 +42,25 @@ const Rooms = {
    * }
    */
   getById (id) {
-    let query = `{
-      values: room(id: ${id}) {
-        id
-        name
-        capacity
-        cinema {
-          id
-        }
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/halls.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('Id Hall:', res.data)
+        return res.data
       })
       .then(res => {
-        let values = res.map(value => {
-          value.idCinema = value.cinema.id
-          return value
-        })
-        return values
-      })
-      .catch(e => {
-        return {}
+        let value = res.data
+        value.id = Number(value.idHall)
+        value.name = value.cinemaMark
+        value.capacity = Number(value.capacity)
+        value.idCinema = Number(value.idCinema)
+
+        console.log('Id Hall2:', newRes)
+        return value
       })
   },
   /* {
@@ -80,27 +70,27 @@ const Rooms = {
    * }
    */
   getByIdCinema (id) {
-    let query = `{
-      values: cinemaRooms(idCinema: ${id}) {
-        id
-        name
-        capacity
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return this.getAll()
       .then(res => {
-        return res.data.data.values
-      })
-      .catch(e => {
-        return {}
+        res = res.filter(room => room.idCinema === id)
+        return res
       })
   },
 
   /**/
   create (name, capacity, idCinema) {
-
+    return axios.post(BACKEND_URL + '/halls.php',
+      'request=INSERT' + '&data=' +
+      JSON.stringify({
+        mark: name,
+        cap: capacity,
+        idCinema: idCinema
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('New Hall id:', res.data)
+        return res.data
+      })
   },
   /**/
   update (id, name, capacity) {
@@ -108,7 +98,22 @@ const Rooms = {
   },
   /**/
   remove (id) {
-
+    return axios.post(BACKEND_URL + '/halls.php',
+      'request=DELETE' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Delete hall bool:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(!res.data){
+          throw new Error(res.error)
+        }
+        return res
+      })
   },
   /**/
   add2Cinema (idRoom, idCinema) {

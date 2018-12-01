@@ -53,6 +53,25 @@ export default {
     loginClient: function () {
       this.$myStore.backend.Clients.auth(this.login, this.password)
         .then(res => {
+          console.log('login res', res)
+          if (res) {
+            this.$myStore.backend.Clients.getLogged()
+              .then(res2 => {
+                console.log('login res2', res2)
+                this.user = res2
+                this.$myStore.user = this.user
+                this.$myStore.save()
+                this.$emit('success')
+              })
+              .catch(e => {
+                console.log('Client problem.')
+                console.log(e)
+                this.loginFailed = true
+                this.$emit('failed')
+              })
+          }
+          /*
+
           this.user = res
           this.loginFailed = !res
 
@@ -64,6 +83,7 @@ export default {
           } else {
             this.$emit('failed')
           }
+          */
         })
         .catch(e => {
           console.log('Client problem.')

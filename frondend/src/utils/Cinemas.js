@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Cinemas = {
   /* [{
@@ -9,22 +9,21 @@ const Cinemas = {
    *   address
    * }]
    */
+  // "data":array("id":"xx","name":"xx","addres":"xx")
   getAll () {
-    let query = `{
-      values: cinemas {
-          id
-          name
-          address
-        }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/cinemas.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('ALL Cinemas:', res.data)
+        return res.data
       })
-      .catch(e => {
-        return {}
+      .then(res => {
+        let newRes = res.data.map(value => {
+          value.id = Number(value.idCinema)
+          return value
+        })
+        return newRes
       })
   },
   /* {
@@ -33,22 +32,21 @@ const Cinemas = {
    *   address
    * }
    */
+  // "data":"id":"xx","name":"xx","addres":"xx"
   getById (id) {
-    let query = `{
-        values: cinema(id: ${id}) {
-          id
-          name
-          address
-        }
-      }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/cinemas.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        console.log('Id Cinemas:', res.data)
+        return res.data
+      })
+      .then(res => {
+        res.data.id = Number(res.data.idCinema)
+        return res.data
       })
   },
 
@@ -67,14 +65,16 @@ const Cinemas = {
    *   null | false
    */
   create (name, address, imgUrl) {
-    // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data
+    return axios.post(BACKEND_URL + '/cinemas.php',
+      'request=INSERT' + '&data=' +
+      JSON.stringify({
+        name: name,
+        address: address
       })
-      .catch(e => {
-        return undefined
+      , axiosConfig)
+      .then(res => {
+        console.log('New Cinema id:', res.data)
+        return res.data
       })
   },
 
@@ -82,25 +82,25 @@ const Cinemas = {
   //  UPDATE  //
   /// ////// ///
 
-  /* OK:
-   * {
-   *   id
-   *   name
-   *   address
-   * }
-   *
-   * KO:
-   *   null | false
-   */
+  // return true | null
   update (id, name, address, imgUrl) {
-    // TODO
-    return axios.post(BACKEND_URL, {
-    })
+    return axios.post(BACKEND_URL + '/cinemas.php',
+      'request=UPDATE' + '&data=' +
+      JSON.stringify({
+        id: id,
+        name: name,
+        address: address
+      })
+      , axiosConfig)
       .then(res => {
+        console.log('Update Cinema bool:', res.data)
         return res.data
       })
-      .catch(e => {
-        return undefined
+      .then(res => {
+        if(!res.data){
+          throw new Error(res.error)
+        }
+        return res
       })
   },
 
@@ -108,21 +108,24 @@ const Cinemas = {
   //  REMOVE  //
   /// ////// ///
 
-  /* OK:
-   *   true
-   *
-   * KO:
-   *   null | false
-   */
+  // return true | null
   remove (id) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
+    return axios.post(BACKEND_URL + '/cinemas.php',
+      'request=DELETE' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
       .then(res => {
+        console.log('Delete Cinema bool:', res.data)
         return res.data
       })
-      .catch(e => {
-        return undefined
+      .then(res => {
+        if(!res.data){
+          throw new Error(res.error)
+        }
+        return res
       })
   }
 

@@ -69,11 +69,10 @@ export default {
       if (this.checkName(this.newRoom.name) &&
         this.checkCapacity(this.newRoom.capacity)
       ) {
-        // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Rooms.create(this.newRoom.name, this.newRoom.capacity, this.newRoom.idCinema)
           .then(res => {
+            this.newRoom.id = res.data
             console.log('OK')
-            this.newRoom.id = Math.floor(Math.random() * Math.floor(1000))
             this.$emit('success', { room: this.newRoom })
           })
           .catch(e => {

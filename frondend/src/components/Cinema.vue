@@ -29,7 +29,7 @@
           </b-card>
         </b-card-group>
 
-        <b-card-group v-if="!!$myStore.worker">
+        <b-card-group v-if="!!$myStore.worker && $myStore.worker.access >= 3">
           <b-card>
             <h2>Akce:</h2>
             <b-button-group vertical>
@@ -133,9 +133,11 @@ export default {
       .then(res => {
         console.log('Cinema is:', res)
         return this.$myStore.backend.Rooms.getByIdCinema(this.id)
+        // return this.$myStore.backend.Rooms.getAll()
           .then(res2 => {
+            //res.rooms = res2.filter(room => room.idCinema === this.id)
             res.rooms = res2
-            console.log('Rooms are:', res)
+            console.log('Rooms are:', res2)
             return res
           })
           .catch(e => {

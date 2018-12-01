@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Studios = {
   /* [{
@@ -9,20 +9,20 @@ const Studios = {
    * }]
    */
   getAll () {
-    let query = `{
-      values: studios {
-        id
-        name
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/studios.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('ALL studios:', res.data)
+        return res.data
       })
-      .catch(e => {
-        return {}
+      .then(res => {
+        let newRes = res.data.map(value => {
+          value.id = Number(value.idStudio)
+          return value
+        })
+        console.log('-------------', newRes)
+        return newRes
       })
   },
   /* {
@@ -31,20 +31,20 @@ const Studios = {
    * }
    */
   getById (id) {
-    let query = `{
-      values: studio(id: ${id}) {
-        id
-        name
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/studios.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        console.log('Id studio:', res.data)
+        return res.data
+      })
+      .then(res => {
+        let value = res.data
+        value.id = Number(value.idStudio)
+        return value
       })
   },
 

@@ -84,11 +84,10 @@ export default {
         this.checkAddress(this.newCinema.address) &&
         this.checkUrl(this.newCinema.img) !== false
       ) {
-        // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Cinemas.create(this.newCinema.name, this.newCinema.address, this.newCinema.img)
           .then(res => {
+            this.newCinema.id = res.data
             console.log('OK')
-            this.newCinema.id = Math.floor(Math.random() * Math.floor(1000))
             this.$emit('success', { cinema: this.newCinema })
           })
           .catch(e => {

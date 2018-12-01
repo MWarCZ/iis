@@ -66,7 +66,28 @@ export default {
     }
   },
   created: function () {
-    this.$myStore.load()
+    this.$myStore.backend.Clients.getLogged()
+      .then(res => {
+        console.log('RELOAD_PAGE Get client data:', res)
+        this.$myStore.user = res
+        this.$myStore.save()
+        //this.$myStore.load()
+        this.$forceUpdate()
+      })
+      .catch(e => {
+        console.log('RELOAD_PAGE clent not logged:', e)
+      })
+    this.$myStore.backend.Workers.getLogged()
+      .then(res => {
+        console.log('RELOAD_PAGE Get worker data:', res)
+        this.$myStore.worker = res
+        this.$myStore.save()
+        //this.$myStore.load()
+        this.$forceUpdate()
+      })
+      .catch(e => {
+        console.log('RELOAD_PAGE worker not logged:', e)
+      })
   },
   methods: {
     forceUpdate () {
@@ -75,11 +96,30 @@ export default {
       this.$forceUpdate()
     },
     logout: function () {
-      this.$myStore.user = undefined
-      this.$myStore.worker = undefined
-      this.$myStore.save()
-      this.$router.push('/')
-      this.$forceUpdate()
+      this.$myStore.backend.Clients.logout()
+        .then(res => {
+          console.log('OK Logout Client')
+          this.$myStore.user = undefined
+          this.$myStore.worker = undefined
+          this.$myStore.save()
+          this.$router.push('/')
+          this.$forceUpdate()
+        })
+        .catch(e =>{
+          console.log('KO Logout Client')
+        })
+      this.$myStore.backend.Workers.logout()
+        .then(res => {
+          console.log('OK Logout Worker')
+          this.$myStore.user = undefined
+          this.$myStore.worker = undefined
+          this.$myStore.save()
+          this.$router.push('/')
+          this.$forceUpdate()
+        })
+        .catch(e =>{
+          console.log('KO Logout Worker')
+        })
     }
   }
 }

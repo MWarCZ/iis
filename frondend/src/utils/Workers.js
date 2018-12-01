@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Workers = {
   /* [{
@@ -15,6 +15,7 @@ const Workers = {
    * }]
    */
   getAll () {
+    /*
     let query = `{
       values: workers {
         id
@@ -37,7 +38,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* {
    *   id
@@ -50,7 +51,7 @@ const Workers = {
    *   cinema
    * }
    */
-  getById (id) {
+  getById (id) {/*
     let query = `{
       values: worker(id: ${id}) {
         id
@@ -80,7 +81,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* [{
    *   id
@@ -94,6 +95,7 @@ const Workers = {
    * }]
    */
   getByIdCinema (id) {
+    /*
     let query = `{
       values: cinemaWorker(idCinema: ${id}) {
         id
@@ -125,7 +127,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* {
    *   id
@@ -135,7 +137,22 @@ const Workers = {
    *   idCinema
    * }
    */
+  // {"id":"1","login":"test","name":"test","surname":"test","ssn":"tes@test.test","access":1}
   auth (login, password) {
+
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=LOGIN' + '&data=' +
+      JSON.stringify({
+        login: login,
+        pass: password
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGIN WORKER:', res.data)
+        return res.data
+      })
+
+    /*
     let query = `{
       values: workerLogin(login: "${login}", password: "${password}") {
         id
@@ -164,6 +181,35 @@ const Workers = {
       })
       .catch(e => {
         return null
+      })*/
+  },
+  getLogged () {
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=LOGGED'
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGGED WORKER:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(!res.data) {
+          throw new Error(res.error)
+        }
+        return res.data
+      })
+      .then(res => {
+        res.firstname = res.name
+        res.lastname = res.surname
+        return res
+      })
+  },
+  logout () {
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=LOGOUT'
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGOUT WORKER:', res.data)
+        return res.data
       })
   },
 

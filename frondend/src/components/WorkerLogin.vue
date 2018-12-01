@@ -51,6 +51,24 @@ export default {
     loginWorker: function () {
       this.$myStore.backend.Workers.auth(this.login, this.password)
         .then(res => {
+          console.log('login res', res)
+          if (res) {
+            this.$myStore.backend.Workers.getLogged()
+              .then(res2 => {
+                console.log('login res2', res2)
+                this.worker = res2
+                this.$myStore.worker = this.worker
+                this.$myStore.save()
+                this.$emit('success')
+              })
+              .catch(e => {
+                console.log('Client problem.')
+                console.log(e)
+                this.loginFailed = true
+                this.$emit('failed')
+              })
+          }
+          /*
           this.worker = res
           this.loginFailed = !res
 
@@ -61,7 +79,7 @@ export default {
             this.$emit('success')
           } else {
             this.$emit('failed')
-          }
+          }*/
         })
         .catch(e => {
           console.log('Worker problem.')

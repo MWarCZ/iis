@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Clients = {
   /* [{
@@ -9,21 +9,31 @@ const Clients = {
    * }]
    */
   getAll () {
+    /*
     let query = `{
       values: clients {
         id
         login
       }
     }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/users.php', {
+      request: 'INSERT',
+      data: {
+        'login': 'test1',
+        'name': 'test1',
+        'surname': 'test1',
+        'email': 'test1@test.cz',
+        'pass': 'test1',
+        'pass_verifi': 'test1'
+      }
+    }, axiosConfig)
       .then(res => {
         return res.data.data.values
       })
       .catch(e => {
         return {}
       })
+      */
   },
   /* {
    *   id
@@ -33,6 +43,7 @@ const Clients = {
    * }
    */
   getById (id) {
+    /*
     let query = `{
       values: client(id: ${id}) {
         id
@@ -50,6 +61,7 @@ const Clients = {
       .catch(e => {
         return {}
       })
+      */
   },
   /* {
    *   id
@@ -58,23 +70,49 @@ const Clients = {
    *   lastname
    * }
    */
+  // true/null
   auth (login, password) {
-    let query = `{
-      values: clientLogin(login: "${login}", password: "${password}") {
-        id
-        login
-        firstname
-        lastname
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=LOGIN' + '&data=' +
+      JSON.stringify({
+        login: login,
+        pass: password
       })
-      .catch(e => {
-        return null
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGIN CLIENT:', res.data)
+        return res.data
+      })
+  },
+  // {"id":"1","login":"test","name":"test","surname":"test","email":"tes@test.test","access":1}}
+  getLogged () {
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=LOGGED'
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGGED CLIENT:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if(!res.data) {
+          throw new Error(res.error)
+        }
+        return res.data
+      })
+      .then(res => {
+        res.firstname = res.name
+        res.lastname = res.surname
+        return res
+      })
+  },
+
+  logout () {
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=LOGOUT'
+      , axiosConfig)
+      .then(res => {
+        console.log('LOGOUT CLIENT:', res.data)
+        return res.data
       })
   },
 
@@ -90,15 +128,21 @@ const Clients = {
    *   birthday
    * }
    */
-  create (firstname, lastname, login, password, birthday) {
+  create (firstname, lastname, login, password, password2, email, birthday) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=INSERT' + '&data=' +
+      JSON.stringify({
+        login: login,
+        name: firstname,
+        surname: lastname,
+        email: email,
+        pass: password,
+        pass_verifi: password
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        return res.data
       })
   },
 

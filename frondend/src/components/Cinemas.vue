@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card v-if="!!$myStore.worker">
+    <b-card v-if="!!$myStore.worker && $myStore.worker.access >= 3">
       <h2>Akce:</h2>
       <b-button variant="outline-primary"
         @click="showDialogAddCinema = true">
@@ -37,7 +37,7 @@
           </b-card-group>
         </router-link>
 
-        <b-button v-if="!!$myStore.worker"
+        <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
           variant="outline-danger"
           @click="removeCinema(cinema.id)">
           Smazat kino: '{{cinema.name}}'
@@ -87,13 +87,18 @@ export default {
       console.log('Remove room.')
       if (idCinema !== undefined) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Cinemas.remove(idCinema)
           .then(res => {
-            console.log('OK')
-            this.cinemas = this.cinemas.filter(cinema => {
-              return cinema.id !== idCinema
-            })
-            this.$emit('success', { cinemas: this.cinemas })
+            if(res) {
+              this.cinemas = this.cinemas.filter(cinema => {
+                return cinema.id !== idCinema
+              })
+              console.log('OK')
+              this.$emit('success', { cinemas: this.cinemas })
+            } else {
+              console.log('KO')
+              this.$emit('fail')
+            }
           })
           .catch(e => {
             console.log('KO')

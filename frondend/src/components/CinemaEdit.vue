@@ -94,9 +94,9 @@ export default {
         this.checkUrl(this.newCinema.img) !== false
       ) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Cinemas.update(this.newCinema.id, this.newCinema.name, this.newCinema.address, this.newCinema.img)
           .then(res => {
-            console.log('OK')
+            console.log('OK', res)
             this.$emit('success', { cinema: this.newCinema })
           })
           .catch(e => {

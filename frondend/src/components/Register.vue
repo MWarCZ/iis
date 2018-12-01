@@ -1,7 +1,14 @@
 <template>
   <div>
     <b-card>
-      <b-alert variant="danger" dismissible :show="registerFailed">
+      <b-alert variant="success" dismissible
+        @dismissed="registerSuccess = false"
+        :show="registerSuccess">
+        Podařilo se zaregistrovat.
+      </b-alert>
+      <b-alert variant="danger" dismissible
+        @dismissed="registerFailed = false"
+        :show="registerFailed">
         Nepodařilo se zaregistrovat.
       </b-alert>
 
@@ -50,7 +57,7 @@
         </b-form-input>
       </b-input-group>
 
-      <b-button variant="primary" @click="loginClient()">
+      <b-button variant="primary" @click="registerClient()">
         Zaregistrovat se
       </b-button>
     </b-card>
@@ -78,6 +85,7 @@ export default {
       password: '',
       password2: '',
       registerFailed: false,
+      registerSuccess: false,
       DateTime: DateTime
     }
   },
@@ -112,9 +120,19 @@ export default {
       ) {
         this.client.password = this.password
         // TODO
-        Promise.resolve(0)
+        // firstname, lastname, login, password, password2, email , birthday
+        this.$myStore.backend.Clients.create(
+          this.client.firstname,
+          this.client.lastname,
+          this.client.login,
+          this.password,
+          this.password2,
+          `${this.client.login}@test.cz`
+        )
           .then(res => {
             console.log('OK')
+            console.log('RES:', res)
+            this.registerSuccess = true
             this.$emit('success', { client: this.client })
           })
           .catch(e => {

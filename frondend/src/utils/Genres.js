@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Genres = {
   /* [{
@@ -9,20 +9,19 @@ const Genres = {
    * }]
    */
   getAll () {
-    let query = `{
-      values: genres {
-        id
-        name
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/genres.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('ALL gneres:', res.data)
+        return res.data
       })
-      .catch(e => {
-        return {}
+      .then(res => {
+        let newRes = res.data.map(value => {
+          value.id = Number(value.idGenre)
+          return value
+        })
+        return newRes
       })
   },
 
@@ -32,20 +31,19 @@ const Genres = {
    * }
    */
   getById (id) {
-    let query = `{
-        values: genre(id: ${id}) {
-          id
-          name
-        }
-      }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/genres.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        console.log('Id gneres:', res.data)
+        return res.data
+      })
+      .then(res => {
+        res.data.id = res.data.idGenre
+        return res.data
       })
   },
 

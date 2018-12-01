@@ -85,7 +85,10 @@ export default {
   },
   data: function () {
     return {
-      newFilm: {},
+      newFilm: {
+        idDirector: null,
+        idStudio: null
+      },
       studios: [],
       directors: [],
       premiere: new Date(),
@@ -123,13 +126,13 @@ export default {
       if (this.checkName(this.newFilm.name) &&
         this.checkPremiere(this.premiere)
       ) {
-        // TODO
-        Promise.resolve(0)
-          .then(res => {
-            console.log('OK')
-            this.newFilm.premiere = this._date
-            this.newFilm.id = Math.floor(Math.random() * Math.floor(1000))
 
+        this.newFilm.premiere = this._date
+        // name, premiere, duration, idDirector, idStudio
+        this.$myStore.backend.Films.create(this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio )
+          .then(res => {
+            this.newFilm.id = res.data
+            console.log('OK')
             this.$emit('success', { film: this.newFilm })
           })
           .catch(e => {

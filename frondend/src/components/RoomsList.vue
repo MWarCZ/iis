@@ -4,7 +4,7 @@
     :items="nowRooms"
     sort-by="date">
     <template slot="event" slot-scope="data">
-      <b-button v-if="!!$myStore.worker"
+      <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
         variant="outline-danger"
         @click="removeRoom(data.item.id)">
         Smazat
@@ -53,12 +53,12 @@ export default {
       console.log('Remove room.')
       if (idRoom !== undefined) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Rooms.remove(idRoom)
           .then(res => {
-            console.log('OK')
             this.nowRooms = this.nowRooms.filter(room => {
               return room.id !== idRoom
             })
+            console.log('OK', res)
             this.$emit('success', { rooms: this.nowRooms })
           })
           .catch(e => {

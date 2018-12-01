@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Actors = {
   /* [{
@@ -13,35 +13,19 @@ const Actors = {
    * }]
    */
   getAll () {
-    let query = `{
-      values: actors {
-        id
-        firstname
-        lastname
-        birthday
-        films {
-          id
-        }
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/actors.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('ALL Actors:', res.data)
+        return res.data
       })
       .then(res => {
-        let values = res.map(value => {
-          value.films = value.films.map(film => {
-            return film.id
-          })
+        let newRes = res.data.map(value => {
+          value.id = value.idActor
           return value
         })
-        console.log('ACTORS:', values)
-        return values
-      })
-      .catch(e => {
-        return {}
+        return newRes
       })
   },
   /* {
@@ -54,33 +38,19 @@ const Actors = {
    * }
    */
   getById (id) {
-    let query = `{
-      values: actor(id:${id}) {
-        id
-        firstname
-        lastname
-        birthday
-        films {
-          id
-        }
-      }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
+    return axios.post(BACKEND_URL + '/actors.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
       .then(res => {
-        return res.data.data.values
+        console.log('Id actors:', res.data)
+        return res.data
       })
       .then(res => {
-        let values = res
-        let films = res.films.map(value => {
-          return value.id
-        })
-        values.films = films
-        return values
-      })
-      .catch(e => {
-        return {}
+        res.data.id = res.data.idActor
+        return res.data
       })
   },
   /* OK:
