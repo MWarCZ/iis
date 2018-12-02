@@ -158,7 +158,7 @@ function delete_tickets($db, $id) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("DELETE FROM `tickets` WHERE idReservation IN (SELECT idReservation FROM reservations WHERE idUser = ? AND paid = 0 and picked = 0)");
+        $query = $db->prepare("DELETE FROM `tickets` WHERE idReservation IN (SELECT idReservation FROM reservations WHERE idUser = ? AND picked = 0)");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return NULL;
@@ -180,7 +180,7 @@ function delete_reservations($db, $id) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("DELETE FROM reservations WHERE idUser = ? AND paid = 0 and picked = 0");
+        $query = $db->prepare("DELETE FROM reservations WHERE idUser = ? AND picked = 0");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return NULL;

@@ -235,11 +235,11 @@ if(isset($input['request'])) {
                         $out["data"] = true;
                     }
                     
-                    //Delete tickets from unpicked/unpaid reservations
+                    //Delete tickets from unpicked reservations
                     if(!delete_tickets($db, $id)) $out["error"][] = "Delete reservation error - deleting ticket";
                     else $out["data"] = true; 
                     
-                    //Delete unpicked/unpaid reservations
+                    //Delete unpicked reservations
                     if(!delete_reservations($db, $id)) $out["error"][] = "Delete reservation error - deleting reservations";
                     else $out["data"] = true;  
                     
