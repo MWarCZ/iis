@@ -31,13 +31,14 @@ if(isset($input['request'])) {
                 !isset($input["data"]["duration"]) &&
                 !isset($input["data"]["released"]) &&
                 !isset($input["data"]["rating"]) &&
-                !isset($input["data"]["genres"]) ) {
+                !isset($input["data"]["genres"])) {
                 $out["error"][] = "Missing some input";
                 break;
             }
             
             if(!isset($input["data"]["idDirector"])) $input["data"]["idDirector"] = null;
             if(!isset($input["data"]["idStudio"])) $input["data"]["idStudio"] = null;
+            if(!isset($input["data"]["idAccess"])) $input["data"]["idAccess"] = null;
             
             //Get data from inputs
             $name = htmlspecialchars($input["data"]["name"]);
@@ -47,20 +48,26 @@ if(isset($input['request'])) {
             $idDirector = htmlspecialchars($input["data"]["idDirector"]);
             $idStudio = htmlspecialchars($input["data"]["idStudio"]);
             $genres = $input["data"]["genres"];
+            $idAccess = htmlspecialchars($input["data"]["idAccess"]);
             
-            if(($id = insert($db, $name, $duration, $released, $rating))) {
+            if(($id = insert($db, $name, $duration, $released, $rating, $idAccess))) {
               $out["data"] = $id;
             } else $out["error"][] = "SQL Error";
             
-            //Bind Studio
+            //Bind Sstudio
             if($idStudio != null){                
-                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio or director";
-            } else if(!unbindStudio($db, $id)) $out["error"][] = "Wrong studio or director";
+                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio";
+            } else unbindStudio($db, $id);
             
             //Bind director
             if($idDirector != null){                
-                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong studio or director";
-            } else if(!unbindDirector($db, $id)) $out["error"][] = "Wrong studio or director";
+                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong director";
+            } else unbindDirector($db, $id);
+            
+            //Bind access
+            if($idAccess != null){                
+                if(!bindAccess($db, $id, $idAccess)) $out["error"][] = "Wrong access";
+            } else unbindAccess($db, $id);
             
             //Validation of array genres
             if(!is_array($genres)) {
@@ -88,13 +95,14 @@ if(isset($input['request'])) {
                 !isset($input["data"]["duration"]) &&
                 !isset($input["data"]["released"]) &&
                 !isset($input["data"]["rating"]) &&
-                !isset($input["data"]["genres"])) {
+                !isset($input["data"]["genres"]) ) {
                 $out["error"][] = "Missing some input";
                 break;
             }
             
             if(!isset($input["data"]["idDirector"])) $input["data"]["idDirector"] = null;
             if(!isset($input["data"]["idStudio"])) $input["data"]["idStudio"] = null;
+            if(!isset($input["data"]["idAccess"])) $input["data"]["idAccess"] = null;
             
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
@@ -104,20 +112,26 @@ if(isset($input['request'])) {
             $rating = htmlspecialchars($input["data"]["rating"]);
             $idDirector = htmlspecialchars($input["data"]["idDirector"]);
             $idStudio = htmlspecialchars($input["data"]["idStudio"]);            
-            $genres = $input["data"]["genres"];
+            $genres = $input["data"]["genres"];            
+            $idAccess = htmlspecialchars($input["data"]["idAccess"]);
             
-            if(!update($db, $id, $name, $duration, $released, $rating)) $out["error"][] = "Update error";
+            if(!update($db, $id, $name, $duration, $released, $rating, $idAccess)) $out["error"][] = "Update error";
             else $out["data"] = true;
             
             //Bind Sstudio
             if($idStudio != null){                
-                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio or director";
+                if(!bindStudio($db, $id, $idStudio)) $out["error"][] = "Wrong studio";
             } else unbindStudio($db, $id);
             
             //Bind director
             if($idDirector != null){                
-                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong studio or director";
+                if(!bindDirector($db, $id, $idDirector)) $out["error"][] = "Wrong director";
             } else unbindDirector($db, $id);
+            
+            //Bind access
+            if($idAccess != null){                
+                if(!bindAccess($db, $id, $idAccess)) $out["error"][] = "Wrong access";
+            } else unbindAccess($db, $id);
             
             //Validation of array genres
             if(!is_array($genres)) {

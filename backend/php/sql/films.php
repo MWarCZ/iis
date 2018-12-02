@@ -83,6 +83,48 @@ function unbindDirector($db, $id) {
     return TRUE;
 }
 
+function bindAccess($db, $id, $idAccess){
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("UPDATE `films` SET `idAccess` = ? WHERE `idFilm` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($idAccess, $id);
+    try {
+        $query->execute(array_values($params));
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
+function unbindAccess($db, $id) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("UPDATE `films` SET `idAccess` = null WHERE `idFilm` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array( $id);
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
 function bindStudio($db, $id, $idStudio) {
     if($db == NULL) return NULL;
     
