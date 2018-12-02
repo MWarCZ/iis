@@ -1,15 +1,15 @@
 <?php
-function insert($db, $date, $idFilm, $idHall, $price, $idAccess) {
+function insert($db, $date, $idFilm, $idHall, $price) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("INSERT INTO `projections`(`date`, `idFilm`, `idHall`, `price`, `idAccess`) VALUES (?, ?, ?, ?, ?)");
+        $query = $db->prepare("INSERT INTO `projections`(`date`, `idFilm`, `idHall`, `price`) VALUES (?, ?, ?, ?)");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($date, $idFilm, $idHall, $price, $idAccess);
+    $params = array($date, $idFilm, $idHall, $price);
     try {
         $query->execute(array_values($params));
     } catch (PDOException $e) {
@@ -20,17 +20,17 @@ function insert($db, $date, $idFilm, $idHall, $price, $idAccess) {
     return $db->lastInsertId();
 }
 
-function update($db, $id, $date, $idFilm, $idHall, $price, $idAccess){
+function update($db, $id, $date, $idFilm, $idHall, $price){
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("UPDATE `projections` SET `date` = ?,`idFilm` = ?,`idHall` = ?,`price` = ?,`idAccess` = ?  WHERE `idProjection` = ?");
+        $query = $db->prepare("UPDATE `projections` SET `date` = ?,`idFilm` = ?,`idHall` = ?,`price` = ?  WHERE `idProjection` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
     }
     
-    $params = array($date, $idFilm, $idHall, $price, $idAccess, $id);
+    $params = array($date, $idFilm, $idHall, $price, $id);
     try {
         $query->execute(array_values($params));
     } catch (PDOException $e) {
