@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 // import { BACKEND_URL } from './constant.js'
-import { BACKEND_URL , axiosConfig } from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 /*
   projections.map((item) => {
         let res = {}
@@ -100,7 +100,7 @@ const Projections = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* {
    *   id
@@ -116,6 +116,43 @@ const Projections = {
    * }
    */
   getById (id) {
+    return axios.post(BACKEND_URL + '/films.php',
+      'request=SELECT' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('ALL films:', res.data)
+        return res.data
+      })
+      .then(res => {
+        let value = res.data[0]
+        value.id = Number(value.idFilm)
+        value.premiere = value.released
+
+        if (value.director) {
+          value.idDirector = Number(value.director.idDirector)
+          value.firstnameDirector = value.director.name
+          value.lastnameDirector = value.director.surname
+        }
+        if (value.studio) {
+          value.idStudio = Number(value.studio.idStudio)
+          value.studio = value.studio.name
+        }
+        value.genres = value.genres.map(genre => {
+          genre.id = Number(genre.idGenre)
+          return genre
+        })
+        value.actors = value.actors.map(actor => {
+          actor.id = Number(actor.idActor)
+          actor.firstname = actor.name
+          actor.lastname = actor.surname
+          return actor
+        })
+        return value
+      })
+      /*
     let query = `{
       values: projection(id: ${id}) {
           id
@@ -160,7 +197,7 @@ const Projections = {
 
       .catch(e => {
         return {}
-      })
+      }) */
   },
 
   /* [{
@@ -254,7 +291,6 @@ const Projections = {
         }
         return res
       })
-
   }
 
 }

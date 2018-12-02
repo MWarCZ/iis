@@ -223,15 +223,23 @@ const Workers = {
    *   lastname
    * }
    */
-  create (firstname, lastname, login, password, idCinema, job, salary) {
+  create (firstname, lastname, login, password, password2, ssn, idCinema, access) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=INSERT' + '&data=' +
+      JSON.stringify({
+        login: login,
+        name: firstname,
+        surname: lastname,
+        ssn: ssn,
+        pass: password,
+        pass_verifi: password2,
+        idCinema: idCinema,
+        access: access
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        return res.data
       })
   },
 

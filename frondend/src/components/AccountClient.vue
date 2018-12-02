@@ -28,6 +28,15 @@
         </b-form-input>
       </b-input-group>
 
+      <b-input-group prepend="Email:">
+        <b-form-input v-model="user.email"
+                  type="email"
+                  label="email"
+                  :readonly="true"
+                  >
+        </b-form-input>
+      </b-input-group>
+
       <br />
 
       <b-button-group>
@@ -41,6 +50,17 @@
 
       <b-collapse id="account_update" :visible="false">
         <b-card title="Upravit účet">
+
+          <b-alert variant="success" dismissible
+            @dismissed="changeSuccess = false"
+            :show="changeSuccess">
+            Údaje změněny.
+          </b-alert>
+          <b-alert variant="danger" dismissible
+            @dismissed="changeFailed = false"
+            :show="changeFailed">
+            Nepodařilo se provést změnit.
+          </b-alert>
 
           <b-input-group prepend="Jméno:">
             <b-form-input v-model="newUser.firstname"
@@ -66,6 +86,23 @@
             </b-form-input>
           </b-input-group>
 
+         <b-input-group prepend="Email:">
+            <b-form-input v-model="newUser.email"
+                      type="email"
+                      label="email"
+                      >
+            </b-form-input>
+          </b-input-group>
+
+         <b-input-group prepend="Heslo pro ovření:">
+            <b-form-input v-model="oldPassword"
+                      type="password"
+                      label="oldPassword"
+                      :state="checkPassword(oldPassword)"
+                      >
+            </b-form-input>
+          </b-input-group>
+
           <b-button variant="primary"
             @click="updateAccount()">
             Ulozit
@@ -75,7 +112,19 @@
       </b-collapse>
 
       <b-collapse id="password_update" :visible="false">
+
         <b-card title="Změnit heslo">
+
+          <b-alert variant="success" dismissible
+            @dismissed="changePassSuccess = false"
+            :show="changePassSuccess">
+            Heslo změněno.
+          </b-alert>
+          <b-alert variant="danger" dismissible
+            @dismissed="changePassFailed = false"
+            :show="changePassFailed">
+            Nepodařilo se změnit heslo.
+          </b-alert>
 
          <b-input-group prepend="Nové heslo:">
             <b-form-input v-model="newPassword"
@@ -117,8 +166,13 @@
 </template>
 
 <script>
+import Dialog from '@/components/Dialog.vue'
+
 export default {
   name: 'AccountClient',
+  components: {
+    Dialog
+  },
   props: {
     idClient: {
       type: Number,
@@ -131,7 +185,11 @@ export default {
       newUser: {},
       newPassword: '',
       newPassword2: '',
-      oldPassword: ''
+      oldPassword: '',
+      changeFailed: false,
+      changeSuccess: false,
+      changePassFailed: false,
+      changePassSuccess: false
     }
   },
   computed: {
@@ -139,6 +197,9 @@ export default {
   methods: {
     checkNewPassword () {
       return !!this.newPassword
+    },
+    checkPassword (password) {
+      return !!password
     },
     checkRepeatNewPassword () {
       return !!this.newPassword && (this.newPassword === this.newPassword2)
@@ -153,8 +214,8 @@ export default {
       console.log('USER:', user)
 
       if (user) {
-        // TODO
-        Promise.resolve(0)
+        // id, firstname, lastname, login, password, email, birthday
+        this.$myStore.backend.Clients.update(this.newUser.id, this.newUser.login, this.oldPassword, this.newUser.email)
           .then(res => {
             console.log('OK')
             this.user = user
@@ -176,27 +237,33 @@ export default {
       console.log('NEW PASSWORD:', this.newPassword)
 
       if (this.checkNewPassword() && this.checkRepeatNewPassword()) {
-        // TODO
-        Promise.resolve(0)
+        // id, login, newPassword, newPassword2, oldPassword
+        this.$myStore.backend.Clients.updatePassword(this.user.id, this.user.login, this.newPassword, this.newPassword2, this.oldPassword)
           .then(res => {
-            console.log('OK')
-
+            console.log('OK', res)
+            this.changePassSuccess = true
+            this.changePassFailed = false
             this.$emit('success', { password: this.newPassword })
           })
           .catch(e => {
             console.log('KO')
             this.failed = true
+            this.changePassFailed = true
+            this.changePassSuccess = false
             this.$emit('fail')
           })
       } else {
         this.failed = true
+        this.changePassFailed = true
+        this.changePassSuccess = false
         this.$emit('fail')
       }
     }
   },
   mounted: function () {
     // Ziskani klienta
-    this.$myStore.backend.Clients.getById(this.idClient)
+    this.$myStore.backend.Clients.getLogged()
+    // this.$myStore.backend.Clients.getById(this.idClient)
       .then(res => {
         console.log('Client is:', res)
         if (res.id === undefined) {

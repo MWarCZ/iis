@@ -53,7 +53,40 @@ const Reservations = {
       })
   },
 
+  /*
+    id
+    reserved
+    totalPrice
+    isPaid
+    isPicked
+    isStorno
+   */
   getByIdClient (id) {
+    return axios.post(BACKEND_URL + '/reservations.php',
+      'request=SELECT_USER' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('User reservations:', res.data)
+        return res.data
+      })
+      .then(res => {
+        let newRes = res.data.map(value => {
+          value.id = Number(value.idReservation)
+          value.reserved = value.reserved
+          value.totalPrice = Number(value.totalPrice)
+          value.isPaid = !!value.paid
+          value.isPicked = !!value.picked
+          value.isStorno = !!value.storno
+
+          return value
+        })
+        console.log('User reservations:', newRes)
+        return newRes
+      })
+      /*
     let query = `{
       values: clientReservations (idClient: ${id}) {
         id
@@ -69,7 +102,7 @@ const Reservations = {
       })
       .catch(e => {
         return {}
-      })
+      }) */
   },
 
   /**/

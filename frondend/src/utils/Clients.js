@@ -138,7 +138,7 @@ const Clients = {
         surname: lastname,
         email: email,
         pass: password,
-        pass_verifi: password
+        pass_verifi: password2
       })
       , axiosConfig)
       .then(res => {
@@ -158,15 +158,28 @@ const Clients = {
    *   birthday
    * }
    */
-  update (id, firstname, lastname, login, birthday) {
+  update (id, firstname, lastname, login, password, email, birthday) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=UPDATE' + '&data=' +
+      JSON.stringify({
+        id: id,
+        login: login,
+        pass: password,
+        name: firstname,
+        surname: lastname,
+        email: email
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        console.log('UPDATE CLIENT:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
   },
   /* {
@@ -176,15 +189,27 @@ const Clients = {
    *   lastname
    * }
    */
-  updatePassword (id, newPassword, oldPassword) {
+  updatePassword (id, login, newPassword, newPassword2, oldPassword) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data.data.values
+    return axios.post(BACKEND_URL + '/users.php',
+      'request=CHANGE_PASSW' + '&data=' +
+      JSON.stringify({
+        id: id,
+        login: login,
+        old_pass: oldPassword,
+        new_pass: newPassword,
+        new_verifi: newPassword2
       })
-      .catch(e => {
-        return {}
+      , axiosConfig)
+      .then(res => {
+        console.log('Change password CLIENT:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
   },
 

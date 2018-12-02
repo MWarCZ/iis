@@ -4,12 +4,12 @@
       <b-alert variant="success" dismissible
         @dismissed="registerSuccess = false"
         :show="registerSuccess">
-        Podařilo se zaregistrovat.
+        Podařilo se vytvořit.
       </b-alert>
       <b-alert variant="danger" dismissible
         @dismissed="registerFailed = false"
         :show="registerFailed">
-        Nepodařilo se zaregistrovat.
+        Nepodařilo se vztvořit.
       </b-alert>
 
       <b-input-group prepend="Jméno:">
@@ -17,7 +17,7 @@
                       type="text"
                       label="firstname"
                       :state="checkName(client.firstname)"
-                      placeholder="Váše křestní jméno.">
+                      placeholder="Pracovníkovo křestní jméno.">
         </b-form-input>
       </b-input-group>
 
@@ -26,7 +26,7 @@
                       type="text"
                       label="lastname"
                       :state="checkName(client.lastname)"
-                      placeholder="Váše příjmení.">
+                      placeholder="Pracovníkovo příjmení.">
         </b-form-input>
       </b-input-group>
 
@@ -35,16 +35,26 @@
                       type="text"
                       label="login"
                       :state="checkLogin(client.login)"
-                      placeholder="Váše přihlašovací jméno.">
+                      placeholder="Pracovníkovo přihlašovací jméno.">
         </b-form-input>
       </b-input-group>
 
-      <b-input-group prepend="Email:">
-        <b-form-input v-model="client.email"
-                  type="email"
-                  label="email"
+      <b-input-group prepend="SSN:">
+        <b-form-input v-model="client.ssn"
+                  type="text"
+                  label="ssn"
                   :state="checkEmail(client.email)"
-                  placeholder="Váše emailová adresa."
+                  placeholder="Pracovníkovo ssn."
+                  >
+        </b-form-input>
+      </b-input-group>
+
+      <b-input-group prepend="Access Level:">
+        <b-form-input v-model="client.access"
+                  type="number"
+                  label="access"
+                  :state="checkAccessLvl(client.access)"
+                  placeholder="urověň oprávnění (2-prodavač, 3-manager, 4-admin"
                   >
         </b-form-input>
       </b-input-group>
@@ -54,7 +64,7 @@
                       type="password"
                       label="heslo"
                       :state="checkNewPassword(password)"
-                      placeholder="Váše přihlašovací heslo.">
+                      placeholder="Pracovníkovo přihlašovací heslo.">
         </b-form-input>
       </b-input-group>
 
@@ -63,7 +73,7 @@
                       type="password"
                       label="heslo"
                       :state="checkRepeatNewPassword(password, password2)"
-                      placeholder="Váše přihlašovací heslo znovu.">
+                      placeholder="Pracovníkovo přihlašovací heslo znovu.">
         </b-form-input>
       </b-input-group>
 
@@ -81,7 +91,7 @@
 import DateTime from '@/utils/DateTime.js'
 
 export default {
-  name: 'Register',
+  name: 'WorkerCreate',
   props: {
   },
   data: function () {
@@ -119,9 +129,9 @@ export default {
       // TODO
       return true
     },
-    checkEmail (email) {
+    checkAccessLvl (access) {
       // TODO
-      return !!email && email.indexOf('@') > 0
+      return access > 1 && access <= 4
     },
 
     registerClient: function () {

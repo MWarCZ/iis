@@ -135,6 +135,7 @@ export default {
           }))
         })
         .then(res => {
+          console.log('Fin. user reservations are:', this.reservations)
           this.$forceUpdate()
         })
         .catch(e => {

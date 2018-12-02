@@ -162,7 +162,6 @@ export default {
         this.checkCinema(this.newProjection.idCinema) &&
         this.checkRoom(this.newProjection.idRoom)
       ) {
-
         this.newProjection.datetime = this.projectionDateTime.toUTCString()
         // datetime, price, idFilm, idRoom, idAccess = 1
         this.$myStore.backend.Projections.create(this.newProjection.datetime, this.newProjection.price, this.newProjection.idFilm, this.newProjection.idRoom)
