@@ -13,20 +13,17 @@
     </head>
     <body>
 
-        <!-- Zkontrolujte prosím nastavení kódování v hlavièce dokumentu 
-             podle pou¾itého editoru -->
-
-        <h1>Zadání è.39 - Øetìzec multikin</h1> <!-- Nahradte názvem svého zadání -->
+        <h1>Zadání è.39 - Øetìzec multikin</h1>
 
         <dl>
             <dt>Autoøi</dt>
-            <dd>První jméno
+            <dd>Miroslav Válka
                 <a href="mailto:xvalka05@stud.fit.vutbr.cz">xvalka05@stud.fit.vutbr.cz</a> -
-                Frontend - Vue.js
+                Frontend - Vue.js, HTTP Requests
             </dd>
             <dd>Roman Zajíc
                 <a href="mailto:xzajic16@stud.fit.vutbr.cz">xzajic16@stud.fit.vutbr.cz</a> - 
-                PHP provider, DB manipulace 
+                PHP API, DB Manipulation 
             </dd>
             <dt>URL aplikace</dt>
             <dd><a href="http://xxx.mwarcz.cz/">http://xxx.mwarcz.cz/</a></dd>
@@ -37,8 +34,8 @@
         <table>
             <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
             <tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
-            <tr><td>worker</td><td>worker</td><td>Prodavaè</td></tr>
             <tr><td>manager</td><td>manager</td><td>Mana¾er</td></tr>
+            <tr><td>worker</td><td>worker</td><td>Prodavaè</td></tr>
             <tr><td>user</td><td>user</td><td>Zákazník</td></tr>
             <tr><td>user2</td><td>user2</td><td>Zákazník</td></tr>
             <tr><td>user3</td><td>user3</td><td>Zákazník</td></tr>
@@ -50,12 +47,16 @@
         <h2>Instalace</h2>
         <ul>
             <li>Testováno na PHP Version 7.2.12 a Apache 2.4.37</li>
-            <li>V /php/db_connect.php je tøeba nastavit údaje pro pøipojení k DB</li>
-            <li>V /php/parse_input.php je tøeba nastavit root doménu</li>
+            <li>V <i>/php/db_connect.php</i> je tøeba nastavit údaje pro pøipojení k DB</li>
+            <li>V <i>/php/parse_input.php</i> je tøeba nastavit root doménu ($rootDomain) kvùli správnému fungování sessions</li>
+            
+            <li>Soubor <i>'xvalka05_xzajic16_FINAL.sql'</i> je export databáze se základními daty</li>
         </ul>
 
         <h2>Známé problémy</h2>
-        <p>Zde popi¹te, které body zadání (IDS a IIS) nejsou implementovány a z jakého dùvodu. Napø. &bdquo;Z èasových dùvodù nebyla implementována správa u¾ivatelù.&rdquo; Pomù¾ete tím zrychlit opravování, kdy¾ neimplementované funkce nebudeme muset dlouze hledat.</p>
+        <ul>
+            <li>TODO PROBLEMS</li>
+        </ul>
 
     </body>
 </html>
