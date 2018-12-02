@@ -65,6 +65,28 @@ function update_passwd($db, $login, $passw) {
     return true;
 }
 
+function update_access($db, $login, $acces) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("UPDATE `employees` SET `access_level`= ? WHERE `login` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    $params = array($acces, $login);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    return true;
+}
+
 function update_employeeData($db, $login, $name, $surname, $ssn) {
     if($db == NULL) return NULL;
     

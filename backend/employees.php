@@ -213,6 +213,38 @@ if(isset($input['request'])) {
             } else $out["error"][] = "Employee don't exist";
             
             break;
+            
+        case "CHANGE_ACCESS" :
+            debug_print("CHANGE_ACCESS");
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
+                $out["error"][] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["login"]) && 
+                !isset($input["data"]["acces"])) {
+                $out["error"][] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $login = htmlspecialchars($input["data"]["login"]);
+            $acces = intval(htmlspecialchars($input["data"]["acces"]));
+            
+            if(!(is_int($acces) && $acces >= 2 && $acces <= 4)) {
+                $out["error"][] = "Acces level must be 2 <= int <= 4";
+                break;
+            }
+            
+            //If employee exist, update acces level
+            if(employee_exist($db, $login)) {
+                if(!update_access($db, $login, $acces)) $out["error"][] = "Change acces level error";
+                else $out["data"] = true;
+            } else $out["error"][] = "Employee don't exist";
+            
+            break;
         
         case "DELETE" : 
             debug_print("DELETE");
