@@ -1,7 +1,7 @@
 
 import axios from 'axios'
-import { BACKEND_URL, axiosConfig } from './constant.js'
-
+// import { BACKEND_URL } from './constant.js'
+import { BACKEND_URL , axiosConfig } from './constant.js'
 /*
   projections.map((item) => {
         let res = {}
@@ -34,6 +34,29 @@ const Projections = {
    * }]
    */
   getAll () {
+    // $date, $idFilm, $idHall, $idPrice, $idAccess
+    return axios.post(BACKEND_URL + '/projections.php',
+      'request=SELECT_ALL_WITH_DETAILS'
+      , axiosConfig)
+      .then(res => {
+        console.log('ALL projections:', res.data)
+        return res.data
+      })
+      .then(res => {
+        let newRes = res.data.map(value => {
+          value.id = Number(value.idProjection)
+          value.idFilm = Number(value.idFilm)
+          value.idRoom = Number(value.idHall)
+          value.room = value.hall
+          value.idCinema = Number(value.idCinema)
+          value.datetime = value.date
+          value.price = Number(value.price)
+          return value
+        })
+        console.log('ALL projections2:', newRes)
+        return newRes
+      })
+      /*
     let query = `{
       values: projections {
           id
@@ -77,7 +100,7 @@ const Projections = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* {
    *   id
@@ -192,8 +215,22 @@ const Projections = {
   },
 
   /**/
-  create (datetime, price, idFilm, idRoom) {
-
+  // date, idFilm, idHall, price, idAccess
+  create (datetime, price, idFilm, idRoom, idAccess = 1) {
+    return axios.post(BACKEND_URL + '/projections.php',
+      'request=INSERT' + '&data=' +
+      JSON.stringify({
+        date: datetime,
+        price: price,
+        idFilm: idFilm,
+        idHall: idRoom,
+        idAccess: idAccess
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('New projection id:', res.data)
+        return res.data
+      })
   },
   /**/
   update (id, datetime, price, idFilm, idRoom) {
@@ -201,6 +238,22 @@ const Projections = {
   },
   /**/
   remove (id) {
+    return axios.post(BACKEND_URL + '/projections.php',
+      'request=DELETE' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Delete projection bool:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
 
   }
 

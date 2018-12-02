@@ -1,5 +1,5 @@
 
-import BACKEND_URL from './constant.js'
+import { BACKEND_URL } from './constant.js'
 import Cinemas from './Cinemas.js'
 import Films from './Films.js'
 import Genres from './Genres.js'

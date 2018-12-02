@@ -79,7 +79,7 @@ export default {
             this.$emit('success')
           } else {
             this.$emit('failed')
-          }*/
+          } */
         })
         .catch(e => {
           console.log('Worker problem.')

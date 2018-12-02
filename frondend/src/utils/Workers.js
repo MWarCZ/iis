@@ -38,7 +38,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* {
    *   id
@@ -51,7 +51,7 @@ const Workers = {
    *   cinema
    * }
    */
-  getById (id) {/*
+  getById (id) { /*
     let query = `{
       values: worker(id: ${id}) {
         id
@@ -81,7 +81,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* [{
    *   id
@@ -127,7 +127,7 @@ const Workers = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* {
    *   id
@@ -139,7 +139,6 @@ const Workers = {
    */
   // {"id":"1","login":"test","name":"test","surname":"test","ssn":"tes@test.test","access":1}
   auth (login, password) {
-
     return axios.post(BACKEND_URL + '/employees.php',
       'request=LOGIN' + '&data=' +
       JSON.stringify({
@@ -181,7 +180,7 @@ const Workers = {
       })
       .catch(e => {
         return null
-      })*/
+      }) */
   },
   getLogged () {
     return axios.post(BACKEND_URL + '/employees.php',
@@ -192,7 +191,7 @@ const Workers = {
         return res.data
       })
       .then(res => {
-        if(!res.data) {
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res.data

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card v-if="!!$myStore.worker">
+    <b-card v-if="!!$myStore.worker && $myStore.worker.access >= 3">
       <h2>Akce:</h2>
       <b-button variant="outline-primary"
         @click="showDialogAddFilm = true">
@@ -65,7 +65,7 @@
           </b-card-group>
         </router-link>
 
-        <b-button v-if="!!$myStore.worker"
+        <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
           variant="outline-danger"
           @click="removeFilm(film.id)">
           Smazat film: '{{film.name}}'
@@ -143,7 +143,7 @@ export default {
         // TODO
         this.$myStore.backend.Films.remove(idFilm)
           .then(res => {
-            if(res) {
+            if (res) {
               console.log('OK')
               this.films = this.films.filter(film => {
                 return film.id !== idFilm

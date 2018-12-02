@@ -1,5 +1,11 @@
 <template>
   <div>
+    <ErrorDialog
+      :showDialog="failed"
+      @close="failed = false"
+      message="Tak toto nepůjde."
+      />
+
     <b-card v-if="!!$myStore.worker && $myStore.worker.access >= 3">
       <h2>Akce:</h2>
       <b-button variant="outline-primary"
@@ -52,19 +58,22 @@
 <script>
 import CinemaAdd from '@/components/CinemaAdd.vue'
 import Dialog from '@/components/Dialog.vue'
+import ErrorDialog from '@/components/ErrorDialog.vue'
 
 export default {
   name: 'Cinemas',
   components: {
     CinemaAdd,
-    Dialog
+    Dialog,
+    ErrorDialog
   },
   props: {
   },
   data: function () {
     return {
       cinemas: [],
-      showDialogAddCinema: false
+      showDialogAddCinema: false,
+      failed: false
     }
   },
   methods: {
@@ -89,19 +98,21 @@ export default {
         // TODO
         this.$myStore.backend.Cinemas.remove(idCinema)
           .then(res => {
-            if(res) {
+            if (res) {
               this.cinemas = this.cinemas.filter(cinema => {
                 return cinema.id !== idCinema
               })
               console.log('OK')
               this.$emit('success', { cinemas: this.cinemas })
             } else {
-              console.log('KO')
+              console.log('KO-2')
+              this.failed = true
               this.$emit('fail')
             }
           })
           .catch(e => {
             console.log('KO')
+            this.failed = true
             this.$emit('fail')
           })
       }

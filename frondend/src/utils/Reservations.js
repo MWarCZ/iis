@@ -1,6 +1,7 @@
 
 import axios from 'axios'
-import { BACKEND_URL, axiosConfig } from './constant.js'
+import { BACKEND_URL } from './constant.js'
+// import { BACKEND_URL , axiosConfig } from './constant.js'
 
 const Reservations = {
   /* [{

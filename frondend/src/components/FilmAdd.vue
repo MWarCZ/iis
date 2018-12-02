@@ -126,10 +126,9 @@ export default {
       if (this.checkName(this.newFilm.name) &&
         this.checkPremiere(this.premiere)
       ) {
-
         this.newFilm.premiere = this._date
         // name, premiere, duration, idDirector, idStudio
-        this.$myStore.backend.Films.create(this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio )
+        this.$myStore.backend.Films.create(this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio, this.idGenreArr)
           .then(res => {
             this.newFilm.id = res.data
             console.log('OK')

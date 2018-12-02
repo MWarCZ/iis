@@ -66,23 +66,27 @@ export default {
     }
   },
   created: function () {
-    this.$myStore.backend.Clients.getLogged()
-      .then(res => {
-        console.log('RELOAD_PAGE Get client data:', res)
-        this.$myStore.user = res
-        this.$myStore.save()
-        //this.$myStore.load()
-        this.$forceUpdate()
-      })
-      .catch(e => {
-        console.log('RELOAD_PAGE clent not logged:', e)
-      })
+    this.$myStore.load()
+    if (this.$myStore.user) {
+      console.log('=====U:', this.$myStore.user)
+      this.$myStore.backend.Clients.getLogged()
+        .then(res => {
+          console.log('RELOAD_PAGE Get client data:', res)
+          this.$myStore.user = res
+          this.$myStore.save()
+          // this.$myStore.load()
+          this.$forceUpdate()
+        })
+        .catch(e => {
+          console.log('RELOAD_PAGE clent not logged:', e)
+        })
+    } // if user
     this.$myStore.backend.Workers.getLogged()
       .then(res => {
         console.log('RELOAD_PAGE Get worker data:', res)
         this.$myStore.worker = res
         this.$myStore.save()
-        //this.$myStore.load()
+        // this.$myStore.load()
         this.$forceUpdate()
       })
       .catch(e => {
@@ -105,7 +109,7 @@ export default {
           this.$router.push('/')
           this.$forceUpdate()
         })
-        .catch(e =>{
+        .catch(e => {
           console.log('KO Logout Client')
         })
       this.$myStore.backend.Workers.logout()
@@ -117,7 +121,7 @@ export default {
           this.$router.push('/')
           this.$forceUpdate()
         })
-        .catch(e =>{
+        .catch(e => {
           console.log('KO Logout Worker')
         })
     }

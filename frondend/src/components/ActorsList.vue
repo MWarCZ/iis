@@ -4,7 +4,7 @@
     :items="filterActor()"
     sort-by="date">
     <template slot="event" slot-scope="data">
-      <b-button v-if="!!$myStore.worker"
+      <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
         variant="outline-danger"
         @click="removeActor(data.item.id)">
         Smazat
@@ -68,15 +68,15 @@ export default {
       }
     },
     filterActor () {
-      //if (this.idFilm === undefined) {
-        return this.nowActors
-      //} else {
-        let actors = this.nowActors.filter(actor => {
-          console.log(actor)
-          return actor.films.indexOf(this.idFilm) >= 0
-        })
-        return actors
-      //}
+      // if (this.idFilm === undefined) {
+      return this.nowActors
+      // } else {
+      // let actors = this.nowActors.filter(actor => {
+      //   console.log(actor)
+      //   return actor.films.indexOf(this.idFilm) >= 0
+      // })
+      // return actors
+      // }
     }
   },
   mounted: function () {
@@ -94,7 +94,7 @@ export default {
         .catch(e => {
           console.log('ERR:', e)
         })
-    }*/
+    } */
   }
 }
 </script>

@@ -29,7 +29,7 @@ const Films = {
             genre.id = Number(genre.idGenre)
             return genre
           })
-          console.log('ALL films genres:', value.genres)
+          // console.log('ALL films genres:', value.genres)
           return value
         })
         return newRes
@@ -149,6 +149,10 @@ const Films = {
           value.idStudio = Number(value.studio.idStudio)
           value.studio = value.studio.name
         }
+        value.genres = value.genres.map(genre => {
+          genre.id = Number(genre.idGenre)
+          return genre
+        })
         value.actors = value.actors.map(actor => {
           actor.id = Number(actor.idActor)
           actor.firstname = actor.name
@@ -169,6 +173,7 @@ const Films = {
         duration: duration,
         idDirector: idDirector,
         idStudio: idStudio,
+        genres: idsGenre,
         rating: 0
 
       })
@@ -179,7 +184,7 @@ const Films = {
       })
   },
   /**/
-  update (id, name, premiere, duration, idDirector, idStudio) {
+  update (id, name, premiere, duration, idDirector, idStudio, idsGenre = []) {
     return axios.post(BACKEND_URL + '/films.php',
       'request=UPDATE' + '&data=' +
       JSON.stringify({
@@ -189,6 +194,7 @@ const Films = {
         duration: duration,
         idDirector: idDirector,
         idStudio: idStudio,
+        genres: idsGenre,
         rating: 0
       })
       , axiosConfig)
@@ -197,7 +203,7 @@ const Films = {
         return res.data
       })
       .then(res => {
-        if(!res.data){
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res
@@ -208,7 +214,7 @@ const Films = {
     return axios.post(BACKEND_URL + '/films.php',
       'request=DELETE' + '&data=' +
       JSON.stringify({
-        id: id,
+        id: id
       })
       , axiosConfig)
       .then(res => {
@@ -216,7 +222,7 @@ const Films = {
         return res.data
       })
       .then(res => {
-        if(!res.data){
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res
@@ -236,7 +242,7 @@ const Films = {
         return res.data
       })
       .then(res => {
-        if(!res.data){
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res
@@ -256,7 +262,7 @@ const Films = {
         return res.data
       })
       .then(res => {
-        if(!res.data){
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res

@@ -110,7 +110,7 @@ export default {
         film: 'film',
         cinema: 'cinema',
         room: 'room',
-        price: 0,
+        price: 100,
         datetime: '2019'
 
       },
@@ -147,7 +147,7 @@ export default {
       return !!name
     },
     checkPrice (price) {
-      return price >= 0 && price !== undefined
+      return price > 0 && price !== undefined
     },
     checkDateTime (datetime) {
       let res = datetime.getTime() > new Date().getTime()
@@ -155,29 +155,39 @@ export default {
     },
     addProjection () {
       console.log('Add projection.')
+      // TODO : Pristupnost promitani
       if (this.checkPrice(this.newProjection.price) &&
         this.checkDateTime(this.projectionDateTime) &&
         this.checkFilm(this.newProjection.idFilm) &&
         this.checkCinema(this.newProjection.idCinema) &&
         this.checkRoom(this.newProjection.idRoom)
       ) {
-        // TODO
-        Promise.resolve(0)
+
+        this.newProjection.datetime = this.projectionDateTime.toUTCString()
+        // datetime, price, idFilm, idRoom, idAccess = 1
+        this.$myStore.backend.Projections.create(this.newProjection.datetime, this.newProjection.price, this.newProjection.idFilm, this.newProjection.idRoom)
           .then(res => {
             console.log('OK')
-            this.newProjection.datetime = this.projectionDateTime.toUTCString()
-            this.newProjection.film = this.films.find(film => {
-              return film.id === this.newProjection.idFilm
-            }).name
-            this.newProjection.cinema = this.cinemas.find(cinema => {
-              return cinema.id === this.newProjection.idCinema
-            }).name
-            this.newProjection.room = this.rooms.find(room => {
-              return room.id === this.newProjection.idRoom
-            }).name
+            if (res.data) {
+              this.newProjection.id = res.data
+              // this.newProjection.datetime = this.projectionDateTime.toUTCString()
+              this.newProjection.film = this.films.find(film => {
+                return film.id === this.newProjection.idFilm
+              }).name
+              this.newProjection.cinema = this.cinemas.find(cinema => {
+                return cinema.id === this.newProjection.idCinema
+              }).name
+              this.newProjection.room = this.rooms.find(room => {
+                return room.id === this.newProjection.idRoom
+              }).name
+              console.log('OK2')
 
-            this.newProjection.id = Math.floor(Math.random() * Math.floor(1000))
-            this.$emit('success', { projection: this.newProjection })
+              this.$emit('success', { projection: this.newProjection })
+            } else {
+              console.log('KO2')
+              this.failed = true
+              this.$emit('fail')
+            }
           })
           .catch(e => {
             console.log('KO')

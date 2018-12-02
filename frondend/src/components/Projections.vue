@@ -1,7 +1,7 @@
 <template>
   <div style="overflow: auto">
 
-    <div v-if="!!$myStore.worker">
+    <div v-if="!!$myStore.worker && $myStore.worker.access >= 3">
       <b-button-group>
         <b-button variant="outline-primary"
           @click="showDialogAddProjection = true">
@@ -59,13 +59,13 @@
             @click="showDialog = true">
             Rezervovat
           </b-button>
-          <template v-else-if="!!$myStore.worker">
+          <template v-else-if="!!$myStore.worker && $myStore.worker.access >= 2">
             <b-button v-if="!!$myStore.worker"
               variant="outline-primary"
               @click="showDialog = true">
               Prodat
             </b-button>
-            <b-button v-if="!!$myStore.worker"
+            <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
               variant="outline-danger"
               @click="removeProjection(data.item.id)">
               Smazat
@@ -155,7 +155,7 @@ export default {
       console.log('Remove room.')
       if (idProjection !== undefined) {
         // TODO
-        Promise.resolve(0)
+        this.$myStore.backend.Projections.remove(idProjection)
           .then(res => {
             console.log('OK')
             this.projections = this.projections.filter(proj => {

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <b-card title="Upravit kino">
+    <b-card title="Upravit film">
 
       <b-alert variant="danger" dismissible
         @dismissed="failed = false"
@@ -78,13 +78,14 @@ export default {
     },
     film: {
       type: Object,
-      default: () => {}
+      default: () => { genres: [] }
     }
   },
   data: function () {
     return {
       oldFilm: this.film,
       newFilm: { ...this.film },
+      idGenreArr: this.genre2index(this.film.genres),
       studios: [],
       directors: [],
       failed: false
@@ -93,6 +94,10 @@ export default {
   computed: {
   },
   methods: {
+    genre2index (genres = []) {
+      let arr = genres.map(genre => genre.id)
+      return arr
+    },
     checkName (name) {
       return !!name
     },
@@ -107,7 +112,7 @@ export default {
       if (this.checkName(this.newFilm.name)
       ) {
         // TODO
-        this.$myStore.backend.Films.update(this.newFilm.id, this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio )
+        this.$myStore.backend.Films.update(this.newFilm.id, this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio, this.idGenreArr)
           .then(res => {
             console.log('OK')
 
@@ -134,7 +139,8 @@ export default {
       }
     },
     changeGenres (args) {
-      let { genres } = args
+      let { idGenreArr, genres } = args
+      this.idGenreArr = idGenreArr
       this.newFilm.genres = genres
     }
   },

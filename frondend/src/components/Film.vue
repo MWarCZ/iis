@@ -57,7 +57,7 @@
           </b-card>
         </b-card-group>
 
-        <b-card-group v-if="!!$myStore.worker">
+        <b-card-group v-if="!!$myStore.worker && $myStore.worker.access >= 3">
           <b-card>
             <h2>Akce:</h2>
             <b-button-group vertical>

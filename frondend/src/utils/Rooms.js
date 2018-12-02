@@ -19,7 +19,7 @@ const Rooms = {
         return res.data
       })
       .then(res => {
-        if(res.data) {
+        if (res.data) {
           let newRes = res.data.map(value => {
             value.id = Number(value.idHall)
             value.name = value.cinemaMark
@@ -59,7 +59,7 @@ const Rooms = {
         value.capacity = Number(value.capacity)
         value.idCinema = Number(value.idCinema)
 
-        console.log('Id Hall2:', newRes)
+        console.log('Id Hall2:', value)
         return value
       })
   },
@@ -109,7 +109,7 @@ const Rooms = {
         return res.data
       })
       .then(res => {
-        if(!res.data){
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res

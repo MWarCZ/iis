@@ -94,7 +94,7 @@ const Clients = {
         return res.data
       })
       .then(res => {
-        if(!res.data) {
+        if (!res.data) {
           throw new Error(res.error)
         }
         return res.data

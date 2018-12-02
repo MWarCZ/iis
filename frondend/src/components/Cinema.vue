@@ -135,7 +135,7 @@ export default {
         return this.$myStore.backend.Rooms.getByIdCinema(this.id)
         // return this.$myStore.backend.Rooms.getAll()
           .then(res2 => {
-            //res.rooms = res2.filter(room => room.idCinema === this.id)
+            // res.rooms = res2.filter(room => room.idCinema === this.id)
             res.rooms = res2
             console.log('Rooms are:', res2)
             return res
