@@ -415,3 +415,29 @@ function getStudio($db, $id) {
     
     return ($data = $query->fetch(PDO::FETCH_ASSOC)) == false ? null : $data;
 }
+
+function film_earnings($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT f.idFilm, f.name, f.duration, f.ratings, f.released, SUM(t.price) AS earnings
+                                FROM tickets AS t
+                                        JOIN projections    AS p ON p.idProjection = t.idProjection
+                                        JOIN films          AS f ON f.idFilm = p.idFilm
+                                WHERE f.idFilm = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
