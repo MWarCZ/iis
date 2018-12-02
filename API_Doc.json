@@ -1,0 +1,583 @@
+[
+{
+    "URL" : "accesses.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "actors.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "cinemas.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"EARNINGS" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "directors.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},{
+    "URL" : "discounts.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "employees.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGIN" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGOUT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"CHANGE_PASSW" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"CHANGE_ACCESS" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGGED" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "films.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"ADD_ACTOR" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DEL_ACTOR" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"EARNINGS" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "genres.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "halls.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "projections.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_BYDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL_WITH_DETAILS" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "reservations.php",
+    "REQUESTS" :[
+        {"RESERVE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"CANCEL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"CANCEL_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"PAY_PICK" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"PAY" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"PICK" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_USER" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_BYDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "studios.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "tickets.php",
+    "REQUESTS" :[
+        {"SELECT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_PROJECTION" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"SELECT_RESERVATION" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+},
+{
+    "URL" : "users.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGIN" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGOUT" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"CHANGE_PASSW" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        },
+        {"LOGGED" : 
+            {
+                "input"  : "aaaa",
+                "output" : "bbbb"
+            }
+        }
+    ]
+}
+]
+
+
