@@ -103,3 +103,30 @@ function selectId($db, $id) {
     
     return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function cinema_earnings($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT c.idCinema, c.name, c.address, SUM(t.price) AS earnings
+                                FROM tickets AS t
+                                    JOIN projections 	AS p ON p.idProjection = t.idProjection
+                                    JOIN halls 			AS h ON h.idHall = p.idHall
+                                    JOIN cinemas 		AS c ON c.idCinema = h.idCinema
+                                WHERE c.idCinema = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return $query->fetch(PDO::FETCH_ASSOC);
+}

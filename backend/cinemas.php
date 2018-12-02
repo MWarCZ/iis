@@ -120,6 +120,29 @@ if(isset($input['request'])) {
             
             break;
             
+        case "EARNINGS" : 
+            debug_print("EARNINGS");
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
+                $out["error"][] = "You don't have enough permissions";
+                break;
+            }
+            
+            //All input set check
+            if( !isset($input["data"]["id"])) {
+                $out["error"][] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            
+            if(($data = cinema_earnings($db, $id))) {
+                $out["data"] = $data;
+            } else $out["error"][] = "Not found";
+            
+            break;
+            
         default :
             $out["error"][] = "Wrong request type";
             break;
