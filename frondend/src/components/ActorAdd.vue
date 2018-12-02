@@ -63,6 +63,18 @@ export default {
     },
     addActor () {
       console.log('Add actor.')
+
+      if (this.checkActor(this.newActor.id)
+      ) {
+        this.$emit('addActor', {
+          idFilm: this.newActor.idFilm,
+          idActor: this.newActor.id
+        })
+        this.$emit('exit')
+      } else {
+        this.failed = true
+      }
+      /*
       if (this.checkActor(this.newActor.id)
       ) {
         // TODO
@@ -81,7 +93,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }
+      }*/
     },
     filterActors () {
       let actors = this.actors.filter(actor => {

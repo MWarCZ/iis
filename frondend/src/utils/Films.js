@@ -132,7 +132,7 @@ const Films = {
       })
       , axiosConfig)
       .then(res => {
-        console.log('ALL films:', res.data)
+        console.log('id film:', res.data)
         return res.data
       })
       .then(res => {
@@ -159,12 +159,14 @@ const Films = {
           actor.lastname = actor.surname
           return actor
         })
+        console.log('id film:', value)
         return value
       })
   },
 
   /**/
   create (name, premiere, duration, idDirector, idStudio, idsGenre = []) {
+    console.log('Films All input:',name, ' | ', premiere, ' | ', duration, ' | ', idDirector, ' | ', idStudio, ' | ', idsGenre)
     return axios.post(BACKEND_URL + '/films.php',
       'request=INSERT' + '&data=' +
       JSON.stringify({
@@ -181,6 +183,12 @@ const Films = {
       .then(res => {
         console.log('New film id:', res.data)
         return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
   },
   /**/

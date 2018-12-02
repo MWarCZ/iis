@@ -8,6 +8,16 @@
     <br />
     Genres: {{genres}}
     <br />
+    <button @click="getCinemas()">Cinemas</button>
+    <br />
+    <button @click="getCinema(1)">Cinema 1</button>
+    <br />
+    <button @click="getCinema(2)">Cinema 2</button>
+    <br />
+    <button @click="getFilm(1)">Film 1</button>
+    <br />
+    <button @click="getFilm(2)">Film 2</button>
+    <br />
 
     <button @click="showDialog = true">Open</button>
     <ErrorDialog
@@ -105,7 +115,116 @@ export default {
       let { idGenreArr, genres } = args
       this.arr = idGenreArr
       this.genres = genres
+    },
+
+
+    getFilm (idFilm) {
+      // Ziskani filmu
+      this.$myStore.backend.Films.getById(idFilm)
+        .then(res => {
+          console.log('Film is:', res)
+          if (res.id === undefined) {
+            throw new Error({ msg: 'Empty Film.', res })
+          }
+          this.film = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.film = undefined
+        })
+    },
+
+    getCinemas() {
+      this.$myStore.backend.Cinemas.getAll()
+      .then(res => {
+        console.log('Cinemas are:', res)
+        if (res[0] === undefined) {
+          throw new Error({ msg: 'Empty Cinemas.', res })
+        }
+        this.cinemas = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.cinemas = []
+      })
+
+    },
+    getCinema (idCinema) {
+      this.$myStore.backend.Cinemas.getById(idCinema)
+      .then(res => {
+        console.log('Cinema is:', res)
+        return this.$myStore.backend.Rooms.getByIdCinema(idCinema)
+          .then(res2 => {
+            res.rooms = res2
+            console.log('Rooms are:', res2)
+            return res
+          })
+          .catch(e => {
+            return undefined
+          })
+      })
+      .then(res => {
+        console.log('Cinema with Rooms is:', res)
+        if (res.id === undefined) {
+          throw new Error({ msg: 'Empty Cinema.', res })
+        }
+        this.cinema = res
+      })
+      .catch(e => {
+        console.log('ERR:', e)
+        this.cinema = undefined
+      })
+    },
+
+    getFilms () {
+      // Stazeni filmu
+      this.$myStore.backend.Films.getAll()
+        .then(res => {
+          console.log('Films are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Films.', res })
+          }
+          this.films = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.films = []
+        })
+    },
+
+    getGenres () {
+      // Stazeni zanru
+      this.$myStore.backend.Genres.getAll()
+        .then(res => {
+          console.log('Genres are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Genres.', res })
+          }
+          this.genres = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.genres = []
+        })
+    },
+
+    getProjections () {
+      // Stazeni projektci
+      this.$myStore.backend.Projections.getAll()
+        .then(res => {
+          console.log('Projections are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Projections.', res })
+          }
+          this.projections = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.projections = []
+        })
     }
+
+
   },
   created: function () {
     console.log('Query filter: ', this.$route.query.filter)

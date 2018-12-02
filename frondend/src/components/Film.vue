@@ -80,14 +80,18 @@
               @close="showDialogAddActor = false">
               <ActorAdd :idFilm="film.id"
                         :disabledActors="film.actors"
-                @success="actorRefresh(...arguments); showDialogAddActor = false" />
+                        @addActor="$emit('addActor', arguments[0])"
+                        @exit="showDialogAddActor = false"
+                @success="/*actorRefresh(...arguments);*/ showDialogAddActor = false" />
             </Dialog>
 
           </b-card>
           <b-card>
             <h2>Herci:</h2>
-            <ActorsList :idFilm="film.id" :actors="film.actors"
-              @success="actorsRefresh(...arguments)" />
+            <ActorsList :idFilm="film.id"
+                        :actors="actors /**/"
+                        @deleteActor="$emit('deleteActor', arguments[0])"
+                        />
           </b-card>
         </b-card-group>
 
@@ -134,7 +138,7 @@ export default {
   },
   data: function () {
     return {
-      film: undefined,
+      // film: undefined,
       showDialogEditFilm: false,
       showDialogAddActor: false,
       DateTime: DateTime
@@ -142,27 +146,27 @@ export default {
   },
   props: {
     film: {
-      type: Object,
+      type: [Object, Function],
       default: undefined
     },
     rooms: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     projections: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     cinemas: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     discounts: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     actors: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     }
   },
@@ -180,7 +184,7 @@ export default {
       let { film } = args
       this.film = film
     }*/
-    providerRooms(rooms, idCinema) {
+    providerActors(actors, idFilm) {
       let newRooms = rooms.filter(r => r.idCinema === idCinema)
       console.log('Cinema-providerRooms:', newRooms)
       return newRooms

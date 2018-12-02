@@ -134,23 +134,23 @@ export default {
     },
 
     cinemas: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     rooms: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     projections: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     films: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     discounts: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     }
   },

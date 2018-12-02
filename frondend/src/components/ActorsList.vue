@@ -6,7 +6,7 @@
     <template slot="event" slot-scope="data">
       <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
         variant="outline-danger"
-        @click="removeActor(data.item.id)">
+        @click="$emit('deleteActor', { idActor: data.item.id, idFilm: idFilm })">
         Smazat
       </b-button>
       <span v-else>
@@ -51,6 +51,7 @@ export default {
     },
     removeActor (idActor) {
       console.log('Remove actor.')
+      /*
       if (idActor !== undefined) {
         // TODO
         this.$myStore.backend.Films.delActor(this.idFilm, idActor)
@@ -65,11 +66,11 @@ export default {
             console.log('KO')
             this.$emit('fail')
           })
-      }
+      }*/
     },
     filterActor () {
       // if (this.idFilm === undefined) {
-      return this.nowActors
+      return this.actors
       // } else {
       // let actors = this.nowActors.filter(actor => {
       //   console.log(actor)
