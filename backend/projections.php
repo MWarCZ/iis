@@ -142,6 +142,23 @@ if(isset($input['request'])) {
             
             break;
             
+        case "SELECT_BYDATE" : 
+            debug_print("SELECT");
+            //All input set check
+            if( !isset($input["data"]["id"])) {
+                $out["error"][] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $date = date('Y-m-d H:i:s', strtotime(htmlspecialchars($input["data"]["date"])));
+            
+            if(($data = selectByDate($db, $date))) {
+                $out["data"] = $data;
+            } else $out["error"][] = "Not found";
+            
+            break;
+            
         case "SELECT_ALL_WITH_DETAILS" :
             debug_print("SELECT_ALL");
 

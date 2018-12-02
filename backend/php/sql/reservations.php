@@ -102,6 +102,27 @@ function selectAll($db) {
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function selectByDate($db, $date){
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT * FROM reservations WHERE reserved >= ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($date);
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+        
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function selectId($db, $id) {
     if($db == NULL) return FALSE;
     

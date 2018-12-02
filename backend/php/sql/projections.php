@@ -104,6 +104,26 @@ function selectId($db, $id) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function selectByDate($db, $date){
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT * FROM projections WHERE date >= ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($date);
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+        
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
 
 function selectAllWithDetails($db) {
     if($db == NULL) return FALSE;
