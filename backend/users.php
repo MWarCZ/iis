@@ -226,7 +226,7 @@ if(isset($input['request'])) {
             //If user exist, verifi passwd and delete
             if(user_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login))) {
-                    //First sign out
+                    //First Logged out
                     if(isset($_SESSION["id"])) {
                         session_unset();
                         session_destroy();
@@ -235,9 +235,16 @@ if(isset($input['request'])) {
                         $out["data"] = true;
                     }
                     
-                    //Remove id from reservations
+                    //Delete tickets from unpicked/unpaid reservations
+                    if(!delete_tickets($db, $id)) $out["error"][] = "Delete reservation error - deleting ticket";
+                    else $out["data"] = true; 
                     
-                    if(!null_reservations($db, $id)) $out["error"][] = "Delete reservation error";
+                    //Delete unpicked/unpaid reservations
+                    if(!delete_reservations($db, $id)) $out["error"][] = "Delete reservation error - deleting reservations";
+                    else $out["data"] = true;  
+                    
+                    //Remove id from reservations                    
+                    if(!null_reservations($db, $id)) $out["error"][] = "Delete reservation error - nulling reservations";
                     else $out["data"] = true;  
                     
                     if(!delete_user($db, $login)) $out["error"][] = "Delete error";

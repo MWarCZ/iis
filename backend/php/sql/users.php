@@ -154,6 +154,50 @@ function delete_user($db, $login) {
     return true;
 }
 
+function delete_tickets($db, $id) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("DELETE FROM `tickets` WHERE idReservation IN (SELECT idReservation FROM reservations WHERE idUser = ? AND paid = 0 and picked = 0)");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    return true;
+}
+
+function delete_reservations($db, $id) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("DELETE FROM reservations WHERE idUser = ? AND paid = 0 and picked = 0");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return NULL;
+    }
+    
+    return true;
+}
+        
 function null_reservations($db, $id) {
     if($db == NULL) return NULL;
     
