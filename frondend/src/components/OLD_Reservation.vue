@@ -15,32 +15,19 @@
       </template>
     </table>
 
-    <br />
-    <b-input-group prepend="Sleva:">
-      <b-form-select v-model="selectedIdDiscount"
-                     >
-        <template v-for="(discount, index) in discounts">
-          <option :value="discount.id" :key="index">
-            {{discount.description + ' (' + discount.discount + '%)'}}
-          </option>
-        </template>
-      </b-form-select>
-    </b-input-group>
-    <br />
-
     <Tickets :x="seats" :tickets="ticketsProvider()"/>
     <h3>Ceklem: {{summaryPrice()}}</h3>
 
     <b-button v-if="!!$myStore.user" variant="primary"
-      @click="sendReservation()">
+      @click="sendReservation(); $emit('success')">
       Rezervovat
     </b-button>
     <b-button v-else-if="!!$myStore.worker" variant="primary"
-      @click="sendAndSellReservation()">
+      @click="sendAndSellReservation(); $emit('success')">
       Prodat
     </b-button>
     <b-button variant="secondary"
-      @click="$emit('exit')">
+      @click="$emit('fail')">
       Zrušit
     </b-button>
 
@@ -59,86 +46,32 @@ export default {
   data: function () {
     return {
       seats: [],
-      // projection: undefined,
-      disabledSeats: [],
-      selectedIdDiscount: 1
+      projection: undefined,
+      disabledSeats: []
     }
   },
   props: {
-    projection: {
-      type: Object,
-      default: undefined
-    },
-    idClient: {
+    idProjection: {
       type: Number,
-      default: null
-    },
-
-    rooms: {
-      type: Array,
-      default: undefined
-    },
-    projections: {
-      type: Array,
-      default: undefined
-    },
-    films: {
-      type: Array,
-      default: undefined
-    },
-    discounts: {
-      type: Array,
       default: undefined
     }
   },
   methods: {
-    makeTickets () {
-      let tickets = this.seats.map(seat => {
-        let ticket = {}
-        ticket.seatNumber = seat
-        ticket.idProjection = this.projection.id
-        ticket.idDiscount = this.selectedIdDiscount
-        // TODO Discount
-        return ticket
-      })
-      return tickets
-    },
     sendReservation () {
-      let tickets = this.makeTickets()
-
-      this.$emit('addReservation', {
-        idUser: this.idClient,
-        tickes: tickets
-      })
-      this.$emit('exit')
+      console.log('RESERVATION')
+      // TODO
     },
     sendAndSellReservation () {
-      let tickets = this.makeTickets()
 
-      this.$emit('addAndSellReservation', {
-        idUser: this.idClient,
-        tickes: tickets
-      })
-      this.$emit('exit')
     },
     summaryPrice () {
-      let tickets = this.makeTickets()
-      let discount = this.discounts.find(d => d.id === this.selectedIdDiscount)
-      let summ = tickets.length * this.projection.price
-      if (discount && discount.discount) {
-        summ = summ * 100 / discount.discount
-        summ = Math.round(summ)
-      }
-      /*
       let tickets = this.ticketsProvider()
       let summ = 0
       tickets.forEach(ticket => {
         summ += this.getFinalPrice(ticket.price, ticket.salePrice, ticket.salePrecentage)
       })
-      */
       return summ
     },
-    /*
     getFinalPrice: function (price, salePrice, salePercent) {
       let sale = 0
       sale += (salePrice) || 0
@@ -147,7 +80,6 @@ export default {
       console.log('PRICE:', finalPrice)
       return finalPrice
     },
-    */
 
     toggleSeat (seatNumber) {
       let index = this.seats.indexOf(seatNumber)
@@ -169,7 +101,7 @@ export default {
           salePrecentage: 0
         }
       })
-      // console.log('TTT', tickets)
+      console.log('TTT', tickets)
       return tickets
     },
     seatsProvider (capacity = 35, maxInRow = 10, disabledSeats = [1, 4, 6, 7, 8, 20, 21, 30, 28], selectedSeats = this.seats) {
@@ -191,8 +123,7 @@ export default {
     },
     downloadByProjection (idProjection) {
 
-      // console.log('=========1=idProjection', idProjection)
-      /*
+      console.log('=========1=idProjection', idProjection)
       // Ziskani projektce
       this.$myStore.backend.Projections.getById(this.idProjection)
         .then(res => {
@@ -207,11 +138,10 @@ export default {
           console.log('ERR:', e)
           this.projection = undefined
         })
-      */
-     /*
-      // console.log('=========2')
+
+      console.log('=========2')
       // Ziskani listku
-      this.$myStore.backend.Tickets.getByIdProjection(this.projection.id)
+      this.$myStore.backend.Tickets.getByIdProjection(this.idProjection)
         .then(res => {
           console.log('Tickets are:', res)
           if (res[0] === undefined) {
@@ -226,14 +156,13 @@ export default {
           this.disabledSeats = []
         })
       console.log('=========3')
-      */
+
     }
   }, // methots
 
   mounted: function () {
-    console.log('Reservation-mounted:', this.projection)
-    // console.log('=========0=idProjection', this.idProjection)
-    // this.downloadByProjection (this.idProjection)
+    console.log('=========0=idProjection', this.idProjection)
+    this.downloadByProjection (this.idProjection)
     /*
     console.log('=========1=idProjection', this.idProjection)
     // Ziskani projektce

@@ -6,32 +6,32 @@
       <b-alert variant="danger" dismissible
         @dismissed="failed = false"
         :show="failed">
-        Nepodařilo se.
+        Chybně vyplněná pole.
       </b-alert>
 
       <b-input-group prepend="Název:">
-        <b-form-input v-model="newCinema.name"
+        <b-form-input v-model="newName"
                   type="text"
                   label="name"
-                  :state="checkName(newCinema.name)"
+                  :state="checkName(newName)"
                   >
         </b-form-input>
       </b-input-group>
 
       <b-input-group prepend="Adresa:">
-        <b-form-input v-model="newCinema.address"
+        <b-form-input v-model="newAddress"
                   type="text"
                   label="address"
-                  :state="checkAddress(newCinema.address)"
+                  :state="checkAddress(newAddress)"
                   >
         </b-form-input>
       </b-input-group>
 
      <b-input-group prepend="Obrázek:">
-        <b-form-input v-model="newCinema.img"
+        <b-form-input v-model="newImg"
                   type="url"
                   label="img"
-                  :state="checkUrl(newCinema.img)"
+                  :state="checkUrl(newImg)"
                   >
         </b-form-input>
       </b-input-group>
@@ -54,15 +54,20 @@ export default {
       type: Number,
       default: undefined
     },
-    cinema: {
-      type: Object,
-      default: () => {}
+    name: {
+      type: String,
+      default: undefined
+    },
+    address: {
+      type: String,
+      default: undefined
     }
   },
   data: function () {
     return {
-      oldCinema: this.cinema,
-      newCinema: { ...this.cinema },
+      newName: this.name,
+      newAddress: this.address,
+      newImg: '',
       failed: false
     }
   },
@@ -87,8 +92,24 @@ export default {
         return false
       }
     },
+
     updateCinema () {
       console.log('Update cinema.')
+
+      if (this.checkName(this.newName) &&
+        this.checkAddress(this.newAddress) &&
+        this.checkUrl(this.newImg) !== false
+      ) {
+        this.$emit('updateCinema', {
+          id: this.idCinema,
+          name: this.newName,
+          address: this.newAddress
+        })
+        this.$emit('exit')
+      } else {
+        this.failed = true
+      }
+      /*
       if (this.checkName(this.newCinema.name) &&
         this.checkAddress(this.newCinema.address) &&
         this.checkUrl(this.newCinema.img) !== false
@@ -107,10 +128,11 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }
+      } */
     }
   },
   mounted: function () {
+    /*
     if (this.idCinema !== undefined) {
       // Ziskani kina
       this.$myStore.backend.Cinemas.getById(this.idCinema)
@@ -126,7 +148,7 @@ export default {
           console.log('ERR:', e)
           this.oldCinema = undefined
         })
-    }
+    }*/
   }
 }
 </script>

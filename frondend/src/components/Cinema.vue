@@ -19,7 +19,7 @@
               <b-list-group-item>
                 <b>Místnosti:</b>
                 <span class="comma-line"
-                  v-for="(room, index) in cinema.rooms"
+                  v-for="(room, index) in providerRooms(rooms, cinema.id)"
                   :key="index">
                   {{room.name}}({{room.capacity}} míst)
                 </span>
@@ -45,26 +45,43 @@
 
             <Dialog v-if="showDialogEditCinema"
               @close="showDialogEditCinema = false">
-              <CinemaEdit :cinema="cinema"
-                @success="cinemaRefresh(...arguments); showDialogEditCinema = false" />
+              <CinemaEdit :idCinema="cinema.id"
+                          :name="cinema.name"
+                          :address="cinema.address"
+                          @updateCinema="$emit('updateCinema', arguments[0])"
+                          @exit="showDialogEditCinema = false"
+                          />
             </Dialog>
             <Dialog v-if="showDialogAddRoom"
               @close="showDialogAddRoom = false">
-              <RoomAdd :idCinema="cinema.id"
-                @success="roomRefresh(...arguments); showDialogAddRoom = false" />
+              <RoomAdd  :idCinema="cinema.id"
+                        @addRoom="$emit('addRoom', arguments[0])"
+                        @exit="showDialogAddRoom = false"
+                        />
             </Dialog>
 
           </b-card>
           <b-card>
             <h2>Místnosti:</h2>
-            <RoomsList :rooms="cinema.rooms"
-              @success="roomsRefresh(...arguments)" />
+            <RoomsList  :rooms="providerRooms(rooms, cinema.id)"
+                        @deleteRoom="$emit('deleteRoom', arguments[0])"
+                        />
           </b-card>
         </b-card-group>
 
         <b-card>
           <h2>Projekce</h2>
-          <Projections :idCinema="id" />
+          <Projections  :idCinema="cinema.id"
+                        :projections="projections"
+                        :cinemas="[cinema]"
+                        :rooms="rooms"
+                        :films="films"
+                        :discounts="discounts"
+                        @deleteProjection="$emit('deleteProjection', arguments[0])"
+                        @addProjection="$emit('addProjection', arguments[0])"
+            @addReservation="$emit('addReservation', arguments[0])"
+            @addAndSellReservation="$emit('addAndSellReservation', arguments[0])"
+                        />
         </b-card>
 
       </b-card>
@@ -95,14 +112,30 @@ export default {
   },
   data: function () {
     return {
-      cinema: undefined,
+      // cinema: undefined,
       showDialogEditCinema: false,
       showDialogAddRoom: false
     }
   },
   props: {
-    id: {
-      type: Number,
+    cinema: {
+      type: Object,
+      default: undefined
+    },
+    rooms: {
+      type: Array,
+      default: undefined
+    },
+    projections: {
+      type: Array,
+      default: undefined
+    },
+    films: {
+      type: Array,
+      default: undefined
+    },
+    discounts: {
+      type: Array,
       default: undefined
     }
   },
@@ -110,6 +143,7 @@ export default {
     debug (...values) {
       console.log(...values)
     },
+    /*
     roomsRefresh (args) {
       let { rooms } = args
       this.cinema.rooms = rooms
@@ -121,13 +155,20 @@ export default {
     cinemaRefresh (args) {
       let { cinema } = args
       this.cinema = cinema
+    },
+    */
+    // ---------
+    providerRooms(rooms, idCinema) {
+      let newRooms = rooms.filter(r => r.idCinema === idCinema)
+      console.log('Cinema-providerRooms:', newRooms)
+      return newRooms
     }
 
   }, // methots
 
   mounted: function () {
     // this.downloadCinema()
-
+    /*
     // Stazeni kin
     this.$myStore.backend.Cinemas.getById(this.id)
       .then(res => {
@@ -154,7 +195,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.cinema = undefined
-      })
+      })*/
   }
 }
 </script>

@@ -7,6 +7,13 @@
     IDs: {{arr}}
     <br />
     Genres: {{genres}}
+    <br />
+
+    <button @click="showDialog = true">Open</button>
+    <ErrorDialog
+      :showDialog="showDialog"
+      @close="showDialog = false"
+      title="ERR" message="Tak toto nepůjde."/>
 
     <!--<Filter v-model="select" :listOfValues="list" />-->
     <!-- <Reservations :idClient="1" /> -->
@@ -62,6 +69,9 @@ import RoomsList from '@/components/RoomsList.vue'
 
 import Genres from '@/components/Genres.vue'
 
+import ErrorDialog from '@/components/ErrorDialog.vue'
+import WorkerCreate from '@/components/WorkerCreate.vue'
+
 export default {
   name: 'About',
   components: {
@@ -78,7 +88,9 @@ export default {
     RoomAdd,
     RoomsList,
 
-    Genres
+    Genres,
+    ErrorDialog,
+    WorkerCreate
   },
   data: function () {
     return {

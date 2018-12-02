@@ -6,7 +6,7 @@
       <b-alert variant="danger" dismissible
         @dismissed="failed = false"
         :show="failed">
-        Nepodařilo se.
+        Chybně vyplněná pole.
       </b-alert>
 
       <b-input-group prepend="Datum:">
@@ -18,8 +18,8 @@
       </b-input-group>
 
       <b-input-group prepend="Film:">
-        <b-form-select v-model="newProjection.idFilm"
-                       :state="checkFilm(newProjection.idFilm)"
+        <b-form-select v-model="newIdFilm"
+                       :state="checkFilm(newIdFilm)"
                        >
           <option :value="undefined" selected> ( Vyber Film )</option>
           <template v-for="(film, index) in films">
@@ -31,9 +31,9 @@
       </b-input-group>
 
       <b-input-group prepend="Kino:">
-        <b-form-select v-model="newProjection.idCinema"
-                       :state="checkCinema(newProjection.idCinema)"
-                       @change="newProjection.idRoom = undefined"
+        <b-form-select v-model="newIdCinema"
+                       :state="checkCinema(newIdCinema)"
+                       @change="newIdRoom = undefined"
                        >
           <option :value="undefined" selected> ( Vyber kino )</option>
           <template v-for="(cinema, index) in cinemas">
@@ -45,8 +45,8 @@
       </b-input-group>
 
       <b-input-group prepend="Místnost:">
-        <b-form-select v-model="newProjection.idRoom"
-                       :state="checkRoom(newProjection.idRoom)"
+        <b-form-select v-model="newIdRoom"
+                       :state="checkRoom(newIdRoom)"
                        >
           <option :value="undefined" selected> ( Vyber mistnost )</option>
           <template v-for="(room, index) in filterRooms()">
@@ -58,10 +58,10 @@
       </b-input-group>
 
       <b-input-group prepend="Cena:">
-        <b-form-input v-model="newProjection.price"
+        <b-form-input v-model="newPrice"
                   type="number"
                   label="price"
-                  :state="checkPrice(newProjection.price)"
+                  :state="checkPrice(newPrice)"
                   >
         </b-form-input>
       </b-input-group>
@@ -92,17 +92,20 @@ export default {
     },
     cinemas: {
       type: Array,
-      default: () => [],
-      required: true
+      default: () => []
     },
     films: {
       type: Array,
-      default: () => [],
-      required: true
+      default: () => []
+    },
+    rooms: {
+      type: Array,
+      default: () => []
     }
   },
   data: function () {
     return {
+      /*
       newProjection: {
         idFilm: this.idFilm,
         idCinema: this.idCinema,
@@ -115,6 +118,12 @@ export default {
 
       },
       rooms: [],
+      */
+      newIdFilm: this.idFilm,
+      newIdRoom: undefined,
+      newIdCinema: this.idCinema,
+      newPrice: 100,
+      newIdAccess: 1,
       projectionDateTime: new Date(),
       failed: false
     }
@@ -155,6 +164,24 @@ export default {
     },
     addProjection () {
       console.log('Add projection.')
+      if (this.checkPrice(this.newPrice) &&
+        this.checkDateTime(this.projectionDateTime) &&
+        this.checkFilm(this.newIdFilm) &&
+        this.checkCinema(this.newIdCinema) &&
+        this.checkRoom(this.newIdRoom)
+      ) {
+        this.$emit('addProjection', {
+          datetime: this.projectionDateTime.toUTCString(),
+          price: this.newPrice,
+          idFilm: this.newIdFilm,
+          idRoom: this.newIdRoom,
+          idAccess: this.newAddress
+        })
+        this.$emit('exit')
+      } else {
+        this.failed = true
+      }
+      /*
       // TODO : Pristupnost promitani
       if (this.checkPrice(this.newProjection.price) &&
         this.checkDateTime(this.projectionDateTime) &&
@@ -196,17 +223,18 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }
+      }*/
     },
     filterRooms () {
       let rooms = this.rooms
       rooms = rooms.filter(room => {
-        return room.idCinema === this.newProjection.idCinema
+        return room.idCinema === this.newIdCinema
       })
       return rooms
     }
   },
   mounted: function () {
+    /*
     // Ziskani mistnosti mistnosti
     this.$myStore.backend.Rooms.getAll()
       .then(res => {
@@ -218,7 +246,7 @@ export default {
       })
       .catch(e => {
         console.log('ERR:', e)
-      })
+      })*/
   }
 }
 </script>

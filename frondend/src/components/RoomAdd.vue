@@ -6,23 +6,23 @@
       <b-alert variant="danger" dismissible
         @dismissed="failed = false"
         :show="failed">
-        Nepodařilo se.
+        Chybně vyplněná pole.
       </b-alert>
 
       <b-input-group prepend="Název:">
-        <b-form-input v-model="newRoom.name"
+        <b-form-input v-model="roomName"
                   type="text"
                   label="name"
-                  :state="checkName(newRoom.name)"
+                  :state="checkName(roomName)"
                   >
         </b-form-input>
       </b-input-group>
 
       <b-input-group prepend="Kapacita:">
-        <b-form-input v-model="newRoom.capacity"
+        <b-form-input v-model="roomCapacity"
                   type="number"
                   label="capacity"
-                  :state="checkCapacity(newRoom.capacity)"
+                  :state="checkCapacity(roomCapacity)"
                   >
         </b-form-input>
       </b-input-group>
@@ -43,15 +43,13 @@ export default {
   props: {
     idCinema: {
       type: Number,
-      default: undefined,
-      required: true
+      default: undefined
     }
   },
   data: function () {
     return {
-      newRoom: {
-        idCinema: this.idCinema
-      },
+      roomName: '',
+      roomCapacity: 1,
       failed: false
     }
   },
@@ -64,8 +62,22 @@ export default {
     checkCapacity (capacity) {
       return capacity >= 0 && capacity !== undefined
     },
+
     addRoom () {
       console.log('Add room.')
+      if (this.checkName(this.roomName) &&
+        this.checkCapacity(this.roomCapacity)
+      ) {
+        this.$emit('addRoom', {
+          idCinema: this.idCinema,
+          name: this.roomName,
+          capacity: this.roomCapacity
+        })
+        this.$emit('exit')
+      } else {
+        this.failed = true
+      }
+      /*
       if (this.checkName(this.newRoom.name) &&
         this.checkCapacity(this.newRoom.capacity)
       ) {
@@ -83,7 +95,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }
+      } */
     }
   },
   mounted: function () {

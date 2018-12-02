@@ -11,10 +11,14 @@
 
       <Dialog v-if="showDialogAddProjection"
         @close="showDialogAddProjection = false">
-        <ProjectionAdd :idCinema="idCinema" :idFilm="idFilm"
-          :cinemas="cinemas"
-          :films="films"
-          @success="projectionRefresh(...arguments); showDialogAddProjection = false" />
+        <ProjectionAdd  :idCinema="idCinema"
+                        :idFilm="idFilm"
+                        :cinemas="cinemas"
+                        :films="films"
+                        :rooms="rooms"
+                        @addProjection="$emit('addProjection', arguments[0])"
+                        @exit="showDialogAddProjection = false"
+                        />
       </Dialog>
     </div>
 
@@ -52,7 +56,7 @@
 
       <b-table striped hover
         :fields="fields"
-        :items="projectionsProvider()"
+        :items="providerProjections(projections)"
         sort-by="date">
         <template slot="event" slot-scope="data">
           <b-button v-if="!!$myStore.user"
@@ -67,7 +71,8 @@
             </b-button>
             <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
               variant="outline-danger"
-              @click="removeProjection(data.item.id)">
+              @click="$emit('deleteProjection', { idProjection: data.item.id })"
+              >
               Smazat
             </b-button>
           </template>
@@ -85,8 +90,16 @@
           <Reservation
             :projection="getOneProjection(idProjectionSelected)"
             :idClient="idClient"
-            @fail="showDialog = false"
-            @success="showDialog = false" />
+
+            :projections="projections"
+            :rooms="rooms"
+            :films="films"
+            :discounts="discounts"
+
+            @addReservation="$emit('addReservation', arguments[0])"
+            @addAndSellReservation="$emit('addAndSellReservation', arguments[0])"
+            @exit="showDialog = false"
+            />
         </b-card>
       </Dialog>
 
@@ -119,19 +132,37 @@ export default {
       type: Number,
       default: undefined
     },
-    valueDate: {
-      type: String
+
+    cinemas: {
+      type: Array,
+      default: undefined
+    },
+    rooms: {
+      type: Array,
+      default: undefined
+    },
+    projections: {
+      type: Array,
+      default: undefined
+    },
+    films: {
+      type: Array,
+      default: undefined
+    },
+    discounts: {
+      type: Array,
+      default: undefined
     }
   },
   data: function () {
     return {
       selectIdCinema: this.idCinema,
       filmStartName: '',
-      cinemas: [],
-      films: [],
+      // cinemas: [],
+      // films: [],
       mydate: new Date(),
       showDialog: false,
-      projections: [],
+      // projections: [],
       fields: [
         { key: 'date', label: 'Datum', sortable: true },
         { key: 'time', label: 'Čas', sortable: true },
@@ -142,7 +173,7 @@ export default {
         { key: 'event', label: 'Akce' }
       ],
       showDialogAddProjection: false,
-      idProjectionSelected: 5,
+      // idProjectionSelected: 5,
       idClient: null,
       DateTime: DateTime
     }
@@ -162,15 +193,123 @@ export default {
     }
   },
   methods: {
+    providerProjections (projections, filtrOn=true) {
+      console.log('Projections-providerProjections-in:', projections)
+      let newProjections = projections.map(item => {
+        let newItem = { ...item }
+
+        newItem.idFilm = item.idFilm
+        newItem.film = this.films.find(fim => fim.id === item.idFilm)
+        if (newItem.film) {
+          newItem.film = newItem.film.name
+        } else {
+          newItem.film = ''
+        }
+        return newItem
+      })
+
+      newProjections = newProjections.map((item) => {
+        let res = {}
+        res.id = item.id
+        res.datetime = new Date(item.datetime)
+        res.date = DateTime.date2string(res.datetime, 'input')
+        res.time = DateTime.time2string(res.datetime)
+
+        res.idFilm = item.idFilm
+        res.film = this.films.find(fim => fim.id === item.idFilm)
+        if (res.film) {
+          res.film = res.film.name
+        }
+
+        res.idRoom = item.idRoom
+        res.room = this.rooms.find(r => r.id === item.idRoom)
+        if (res.room) {
+          res.idCinema = res.room.idCinema
+          res.roomCapacity = res.room.capacity
+          res.room = res.room.name
+        }
+
+        res.cinema = this.cinemas.find(c => c.id === res.idCinema)
+        if (res.cinema) {
+          res.cinema = res.cinema.name
+        }
+        res.price = item.price
+
+        return res
+      })
+      //console.log('Projections-providerProjections-x:', newProjections)
+      if (filtrOn) {
+        newProjections = this.filterProjections(
+          newProjections,
+          this.idFilm,
+          this.idCinema,
+          this.filmStartName,
+          this.selectIdCinema,
+          this.mydate
+          )
+      }
+
+      console.log('Projections-providerProjections-out:', newProjections)
+      return newProjections
+    },
+
+    getOneProjection (idProjection) {
+      let projections = this.providerProjections(this.projections, false)
+      let projection = projections.find(proj => proj.id === idProjection)
+      return projection
+    },
+
+    filterProjections (projectionsX, idFilm, idCinema, filmStartName, selectIdCinema, date) {
+      console.log('Projections-filterProjections-in:', projectionsX)
+      console.log('idFilm', idFilm, 'IdCinema', idCinema)
+      let projections = projectionsX
+      // Filtr: Film start with ...
+      if (idFilm === undefined) {
+        projections = projections.filter(projection => {
+          return projection.film.toLowerCase().startsWith(filmStartName.toLowerCase())
+        })
+      } else {
+        projections = projections.filter(projection => projection.idFilm === idFilm)
+      }
+
+      // Filtr: Kino
+      if (idCinema === undefined) {
+        if (typeof (selectIdCinema) === 'number') {
+          projections = projections.filter(projection => projection.idCinema === selectIdCinema)
+        }
+      } else {
+        projections = projections.filter(projection => projection.idCinema === idCinema)
+      }
+
+      // Filtr: Od data
+      //
+      projections = projections.filter(projection => new Date(projection.datetime) >= date)
+
+      // Sort: Date Time
+      projections.sort((a, b) => {
+        let dateA = new Date(a.datetime)
+        let dateB = new Date(b.datetime)
+        if (dateA < dateB) { return -1 } else if (dateA > dateB) { return 1 }
+        return 0
+      })
+
+      console.log('Projections-filterProjections-out:', projections)
+      return projections
+    },
+
+    // ------------------------
     reservationNow(idProjection) {
       this.idProjectionSelected = idProjection
-      // this.idClient = (this.$myStore.user)?this.$myStore.user.id:null
+      this.idClient = (this.$myStore.user)?Number(this.$myStore.user.id):null
     },
+    /*
     projectionRefresh (args) {
       let { projection } = args
       this.projections.push(projection)
     },
+    */
     removeProjection (idProjection) {
+      /*
       console.log('Remove room.')
       if (idProjection !== undefined) {
         // TODO
@@ -186,12 +325,9 @@ export default {
             console.log('KO')
             this.$emit('fail')
           })
-      }
+      }*/
     },
-    getOneProjection (idProjection) {
-      let projection = this.projections.find(proj => proj.id === idProjection)
-      return projection
-    },
+    /*
     projectionsProvider () {
       let projections = this.filterProjections()
       projections = projections.map((item) => {
@@ -211,8 +347,9 @@ export default {
         return res
       })
       return projections
-    },
+    },*/
 
+    /*
     filterProjections () {
       let projections = this.projections
       // Filtr: Film start with ...
@@ -245,10 +382,12 @@ export default {
 
       // console.log('>PROJ:', projections)
       return projections
-    }
+    }*/
 
   },
   mounted: function () {
+
+    /*
     console.log('==USER++', this.$myStore.user)
     // Stazeni kin
     this.$myStore.backend.Cinemas.getAll()
@@ -290,7 +429,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.projections = []
-      })
+      })*/
   }
 /*
   // <h1>{{ msg }}</h1>

@@ -93,7 +93,17 @@
 
         <b-card>
           <h2>Projekce</h2>
-          <Projections :idFilm="id" />
+          <Projections  :idFilm="film.id"
+                        :projections="projections"
+                        :films="[film]"
+                        :rooms="rooms"
+                        :cinemas="cinemas"
+                        :discounts="discounts"
+                        @deleteProjection="$emit('deleteProjection', arguments[0])"
+                        @addProjection="$emit('addProjection', arguments[0])"
+            @addReservation="$emit('addReservation', arguments[0])"
+            @addAndSellReservation="$emit('addAndSellReservation', arguments[0])"
+                        />
         </b-card>
 
       </b-card>
@@ -131,12 +141,33 @@ export default {
     }
   },
   props: {
-    id: {
-      type: Number,
+    film: {
+      type: Object,
+      default: undefined
+    },
+    rooms: {
+      type: Array,
+      default: undefined
+    },
+    projections: {
+      type: Array,
+      default: undefined
+    },
+    cinemas: {
+      type: Array,
+      default: undefined
+    },
+    discounts: {
+      type: Array,
+      default: undefined
+    },
+    actors: {
+      type: Array,
       default: undefined
     }
   },
   methods: {
+    /*
     actorsRefresh (args) {
       let { actors } = args
       this.film.actors = actors
@@ -148,11 +179,17 @@ export default {
     filmRefresh (args) {
       let { film } = args
       this.film = film
+    }*/
+    providerRooms(rooms, idCinema) {
+      let newRooms = rooms.filter(r => r.idCinema === idCinema)
+      console.log('Cinema-providerRooms:', newRooms)
+      return newRooms
     }
 
   }, // methots
 
   mounted: function () {
+    /*
     // Ziskani filmu
     this.$myStore.backend.Films.getById(this.id)
       .then(res => {
@@ -165,7 +202,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.film = undefined
-      })
+      })*/
   }
 }
 </script>
@@ -182,40 +219,5 @@ export default {
 .comma-line:last-child:after {
   content: ' ';
 }
-/*
-.film-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
-  overflow: hidden;
-  min-width: 400px;
-  max-width: 800px;
-  margin: auto;
-}
-.film-info-box {
-  display: flex;
-  align-items: center;
-  text-align: left;
-}
-.film-img {
-  float: left;
-}
-.film-info {
-
-}
-.film-genre {
-  border: 1px solid black;
-}
-h3 {
-  display: inline;
-}
-h3:before {
-  content: ' ';
-  display: block;
-}
-.film-info {
-  overflow: auto;
-}
- */
 </style>
