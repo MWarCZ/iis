@@ -56,13 +56,13 @@
         sort-by="date">
         <template slot="event" slot-scope="data">
           <b-button v-if="!!$myStore.user"
-            @click="showDialog = true">
+            @click="reservationNow(data.item.id); showDialog = true">
             Rezervovat
           </b-button>
           <template v-else-if="!!$myStore.worker && $myStore.worker.access >= 2">
             <b-button v-if="!!$myStore.worker"
               variant="outline-primary"
-              @click="showDialog = true">
+              @click="reservationNow(data.item.id); showDialog = true">
               Prodat
             </b-button>
             <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
@@ -75,9 +75,20 @@
         </template>
       </b-table>
 
-      <ReservationDialog
+      <!-- <ReservationDialog
+        :idProjection="idProjectionSelected"
         :showDialog="showDialog"
-        @close="showDialog = false" />
+        @close="showDialog = false" /> -->
+
+      <Dialog v-if="showDialog" @close="showDialog = false">
+        <b-card style="overflow:auto">
+          <Reservation
+            :projection="getOneProjection(idProjectionSelected)"
+            :idClient="idClient"
+            @fail="showDialog = false"
+            @success="showDialog = false" />
+        </b-card>
+      </Dialog>
 
     </div>
   </div>
@@ -89,13 +100,15 @@ import ReservationDialog from '@/components/ReservationDialog.vue'
 
 import Dialog from '@/components/Dialog.vue'
 import ProjectionAdd from '@/components/ProjectionAdd.vue'
+import Reservation from '@/components/Reservation.vue'
 
 export default {
   name: 'Projections',
   components: {
     ReservationDialog,
     Dialog,
-    ProjectionAdd
+    ProjectionAdd,
+    Reservation
   },
   props: {
     idCinema: {
@@ -129,6 +142,8 @@ export default {
         { key: 'event', label: 'Akce' }
       ],
       showDialogAddProjection: false,
+      idProjectionSelected: 5,
+      idClient: null,
       DateTime: DateTime
     }
   },
@@ -147,6 +162,10 @@ export default {
     }
   },
   methods: {
+    reservationNow(idProjection) {
+      this.idProjectionSelected = idProjection
+      // this.idClient = (this.$myStore.user)?this.$myStore.user.id:null
+    },
     projectionRefresh (args) {
       let { projection } = args
       this.projections.push(projection)
@@ -168,6 +187,10 @@ export default {
             this.$emit('fail')
           })
       }
+    },
+    getOneProjection (idProjection) {
+      let projection = this.projections.find(proj => proj.id === idProjection)
+      return projection
     },
     projectionsProvider () {
       let projections = this.filterProjections()
@@ -226,6 +249,7 @@ export default {
 
   },
   mounted: function () {
+    console.log('==USER++', this.$myStore.user)
     // Stazeni kin
     this.$myStore.backend.Cinemas.getAll()
       .then(res => {

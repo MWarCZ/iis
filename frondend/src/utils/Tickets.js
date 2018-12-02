@@ -1,7 +1,7 @@
 
 import axios from 'axios'
-import { BACKEND_URL } from './constant.js'
-// import { BACKEND_URL , axiosConfig } from './constant.js'
+// import { BACKEND_URL } from './constant.js'
+import { BACKEND_URL , axiosConfig } from './constant.js'
 
 const Tickets = {
   /* [{
@@ -261,6 +261,26 @@ const Tickets = {
    * }]
    */
   getByIdProjection (id) {
+
+    return axios.post(BACKEND_URL + '/tickets.php',
+      'request=SELECT_PROJECTION' + '&data=' +
+      JSON.stringify({
+        idProjection: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('projection tickets:', res.data)
+        return res.data
+      })
+      .then(res => {
+        let newResult = res.data.map(value => {
+          value.id = Number(value.idTicket)
+          value.seat = Number(value.seatNumber)
+          return value
+        })
+        return newResult
+      })
+      /*
     let query = `{
       values: projectionTickets(idProjection: ${id}) {
           id
@@ -284,7 +304,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
 
   /**/

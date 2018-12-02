@@ -2,6 +2,7 @@
   <Dialog v-if="showDialog" @close="$emit('close')">
     <b-card style="overflow:auto">
       <Reservation
+        :idProjection="idProjection"
         @fail="$emit('fail');$emit('close')"
         @success="$emit('success');$emit('close')" />
     </b-card>
@@ -27,6 +28,10 @@ export default {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    idProjection: {
+      type: Number,
+      default: 5
     }
   },
   methods: {

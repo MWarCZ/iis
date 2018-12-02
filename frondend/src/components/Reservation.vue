@@ -46,14 +46,18 @@ export default {
   data: function () {
     return {
       seats: [],
-      projection: undefined,
+      // projection: undefined,
       disabledSeats: []
     }
   },
   props: {
-    idProjection: {
+    projection: {
+      type: Object,
+      default: undefined
+    },
+    idClient: {
       type: Number,
-      default: 1
+      default: null
     }
   },
   methods: {
@@ -120,10 +124,52 @@ export default {
         }
       }
       return seats
+    },
+    downloadByProjection (idProjection) {
+
+      console.log('=========1=idProjection', idProjection)
+      /*
+      // Ziskani projektce
+      this.$myStore.backend.Projections.getById(this.idProjection)
+        .then(res => {
+          console.log('Projection is:', res)
+          if (res.id === undefined) {
+            throw new Error({ msg: 'Empty Projection.', res })
+          }
+
+          this.projection = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.projection = undefined
+        })
+      */
+      console.log('=========2')
+      // Ziskani listku
+      this.$myStore.backend.Tickets.getByIdProjection(this.projection.id)
+        .then(res => {
+          console.log('Tickets are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Tickets.', res })
+          }
+          this.disabledSeats = res.map((ticket) => {
+            return ticket.seat
+          })
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.disabledSeats = []
+        })
+      console.log('=========3')
+
     }
   }, // methots
 
   mounted: function () {
+    console.log('=========0=idProjection', this.idProjection)
+    this.downloadByProjection (this.idProjection)
+    /*
+    console.log('=========1=idProjection', this.idProjection)
     // Ziskani projektce
     this.$myStore.backend.Projections.getById(this.idProjection)
       .then(res => {
@@ -139,6 +185,7 @@ export default {
         this.projection = undefined
       })
 
+    console.log('=========2')
     // Ziskani listku
     this.$myStore.backend.Tickets.getByIdProjection(this.idProjection)
       .then(res => {
@@ -154,6 +201,7 @@ export default {
         console.log('ERR:', e)
         this.disabledSeats = []
       })
+    console.log('=========3')*/
   }
 }
 </script>

@@ -116,40 +116,35 @@ const Projections = {
    * }
    */
   getById (id) {
-    return axios.post(BACKEND_URL + '/films.php',
+    return axios.post(BACKEND_URL + '/projections.php',
       'request=SELECT' + '&data=' +
       JSON.stringify({
         id: id
       })
       , axiosConfig)
       .then(res => {
-        console.log('ALL films:', res.data)
+        console.log('X id projection:', res.data)
         return res.data
       })
       .then(res => {
-        let value = res.data[0]
-        value.id = Number(value.idFilm)
-        value.premiere = value.released
+        let value = res.data
+        value.id = Number(value.idProjection)
+        value.idFilm = Number(value.idFilm)
+        value.idRoom = Number(value.idHall)
+        value.price = Number(value.price)
+        value.datetime = value.date
+        /*
+        value.film = 'sss'
+        value.cinema = ''
 
-        if (value.director) {
-          value.idDirector = Number(value.director.idDirector)
-          value.firstnameDirector = value.director.name
-          value.lastnameDirector = value.director.surname
-        }
-        if (value.studio) {
-          value.idStudio = Number(value.studio.idStudio)
-          value.studio = value.studio.name
-        }
-        value.genres = value.genres.map(genre => {
-          genre.id = Number(genre.idGenre)
-          return genre
-        })
-        value.actors = value.actors.map(actor => {
-          actor.id = Number(actor.idActor)
-          actor.firstname = actor.name
-          actor.lastname = actor.surname
-          return actor
-        })
+        newItem.film = item.film.name
+        newItem.idCinema = item.room.cinema.id
+        newItem.cinema = item.room.cinema.name
+        newItem.idRoom = item.room.id
+        newItem.room = item.room.name
+        newItem.roomCapacity = item.room.capacity
+        */
+
         return value
       })
       /*
