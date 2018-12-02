@@ -139,6 +139,19 @@ if(isset($input['request'])) {
             
             break;
             
+        case "PAY_PICK" : 
+            debug_print("PAY");
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
+                $out["error"][] = "You don't have enough permissions";
+                break;
+            }
+            
+            if(payAndPick($db, $id)) {
+                $out["data"] = true;
+            } else $out["error"][] = "SQL Error";
+            
+            break;
+            
         case "PAY" : 
             debug_print("PAY");
             if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
@@ -200,15 +213,12 @@ if(isset($input['request'])) {
         case "SELECT_ALL" : 
             debug_print("SELECT_ALL");
             //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
                 $out["error"][] = "You don't have enough permissions";
                 break;
             }
             
-            //Get data from inputs
-            $id = htmlspecialchars($input["data"]["id"]);
-            
-            if(($data = selectAll($db, $id))) {
+            if(($data = selectAll($db))) {
                 $out["data"] = $data;
             } else $out["error"][] = "Not found";
             

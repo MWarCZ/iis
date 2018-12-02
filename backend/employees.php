@@ -275,6 +275,21 @@ if(isset($input['request'])) {
                 $out["data"] = $_SESSION;
             } else $out["error"][] = "You aren't loged in";  
             break;
+            
+        case "SELECT_ALL" :
+            debug_print("LOGGED");
+            
+            if(isset($_SESSION["id"])) {
+                if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
+                    $out["error"][] = "You don't have enough permissions";
+                    break;
+                }
+                
+                if(($data = selectAll($db))) {
+                    $out["data"] = $data;
+                } else $out["error"][] = "Not found";
+            } else $out["error"][] = "You aren't loged in";  
+            break;
         
         default :
             $out["error"][] = "Wrong request type";

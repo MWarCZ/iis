@@ -153,3 +153,23 @@ function delete_employee($db, $login) {
     
     return true;
 }
+
+function selectAll($db) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("SELECT * FROM `employees`");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    try {
+        $query->execute();
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}

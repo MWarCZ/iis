@@ -146,11 +146,32 @@ function selectUser($db, $id) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function payAndPick($db, $id) {
+    if($db == NULL) return NULL;
+    
+    try {
+        $query = $db->prepare("UPDATE `reservations` SET `paid`=1, `picked`=1 WHERE `idReservation` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
 function pay($db, $id) {
     if($db == NULL) return NULL;
     
     try {
-        $query = $db->prepare("UPDATE `reservations` SET `paid`=0 WHERE `idReservation` = ?");
+        $query = $db->prepare("UPDATE `reservations` SET `paid`=1 WHERE `idReservation` = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
