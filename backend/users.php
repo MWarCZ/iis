@@ -122,7 +122,7 @@ if(isset($input['request'])) {
         case "UPDATE" : 
             debug_print("UPDATE");
             
-            if(isset($_SESSION["id"])) {
+            if(!isset($_SESSION["id"])) {
                 $out["error"][] = "You aren't loged in";            
                 break;
             }
