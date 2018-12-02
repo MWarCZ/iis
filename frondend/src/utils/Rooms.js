@@ -72,6 +72,7 @@ const Rooms = {
   getByIdCinema (id) {
     return this.getAll()
       .then(res => {
+        console.log('idall', res)
         res = res.filter(room => room.idCinema === id)
         return res
       })

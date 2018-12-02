@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="cinema !== undefined">
-      <h2>{{cinema.name}}</h2>
+      <h2 @click="echoAll()">{{cinema.name}}</h2>
 
       <b-card>
 
@@ -119,23 +119,23 @@ export default {
   },
   props: {
     cinema: {
-      type: Object,
+      type: [Object, Function],
       default: undefined
     },
     rooms: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     projections: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     films: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     },
     discounts: {
-      type: Array,
+      type: [Array, Function],
       default: undefined
     }
   },
@@ -143,6 +143,17 @@ export default {
     debug (...values) {
       console.log(...values)
     },
+
+    echoAll () {
+      console.log('================')
+      console.log('cinema', this.cinema, typeof(this.cinema) )
+      console.log('rooms', this.rooms, typeof(this.rooms) )
+      console.log('projections', this.projections, typeof(this.projections) )
+      console.log('films', this.films, typeof(this.films) )
+      console.log('discounts', this.discounts, typeof(this.discounts) )
+      console.log('================')
+    },
+
     /*
     roomsRefresh (args) {
       let { rooms } = args
@@ -159,6 +170,7 @@ export default {
     */
     // ---------
     providerRooms(rooms, idCinema) {
+      console.log('RRRRRRRRR',rooms)
       let newRooms = rooms.filter(r => r.idCinema === idCinema)
       console.log('Cinema-providerRooms:', newRooms)
       return newRooms

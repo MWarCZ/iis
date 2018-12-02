@@ -12,6 +12,7 @@ import Workers from './Workers.js'
 import Actors from './Actors.js'
 import Directors from './Directors.js'
 import Studios from './Studios.js'
+import Discounts from './Discounts.js'
 
 const backend = {
   Cinemas,
@@ -26,6 +27,7 @@ const backend = {
   Actors,
   Directors,
   Studios,
+  Discounts,
 
   url: BACKEND_URL
 }

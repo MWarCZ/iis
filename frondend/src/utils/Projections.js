@@ -2,23 +2,6 @@
 import axios from 'axios'
 // import { BACKEND_URL } from './constant.js'
 import { BACKEND_URL, axiosConfig } from './constant.js'
-/*
-  projections.map((item) => {
-        let res = {}
-        res.id = item.id
-        res.datetime = new Date(item.datetime)
-        res.date = DateTime.date2string(res.datetime, 'input')
-        res.time = DateTime.time2string(res.datetime)
-        res.film = item.type.film.name
-        res.idFilm = item.type.film.id
-        res.cinema = item.room.cinema.name
-        res.idCinema = item.room.cinema.id
-        res.room = item.room.name
-        res.price = item.price
-
-        return res
-      })
-*/
 
 const Projections = {
   /* [{
@@ -200,6 +183,7 @@ const Projections = {
    * }]
    */
   getByIdFilm () {
+    /*
     let query = `{
       values: projections {
           id
@@ -244,6 +228,7 @@ const Projections = {
       .catch(e => {
         return {}
       })
+      */
   },
 
   /**/

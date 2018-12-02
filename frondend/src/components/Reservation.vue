@@ -108,7 +108,7 @@ export default {
 
       this.$emit('addReservation', {
         idUser: this.idClient,
-        tickes: tickets
+        tickets: tickets
       })
       this.$emit('exit')
     },
@@ -117,7 +117,7 @@ export default {
 
       this.$emit('addAndSellReservation', {
         idUser: this.idClient,
-        tickes: tickets
+        tickets: tickets
       })
       this.$emit('exit')
     },
@@ -126,7 +126,7 @@ export default {
       let discount = this.discounts.find(d => d.id === this.selectedIdDiscount)
       let summ = tickets.length * this.projection.price
       if (discount && discount.discount) {
-        summ = summ * 100 / discount.discount
+        summ = summ * discount.discount / 100
         summ = Math.round(summ)
       }
       /*
