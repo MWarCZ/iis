@@ -193,7 +193,7 @@ export default {
     }
   },
   methods: {
-    providerProjections (projections, filtrOn=true) {
+    providerProjections (projections, filtrOn = true) {
       console.log('Projections-providerProjections-in:', projections)
       let newProjections = projections.map(item => {
         let newItem = { ...item }
@@ -237,7 +237,7 @@ export default {
 
         return res
       })
-      //console.log('Projections-providerProjections-x:', newProjections)
+      // console.log('Projections-providerProjections-x:', newProjections)
       if (filtrOn) {
         newProjections = this.filterProjections(
           newProjections,
@@ -246,7 +246,7 @@ export default {
           this.filmStartName,
           this.selectIdCinema,
           this.mydate
-          )
+        )
       }
 
       console.log('Projections-providerProjections-out:', newProjections)
@@ -298,9 +298,9 @@ export default {
     },
 
     // ------------------------
-    reservationNow(idProjection) {
+    reservationNow (idProjection) {
       this.idProjectionSelected = idProjection
-      this.idClient = (this.$myStore.user)?Number(this.$myStore.user.id):null
+      this.idClient = (this.$myStore.user) ? Number(this.$myStore.user.id) : null
     },
     /*
     projectionRefresh (args) {
@@ -325,8 +325,8 @@ export default {
             console.log('KO')
             this.$emit('fail')
           })
-      }*/
-    },
+      } */
+    }
     /*
     projectionsProvider () {
       let projections = this.filterProjections()
@@ -347,7 +347,7 @@ export default {
         return res
       })
       return projections
-    },*/
+    }, */
 
     /*
     filterProjections () {
@@ -382,7 +382,7 @@ export default {
 
       // console.log('>PROJ:', projections)
       return projections
-    }*/
+    } */
 
   },
   mounted: function () {
@@ -429,7 +429,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.projections = []
-      })*/
+      }) */
   }
 /*
   // <h1>{{ msg }}</h1>

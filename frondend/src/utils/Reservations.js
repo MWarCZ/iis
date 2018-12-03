@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 // import { BACKEND_URL } from './constant.js'
-import { BACKEND_URL , axiosConfig } from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Reservations = {
   /* [{
@@ -176,8 +176,8 @@ const Reservations = {
   },
 
   /**/
-  create (tickets, idClient=null) {
-    console.log('RESERVE Tickets:', tickets, ' | idClient:', idClient )
+  create (tickets, idClient = null) {
+    console.log('RESERVE Tickets:', tickets, ' | idClient:', idClient)
     return axios.post(BACKEND_URL + '/reservations.php',
       'request=RESERVE' + '&data=' +
       JSON.stringify({
@@ -189,7 +189,6 @@ const Reservations = {
         console.log('New reservation id:', res.data)
         return res.data
       })
-
   },
   /**/
   remove (id) {
@@ -263,7 +262,7 @@ const Reservations = {
         }
         return res
       })
-  },
+  }
 
 /*
   createAndSell (idTicketsArr) {

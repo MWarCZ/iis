@@ -16,7 +16,12 @@
     <br />
     <button @click="getFilm(1)">Film 1</button>
     <br />
-    <button @click="getFilm(2)">Film 2</button>
+    <button @click="getWorkers()">Workers</button>
+    <br />
+    <WorkersList :workers="workers"
+                />
+
+    <!-- <WorkerCreate /> -->
     <br />
 
     <button @click="showDialog = true">Open</button>
@@ -81,6 +86,7 @@ import Genres from '@/components/Genres.vue'
 
 import ErrorDialog from '@/components/ErrorDialog.vue'
 import WorkerCreate from '@/components/WorkerCreate.vue'
+import WorkersList from '@/components/WorkersList.vue'
 
 export default {
   name: 'About',
@@ -100,14 +106,16 @@ export default {
 
     Genres,
     ErrorDialog,
-    WorkerCreate
+    WorkerCreate,
+    WorkersList
   },
   data: function () {
     return {
       store: store,
       showDialog: false,
       arr: [],
-      genres: []
+      genres: [],
+      workers: () => []
     }
   },
   methods: {
@@ -117,6 +125,20 @@ export default {
       this.genres = genres
     },
 
+    getWorkers () {
+      this.$myStore.backend.Workers.getAll()
+        .then(res => {
+          console.log('Workers are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Workers.', res })
+          }
+          this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.workers = []
+        })
+    },
 
     getFilm (idFilm) {
       // Ziskani filmu
@@ -134,46 +156,45 @@ export default {
         })
     },
 
-    getCinemas() {
+    getCinemas () {
       this.$myStore.backend.Cinemas.getAll()
-      .then(res => {
-        console.log('Cinemas are:', res)
-        if (res[0] === undefined) {
-          throw new Error({ msg: 'Empty Cinemas.', res })
-        }
-        this.cinemas = res
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-        this.cinemas = []
-      })
-
+        .then(res => {
+          console.log('Cinemas are:', res)
+          if (res[0] === undefined) {
+            throw new Error({ msg: 'Empty Cinemas.', res })
+          }
+          this.cinemas = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.cinemas = []
+        })
     },
     getCinema (idCinema) {
       this.$myStore.backend.Cinemas.getById(idCinema)
-      .then(res => {
-        console.log('Cinema is:', res)
-        return this.$myStore.backend.Rooms.getByIdCinema(idCinema)
-          .then(res2 => {
-            res.rooms = res2
-            console.log('Rooms are:', res2)
-            return res
-          })
-          .catch(e => {
-            return undefined
-          })
-      })
-      .then(res => {
-        console.log('Cinema with Rooms is:', res)
-        if (res.id === undefined) {
-          throw new Error({ msg: 'Empty Cinema.', res })
-        }
-        this.cinema = res
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-        this.cinema = undefined
-      })
+        .then(res => {
+          console.log('Cinema is:', res)
+          return this.$myStore.backend.Rooms.getByIdCinema(idCinema)
+            .then(res2 => {
+              res.rooms = res2
+              console.log('Rooms are:', res2)
+              return res
+            })
+            .catch(e => {
+              return undefined
+            })
+        })
+        .then(res => {
+          console.log('Cinema with Rooms is:', res)
+          if (res.id === undefined) {
+            throw new Error({ msg: 'Empty Cinema.', res })
+          }
+          this.cinema = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.cinema = undefined
+        })
     },
 
     getFilms () {
@@ -223,7 +244,6 @@ export default {
           this.projections = []
         })
     }
-
 
   },
   created: function () {

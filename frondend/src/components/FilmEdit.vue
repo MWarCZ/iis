@@ -6,7 +6,7 @@
       <b-alert variant="danger" dismissible
         @dismissed="failed = false"
         :show="failed">
-        Nepodařilo se.
+        Chybně vyplněná pole.
       </b-alert>
 
       <b-input-group prepend="Název:">
@@ -109,7 +109,31 @@ export default {
     },
     updateFilm () {
       console.log('Update film.')
-      if (this.checkName(this.newFilm.name)
+      if (this.checkName(this.newFilm.name) &&
+        this.checkDuration(this.newFilm.duration)
+      ) {
+
+        let director = this.directors.find(dir => dir.id === this.newFilm.idDirector)
+        if (director) {
+          this.newFilm.firstnameDirector = director.firstname
+          this.newFilm.lastnameDirector = director.lastname
+        }
+        let studio = this.studios.find(stud => stud.id === this.newFilm.idStudio)
+        if (studio) {
+          this.newFilm.studio = studio.name
+        }
+
+        this.$emit('updateFilm', {
+          film: this.newFilm, idGenreArr: this.idGenreArr,
+        })
+
+
+        this.$emit('exit')
+      } else {
+        this.failed = true
+      }
+      /*
+      if (this.checkName(this.newFilm.name) && this.checkDuration(this.newFilm.duration)
       ) {
         // TODO
         this.$myStore.backend.Films.update(this.newFilm.id, this.newFilm.name, this.newFilm.premiere, this.newFilm.duration, this.newFilm.idDirector, this.newFilm.idStudio, this.idGenreArr)
@@ -136,7 +160,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }
+      }*/
     },
     changeGenres (args) {
       let { idGenreArr, genres } = args
@@ -145,6 +169,7 @@ export default {
     }
   },
   mounted: function () {
+    /*
     if (this.idFilm !== undefined) {
       // Ziskani kina
       this.$myStore.backend.Films.getById(this.idFilm)
@@ -160,7 +185,7 @@ export default {
           console.log('ERR:', e)
           this.oldFilm = undefined
         })
-    }
+    }*/
     // Ziskani seznamu studii
     this.$myStore.backend.Studios.getAll()
       .then(res => {

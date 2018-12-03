@@ -208,7 +208,7 @@ export default {
           this.projection = undefined
         })
       */
-     /*
+      /*
       // console.log('=========2')
       // Ziskani listku
       this.$myStore.backend.Tickets.getByIdProjection(this.projection.id)
@@ -267,7 +267,7 @@ export default {
         console.log('ERR:', e)
         this.disabledSeats = []
       })
-    console.log('=========3')*/
+    console.log('=========3') */
   }
 }
 </script>

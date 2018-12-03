@@ -1,5 +1,11 @@
 <template>
   <div>
+    <ErrorDialog
+      :showDialog="failed"
+      @close="failed = false"
+      message="Tak toto nepůjde."
+      />
+
     <b-card v-if="!!$myStore.worker && $myStore.worker.access >= 3">
       <h2>Akce:</h2>
       <b-button variant="outline-primary"
@@ -85,13 +91,15 @@
 import FilmAdd from '@/components/FilmAdd.vue'
 import Dialog from '@/components/Dialog.vue'
 import Genres from '@/components/Genres.vue'
+import ErrorDialog from '@/components/ErrorDialog.vue'
 
 export default {
   name: 'Films',
   components: {
     Dialog,
     FilmAdd,
-    Genres
+    Genres,
+    ErrorDialog
   },
   props: {
     filterForGenre: { type: Array, default: () => [] },
@@ -103,7 +111,8 @@ export default {
       filterGenre: this.filterForGenre,
       genres: [],
       films: [],
-      showDialogAddFilm: false
+      showDialogAddFilm: false,
+      failed: false
     }
   },
   methods: {
@@ -150,12 +159,14 @@ export default {
               })
               this.$emit('success', { films: this.films })
             } else {
-              console.log('KO')
+              console.log('KO2')
+              this.failed = true
               this.$emit('fail')
             }
           })
           .catch(e => {
             console.log('KO')
+            this.failed = true
             this.$emit('fail')
           })
       }

@@ -15,6 +15,41 @@ const Workers = {
    * }]
    */
   getAll () {
+
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=SELECT_ALL'
+      , axiosConfig)
+      .then(res => {
+        console.log('ALL workers:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res.data
+      })
+      .then(res => {
+        let newValue = res.map(value => {
+          value.id = Number(value.idEmployee)
+          value.deleted = Number(value.deleted)
+          value.firstname = value.name
+          value.lastname = value.surname
+          value.access = Number(value.access_level)
+          return value
+        })
+        /*
+        id
+        firstname
+        lastname
+        access
+        login
+        ssn
+        deleted
+         */
+        console.log('ALL workers2:', res)
+        return res
+      })
     /*
     let query = `{
       values: workers {

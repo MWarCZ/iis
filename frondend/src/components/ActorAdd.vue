@@ -93,7 +93,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }*/
+      } */
     },
     filterActors () {
       let actors = this.actors.filter(actor => {

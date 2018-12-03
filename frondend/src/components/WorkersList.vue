@@ -1,8 +1,21 @@
 <template>
   <b-table striped hover
     :fields="fields"
-    :items="providerRooms(rooms)"
+    :items="providerWorkers(workers)"
     sort-by="date">
+
+    <template slot="show_details" slot-scope="row">
+      <b-button @click="row.toggleDetails()">
+        {{ !row.detailsShowing ? 'Zobrazit' : 'Skrýt'}}
+      </b-button>
+    </template>
+    <template slot="row-details" slot-scope="row">
+      <b-card>
+        {{row.item.ssn}}
+        <b-button variant="outline-primary">Uložit změny</b-button>
+      </b-card>
+    </template>
+
     <template slot="event" slot-scope="data">
       <b-button v-if="!!$myStore.worker && $myStore.worker.access >= 3"
         variant="outline-danger"
@@ -18,19 +31,30 @@
 
 <script>
 export default {
-  name: 'RoomsList',
+  name: 'WorkersList',
   props: {
-    rooms: {
-      type: Array,
+    workers: {
+      type: [Array, Function],
       default: () => []
     }
+
+    /* worker:
+        id
+        firstname
+        lastname
+        access
+        login
+        ssn
+        deleted
+     */
   },
   data: function () {
     return {
       fields: [
-        { key: 'id', label: 'ID', sortable: true },
-        { key: 'name', label: 'Název', sortable: true },
-        { key: 'capacity', label: 'Kapacita', sortable: true },
+        { key: 'login', label: 'Login', sortable: true },
+        { key: 'firstname', label: 'Jméno', sortable: true },
+        { key: 'lastname', label: 'Příjmení', sortable: true },
+        { key: 'show_details', label: 'Zobrazit' },
         { key: 'event', label: 'Akce' }
       ]
     }
@@ -44,10 +68,10 @@ export default {
     checkCapacity (capacity) {
       return capacity >= 0 && capacity !== undefined
     },
-    providerRooms (rooms) {
-      let newRooms = rooms
-      console.log('RoomList-providerRooms:', newRooms)
-      return rooms
+    providerWorkers (workers) {
+      let workers1 = workers
+      console.log('WorkerList-providerWorkers:', workers1)
+      return workers1
     }
   },
   mounted: function () {

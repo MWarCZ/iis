@@ -122,7 +122,6 @@ export default {
       return seats
     },
     downloadByProjection (idProjection) {
-
       console.log('=========1=idProjection', idProjection)
       // Ziskani projektce
       this.$myStore.backend.Projections.getById(this.idProjection)
@@ -156,13 +155,12 @@ export default {
           this.disabledSeats = []
         })
       console.log('=========3')
-
     }
   }, // methots
 
   mounted: function () {
     console.log('=========0=idProjection', this.idProjection)
-    this.downloadByProjection (this.idProjection)
+    this.downloadByProjection(this.idProjection)
     /*
     console.log('=========1=idProjection', this.idProjection)
     // Ziskani projektce
@@ -196,7 +194,7 @@ export default {
         console.log('ERR:', e)
         this.disabledSeats = []
       })
-    console.log('=========3')*/
+    console.log('=========3') */
   }
 }
 </script>

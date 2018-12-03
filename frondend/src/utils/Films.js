@@ -166,7 +166,7 @@ const Films = {
 
   /**/
   create (name, premiere, duration, idDirector, idStudio, idsGenre = []) {
-    console.log('Films All input:',name, ' | ', premiere, ' | ', duration, ' | ', idDirector, ' | ', idStudio, ' | ', idsGenre)
+    console.log('Films All input:', name, ' | ', premiere, ' | ', duration, ' | ', idDirector, ' | ', idStudio, ' | ', idsGenre)
     return axios.post(BACKEND_URL + '/films.php',
       'request=INSERT' + '&data=' +
       JSON.stringify({
@@ -230,7 +230,7 @@ const Films = {
         return res.data
       })
       .then(res => {
-        if (!res.data) {
+        if (!res.data || res.error) {
           throw new Error(res.error)
         }
         return res

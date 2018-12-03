@@ -10,7 +10,7 @@
             :discounts="discounts"
             :actors="actors"
             @deleteActor="deleteActor(arguments[0])"
-            @updateFilm="xxx(arguments[0])"
+            @updateFilm="updateFilm(arguments[0])"
             @addActor="addActor(arguments[0])"
 
             @addProjection="(addProjection(arguments[0]))"
@@ -45,12 +45,12 @@ export default {
     }
   },
   created () {
-    //this.film = this.getFilm(this.idFilm)
-    //this.rooms = this.getRooms(this.idCinema)
-    //this.projections = this.getProjections(this.idCinema)
-    //this.cinemas = this.getCinemas()
-    //this.discounts = this.getDiscounts()
-    //this.actors = this.getActors()
+    // this.film = this.getFilm(this.idFilm)
+    // this.rooms = this.getRooms(this.idCinema)
+    // this.projections = this.getProjections(this.idCinema)
+    // this.cinemas = this.getCinemas()
+    // this.discounts = this.getDiscounts()
+    // this.actors = this.getActors()
 
     this.getFilm(this.idFilm)
     this.getRooms(this.idCinema)
@@ -61,19 +61,53 @@ export default {
   },
   methods: {
     xxx (values) {
-      //let obj = {...values}[0] // obj = {idRoom: 1}
+      // let obj = {...values}[0] // obj = {idRoom: 1}
       console.log('====XXX===>:', values)
     },
     echoAll () {
       console.log('================')
       console.log('idFilm', this.idFilm)
-      console.log('film', this.film, typeof(this.film) )
-      console.log('rooms', this.rooms, typeof(this.rooms) )
-      console.log('projections', this.projections, typeof(this.projections) )
-      console.log('cinemas', this.cinemas, typeof(this.cinemas) )
-      console.log('discounts', this.discounts, typeof(this.discounts) )
-      console.log('actors', this.discounts, typeof(this.discounts) )
+      console.log('film', this.film, typeof (this.film))
+      console.log('rooms', this.rooms, typeof (this.rooms))
+      console.log('projections', this.projections, typeof (this.projections))
+      console.log('cinemas', this.cinemas, typeof (this.cinemas))
+      console.log('discounts', this.discounts, typeof (this.discounts))
+      console.log('actors', this.discounts, typeof (this.discounts))
       console.log('================')
+    },
+
+    updateFilm (args) {
+      this.xxx(args)
+
+      this.$myStore.backend.Films.update(args.film.id, args.film.name, args.film.premiere, args.film.duration, args.film.idDirector, args.film.idStudio, args.idGenreArr)
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.film = args.film
+            //this.cinema.name = args.name
+            //this.cinema.address = args.address
+          }
+          /*
+          console.log('OK')
+
+          let director = this.directors.find(dir => dir.id === this.newFilm.idDirector)
+          if (director) {
+            this.newFilm.firstnameDirector = director.firstname
+            this.newFilm.lastnameDirector = director.lastname
+          }
+          let studio = this.studios.find(stud => stud.id === this.newFilm.idStudio)
+          if (studio) {
+            this.newFilm.studio = studio.name
+          }
+
+          this.$emit('success', { film: this.newFilm })
+          */
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
 
     deleteActor (args) {
@@ -81,36 +115,34 @@ export default {
       // {idRoom: 1}
 
       this.$myStore.backend.Films.delActor(args.idFilm, args.idActor)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.actors = this.actors.filter(r => r.id !== args.idActor)
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.actors = this.actors.filter(r => r.id !== args.idActor)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addActor (args) {
       this.xxx(args)
 
       this.$myStore.backend.Films.addActor(args.idFilm, args.idActor)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          let actor = this.allActors.find(a => a.id === args.idActor)
-          this.actors.push( { ...actor, id: Number(args.idActor) } )
-        }
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
-
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            let actor = this.allActors.find(a => a.id === args.idActor)
+            this.actors.push({ ...actor, id: Number(args.idActor) })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
 
     addProjection (args) {
@@ -119,37 +151,34 @@ export default {
 
       // datetime, price, idFilm, idRoom, idAccess = 1
       this.$myStore.backend.Projections.create(args.datetime, args.price, args.idFilm, args.idRoom)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.projections.push( { ...args, id: Number(res.data) } )
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
-
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.projections.push({ ...args, id: Number(res.data) })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     deleteProjection (args) {
       this.xxx(args)
       // {idProjection: 1}
 
       this.$myStore.backend.Projections.remove(args.idProjection)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.projections = this.projections.filter(r => r.id !== args.idProjection)
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.projections = this.projections.filter(r => r.id !== args.idProjection)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addReservation (args) {
       this.xxx(args)
@@ -158,18 +187,16 @@ export default {
 
       // tickets, idClient
       this.$myStore.backend.Reservations.create(args.tickets, args.idUser)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addAndSellReservation (args) {
       this.xxx(args)
@@ -178,25 +205,23 @@ export default {
 
       // tickets, idClient
       this.$myStore.backend.Reservations.create(args.tickets, args.idUser)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.$myStore.backend.Reservations.pick(res.data)
-          .then(res2 => {
-            console.log('OK2:', res2.data)
-          })
-          .catch(e => {
-            console.log('KO2:', e)
-          })
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
-
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.$myStore.backend.Reservations.pick(res.data)
+              .then(res2 => {
+                console.log('OK2:', res2.data)
+              })
+              .catch(e => {
+                console.log('KO2:', e)
+              })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
 
     // =======================
@@ -307,7 +332,7 @@ export default {
       return film
     },
     */
-   /*
+    /*
     getActors () {
       let actors = [
         {
@@ -399,7 +424,7 @@ export default {
       return projections
     },
     */
-   /*
+    /*
     getCinemas () {
       let cinemas = [
         {
@@ -441,7 +466,7 @@ export default {
         }
       ]
       return discounts
-    }*/
+    } */
   }
 }
 </script>

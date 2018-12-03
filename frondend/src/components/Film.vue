@@ -74,7 +74,9 @@
             <Dialog v-if="showDialogEditFilm"
               @close="showDialogEditFilm = false">
               <FilmEdit :film="film"
-                @success="filmRefresh(...arguments); showDialogEditFilm = false" />
+                        @updateFilm="$emit('updateFilm', arguments[0])"
+                        @exit="showDialogEditFilm = false"
+                @success="/*filmRefresh(...arguments);*/ showDialogEditFilm = false" />
             </Dialog>
             <Dialog v-if="showDialogAddActor"
               @close="showDialogAddActor = false">
@@ -183,8 +185,8 @@ export default {
     filmRefresh (args) {
       let { film } = args
       this.film = film
-    }*/
-    providerActors(actors, idFilm) {
+    } */
+    providerActors (actors, idFilm) {
       let newRooms = rooms.filter(r => r.idCinema === idCinema)
       console.log('Cinema-providerRooms:', newRooms)
       return newRooms
@@ -206,7 +208,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.film = undefined
-      })*/
+      }) */
   }
 }
 </script>

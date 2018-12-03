@@ -223,7 +223,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }*/
+      } */
     },
     filterRooms () {
       let rooms = this.rooms
@@ -246,7 +246,7 @@ export default {
       })
       .catch(e => {
         console.log('ERR:', e)
-      })*/
+      }) */
   }
 }
 </script>

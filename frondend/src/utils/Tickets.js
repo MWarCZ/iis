@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 // import { BACKEND_URL } from './constant.js'
-import { BACKEND_URL , axiosConfig } from './constant.js'
+import { BACKEND_URL, axiosConfig } from './constant.js'
 
 const Tickets = {
   /* [{
@@ -261,7 +261,6 @@ const Tickets = {
    * }]
    */
   getByIdProjection (id) {
-
     return axios.post(BACKEND_URL + '/tickets.php',
       'request=SELECT_PROJECTION' + '&data=' +
       JSON.stringify({
@@ -304,7 +303,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
 
   /**/

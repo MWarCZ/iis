@@ -146,11 +146,11 @@ export default {
 
     echoAll () {
       console.log('================')
-      console.log('cinema', this.cinema, typeof(this.cinema) )
-      console.log('rooms', this.rooms, typeof(this.rooms) )
-      console.log('projections', this.projections, typeof(this.projections) )
-      console.log('films', this.films, typeof(this.films) )
-      console.log('discounts', this.discounts, typeof(this.discounts) )
+      console.log('cinema', this.cinema, typeof (this.cinema))
+      console.log('rooms', this.rooms, typeof (this.rooms))
+      console.log('projections', this.projections, typeof (this.projections))
+      console.log('films', this.films, typeof (this.films))
+      console.log('discounts', this.discounts, typeof (this.discounts))
       console.log('================')
     },
 
@@ -169,8 +169,8 @@ export default {
     },
     */
     // ---------
-    providerRooms(rooms, idCinema) {
-      console.log('RRRRRRRRR',rooms)
+    providerRooms (rooms, idCinema) {
+      console.log('RRRRRRRRR', rooms)
       let newRooms = rooms.filter(r => r.idCinema === idCinema)
       console.log('Cinema-providerRooms:', newRooms)
       return newRooms
@@ -207,7 +207,7 @@ export default {
       .catch(e => {
         console.log('ERR:', e)
         this.cinema = undefined
-      })*/
+      }) */
   }
 }
 </script>

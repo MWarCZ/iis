@@ -66,7 +66,7 @@ export default {
             console.log('KO')
             this.$emit('fail')
           })
-      }*/
+      } */
     },
     filterActor () {
       // if (this.idFilm === undefined) {

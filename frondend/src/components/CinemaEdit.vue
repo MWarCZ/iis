@@ -148,7 +148,7 @@ export default {
           console.log('ERR:', e)
           this.oldCinema = undefined
         })
-    }*/
+    } */
   }
 }
 </script>

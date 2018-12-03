@@ -38,7 +38,6 @@ export default {
     }
   },
   created () {
-
     // this.cinema = this.getCinema(this.idCinema)
     // this.rooms = this.getRooms(this.idCinema)
     // this.projections = this.getProjections(this.idCinema)
@@ -53,17 +52,17 @@ export default {
   },
   methods: {
     xxx (values) {
-      //let obj = {...values}[0] // obj = {idRoom: 1}
+      // let obj = {...values}[0] // obj = {idRoom: 1}
       console.log('====XXX===>:', values)
     },
     echoAll () {
       console.log('================')
       console.log('idCinema', this.idCinema)
-      console.log('cinema', this.cinema, typeof(this.cinema) )
-      console.log('rooms', this.rooms, typeof(this.rooms) )
-      console.log('projections', this.projections, typeof(this.projections) )
-      console.log('films', this.films, typeof(this.films) )
-      console.log('discounts', this.discounts, typeof(this.discounts) )
+      console.log('cinema', this.cinema, typeof (this.cinema))
+      console.log('rooms', this.rooms, typeof (this.rooms))
+      console.log('projections', this.projections, typeof (this.projections))
+      console.log('films', this.films, typeof (this.films))
+      console.log('discounts', this.discounts, typeof (this.discounts))
       console.log('================')
     },
 
@@ -72,18 +71,17 @@ export default {
       // {idRoom: 1}
 
       this.$myStore.backend.Rooms.remove(args.idRoom)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.rooms = this.rooms.filter(r => r.id !== args.idRoom)
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.rooms = this.rooms.filter(r => r.id !== args.idRoom)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     updateCinema (args) {
       this.xxx(args)
@@ -91,19 +89,18 @@ export default {
 
       // id, name, address
       this.$myStore.backend.Cinemas.update(args.id, args.name, args.address)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.cinema.name = args.name
-          this.cinema.address = args.address
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.cinema.name = args.name
+            this.cinema.address = args.address
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addRoom (args) {
       this.xxx(args)
@@ -111,18 +108,17 @@ export default {
 
       // name, capacity, idCinema
       this.$myStore.backend.Rooms.create(args.name, args.capacity, args.idCinema)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.rooms.push( { ...args, id: Number(res.data) } )
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.rooms.push({ ...args, id: Number(res.data) })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addProjection (args) {
       this.xxx(args)
@@ -130,37 +126,34 @@ export default {
 
       // datetime, price, idFilm, idRoom, idAccess = 1
       this.$myStore.backend.Projections.create(args.datetime, args.price, args.idFilm, args.idRoom)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.projections.push( { ...args, id: Number(res.data) } )
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
-
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.projections.push({ ...args, id: Number(res.data) })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     deleteProjection (args) {
       this.xxx(args)
       // {idProjection: 1}
 
       this.$myStore.backend.Projections.remove(args.idProjection)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.projections = this.projections.filter(r => r.id !== args.idProjection)
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.projections = this.projections.filter(r => r.id !== args.idProjection)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addReservation (args) {
       this.xxx(args)
@@ -169,18 +162,16 @@ export default {
 
       // tickets, idClient
       this.$myStore.backend.Reservations.create(args.tickets, args.idUser)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
     addAndSellReservation (args) {
       this.xxx(args)
@@ -189,53 +180,51 @@ export default {
 
       // tickets, idClient
       this.$myStore.backend.Reservations.create(args.tickets, args.idUser)
-      .then(res => {
-        if (!res.data) {
-          console.log('ERR:', res.error)
-        } else {
-          console.log('OK:', res.data)
-          this.$myStore.backend.Reservations.pick(res.data)
-          .then(res2 => {
-            console.log('OK2:', res2.data)
-          })
-          .catch(e => {
-            console.log('KO2:', e)
-          })
-        }
-
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-      })
-
+        .then(res => {
+          if (!res.data) {
+            console.log('ERR:', res.error)
+          } else {
+            console.log('OK:', res.data)
+            this.$myStore.backend.Reservations.pick(res.data)
+              .then(res2 => {
+                console.log('OK2:', res2.data)
+              })
+              .catch(e => {
+                console.log('KO2:', e)
+              })
+          }
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+        })
     },
 
     getCinema (idCinema) {
       this.$myStore.backend.Cinemas.getById(idCinema)
-      .then(res => {
-        console.log('Cinema is:', res)
-        return this.$myStore.backend.Rooms.getByIdCinema(idCinema)
-          .then(res2 => {
-            res.rooms = res2
-            console.log('Rooms are:', res2)
-            return res
-          })
-          .catch(e => {
-            return undefined
-          })
-      })
-      .then(res => {
-        console.log('Cinema with Rooms is:', res)
-        if (res.id === undefined) {
-          throw new Error({ msg: 'Empty Cinema.', res })
-        }
-        this.cinema = res
-        this.rooms = res.rooms
-      })
-      .catch(e => {
-        console.log('ERR:', e)
-        this.cinema = undefined
-      })
+        .then(res => {
+          console.log('Cinema is:', res)
+          return this.$myStore.backend.Rooms.getByIdCinema(idCinema)
+            .then(res2 => {
+              res.rooms = res2
+              console.log('Rooms are:', res2)
+              return res
+            })
+            .catch(e => {
+              return undefined
+            })
+        })
+        .then(res => {
+          console.log('Cinema with Rooms is:', res)
+          if (res.id === undefined) {
+            throw new Error({ msg: 'Empty Cinema.', res })
+          }
+          this.cinema = res
+          this.rooms = res.rooms
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.cinema = undefined
+        })
     },
 
     getFilms () {
@@ -284,7 +273,7 @@ export default {
           console.log('ERR:', e)
           this.projections = []
         })
-    },
+    }
     /*
     getCinema (idCinema) {
       let cinema = {
@@ -295,7 +284,7 @@ export default {
       return cinema
     },
     */
-   /*
+    /*
     getRooms (idCinema) {
       let rooms = [
         {
@@ -320,7 +309,7 @@ export default {
       return rooms
     },
     */
-   /*
+    /*
     getProjections (idCinema) {
       let projections = [
         {
@@ -370,7 +359,7 @@ export default {
       return films
     },
     */
-   /*
+    /*
     getDiscounts () {
       let discounts = [
         {
@@ -390,7 +379,7 @@ export default {
         }
       ]
       return discounts
-    }*/
+    } */
   }
 }
 </script>
