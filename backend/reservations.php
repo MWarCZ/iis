@@ -208,7 +208,7 @@ if(isset($input['request'])) {
         case "SELECT" : 
             debug_print("SELECT");
             //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
                 $out["error"][] = "You don't have enough permissions";
                 break;
             }
