@@ -52,7 +52,103 @@
             PHP zpracovává jednotlivé dotazy (struktura dotazu ní¾e). Seznam v¹ech dotazù naleznete v souboru <a href="./API_Doc.json">API_Doc.json</a>,
             kde je seznam v¹ech souborù které pøijímají data, a co pøijímá a vrací který request. Ka¾dý .php soubor zaji¹tuje kompletní správu dané kategorie. 
             Jedinná vyjímka je u <i>reservations.php</i> / <i>tickets.php</i> -> lístek se vytváøí u rezervace a tickets.php obsahuje pouze selecty do DB.
-        </p> 
+        </p>
+        
+        <h4>U¾ivatel</h4>
+        <table>
+            <tr>
+                <th>PØÍPAD U®ITÍ</th>
+                <th>SOUBOR</th>
+                <th>REQUEST</th>
+            </tr>
+            <tr>
+                <td>Rezervoval lístky</td>
+                <td>reservation.php</td>
+                <td>RESERVE</td>
+            </tr>
+            <tr>
+                <td>Ru¹ení rezervace</td>
+                <td>reservation.php</td>
+                <td>CANCEL, CANCEL_ALL</td>
+            </tr>
+            <tr>
+                <td>Procházení historie</td>
+                <td>reservation.php</td>
+                <td>SELECT, SELCET_ALL, .... </td>
+            </tr>
+            <tr>
+                <td>Registrace</td>
+                <td>user.php</td>
+                <td>INSERT</td>
+            </tr>
+            <tr>
+                <td>Zobrazit program</td>
+                <td>projections.php</td>
+                <td>SELECT, SELECT_ALL, ....</td>
+            </tr>
+            <tr>
+                <td>Hledat film</td>
+                <td>films.php</td>
+                <td>SELECT, SELECT_ALL, ....</td>
+            </tr>
+        </table>
+        
+        <h4>Zamìstnanec</h4>
+        <table>
+            <tr>
+                <th>PØÍPAD U®ITÍ</th>
+                <th>SOUBOR</th>
+                <th>REQUEST</th>
+            </tr>
+            <tr>
+                <td>Prodat vstupenku</td>
+                <td>reservation.php</td>
+                <td>PAY, PAY_PICK</td>
+            </tr>
+            <tr>
+                <td>Vydat vstupenku</td>
+                <td>reservation.php</td>
+                <td>PICK</td>
+            </tr>
+        </table>
+        
+        <h4>Mana¾er</h4>
+        <table>
+            <tr>
+                <th>PØÍPAD U®ITÍ</th>
+                <th>SOUBOR</th>
+                <th>REQUEST</th>
+            </tr>
+            <tr>
+                <td>Zjistit tr¾by</td>
+                <td>films.php / cinemas.php</td>
+                <td>EARNINGS</td>
+            </tr>
+            <tr>
+                <td>Editace programu</td>
+                <td>projections.php</td>
+                <td>INSERT, UPDATE, DELETE</td>
+            </tr>            
+            <tr>
+                <td>Editace kina/filmu/sálu/...</td>
+                <td>cinemas.php / films.php / halls.php / ....</td>
+                <td>INSERT, UPDATE, DELETE</td>
+            </tr>
+        </table>
+        
+        <h4>Administrátor</h4>
+        <table>
+            <tr>
+                <th>PØÍPAD U®ITÍ</th>
+                <th>SOUBOR</th>
+                <th>REQUEST</th>
+            </tr>
+            <tr>
+                <td>Editace práv</td>
+                <td>employees.php</td>
+                <td>CHANGE_ACCESS</td>
+            </tr>
+        </table>
         
         <dl>
             <dt>Struktura pøijímaného dotazu</dt>
@@ -88,7 +184,7 @@
         <ul>
             <li>V souboru <i>src/utils/constant.js</i> se musí nastavit adresa backendu</li>
             <li>Projekt se musí zkompilovat pøes commandline 'npm build' nebo 'yarn build'</li>
-            <li>To vytvoøí slo¾ku dist, a v ní jsou poté soubory index.html a dal¹í</li>
+            <li>To vytvoøí slo¾ku /dist a v ní jsou poté soubory index.html a dal¹í</li>
         </ul>
 
         <h2>Známé problémy</h2>
