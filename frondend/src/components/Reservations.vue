@@ -43,6 +43,16 @@
             </template>
 
           </b-list-group-item>
+          <b-list-group-item>
+            <b>Více: </b>
+            <template v-if="!!$myStore.user">
+              <b-button
+                        variant="primary"
+                        @click="tickets = reservation.tickets">
+                Zobrazit lístky
+              </b-button>
+            </template>
+          </b-list-group-item>
           <br/>
         </b-list-group>
     <!--
@@ -72,6 +82,13 @@
       </template>
     </b-table>
  -->
+    <Dialog v-if="!!tickets"
+            @close="tickets = undefined">
+      <b-card style="overflow: auto">
+        <h1>Rezervované lístky</h1>
+        <Tickets :tickets="providerTickets (tickets) " />
+      </b-card>
+    </Dialog>
   </div>
 </template>
 
@@ -79,11 +96,13 @@
 // import axios from 'axios'
 import DateTime from '@/utils/DateTime.js'
 import Tickets from '@/components/Tickets.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'Reservations',
   components: {
-    Tickets
+    Tickets,
+    Dialog
   },
   props: {
     idClient: {
@@ -95,6 +114,7 @@ export default {
     return {
       selectIdClient: this.idClient,
       reservations: [],
+      tickets: undefined,
       fields: [
         { key: 'dateAndTime', label: 'Zarezervováno', sortable: true },
         { key: 'code', label: 'Kód', sortable: true },
@@ -110,6 +130,15 @@ export default {
     debug (...obj) {
       console.log(...obj)
     },
+    providerTickets (tickets) {
+      let newTickets = tickets.map(t => {
+        t.seat = t.seatNumber
+        t.datetime = t.date
+        return t
+      })
+      return newTickets
+    },
+
     getReservationByIdClient (id) {
       this.$myStore.backend.Reservations.getByIdClient(id)
         .then(res => {

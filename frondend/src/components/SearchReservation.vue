@@ -88,6 +88,17 @@
             </template>
 
           </b-list-group-item>
+
+          <b-list-group-item>
+            <b>Více: </b>
+            <!-- <template > -->
+              <b-button
+                        variant="primary"
+                        @click="tickets = reservation.tickets">
+                Zobrazit lístky
+              </b-button>
+            <!-- </template> -->
+          </b-list-group-item>
         </b-list-group>
 
         <b-alert v-else
@@ -99,19 +110,34 @@
 
     </b-card>
 
+    <Dialog v-if="!!tickets"
+            @close="tickets = undefined">
+      <b-card style="overflow: auto">
+        <h1>Rezervované lístky</h1>
+        <Tickets :tickets="providerTickets (tickets) " />
+      </b-card>
+    </Dialog>
+
   </div>
 </template>
 
 <script>
+import Tickets from '@/components/Tickets.vue'
+import Dialog from '@/components/Dialog.vue'
 export default {
   name: 'SearchReservation',
+  components: {
+    Tickets,
+    Dialog
+  },
   props: {
   },
   data: function () {
     return {
       idReservation: 0,
       reservation: undefined,
-      failed: false
+      failed: false,
+      tickets: undefined
     }
   },
   computed: {
@@ -122,6 +148,14 @@ export default {
     },
     checkCapacity (capacity) {
       return capacity >= 0 && capacity !== undefined
+    },
+    providerTickets (tickets) {
+      let newTickets = tickets.map(t => {
+        t.seat = t.seatNumber
+        t.datetime = t.date
+        return t
+      })
+      return newTickets
     },
 
     getReservationById (id) {

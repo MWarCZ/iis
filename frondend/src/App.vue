@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/films">Filmy</router-link> |
       <router-link to="/cinemas">Kina</router-link> |
-      <router-link to="/about">HokusPokus</router-link> |
+      <!-- <router-link to="/about">HokusPokus</router-link> | -->
 
       <template v-if="!!$myStore.worker && $myStore.worker.access >= 3">
         <router-link to="/workers">Správa pracovníků</router-link> |

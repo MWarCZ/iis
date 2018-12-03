@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Vítejte</h1>
     TODO
-    <SearchReservation v-if="!!$myStore.user || !!$myStore.worker " />
+    <SearchReservation v-if="!!$myStore.worker " />
   </div>
 </template>
 
