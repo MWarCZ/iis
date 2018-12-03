@@ -277,8 +277,8 @@ if(isset($input['request'])) {
             //If employee exist, verifi passwd and delete
             if(employee_exist($db, $login)) {
                 if(password_verify($pass, get_passwd ($db, $login)) || $_SESSION["access"] >= 3) {
-                    //First sign out
-                    if(isset($_SESSION["id"])) {
+                    //First sign out if not admin
+                    if(isset($_SESSION["id"]) && $_SESSION["login"] == $login) {
                         session_unset();
                         session_destroy();
 
