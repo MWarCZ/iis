@@ -167,9 +167,7 @@ if(isset($input['request'])) {
                     else $out["data"] = true;                   
                 } else $out["error"][] = "Wrong password";
             } else $out["error"][] = "Employee don't exist";
-            
-            
-                    
+                   
             break;
         
         case "CHANGE_PASSW" :
@@ -257,15 +255,15 @@ if(isset($input['request'])) {
             }
             
             //All input set check
-            if( !isset($input["data"]["login"]) && 
-                !isset($input["data"]["pass"])) {
+            if( !isset($input["data"]["login"])) {
                 $out["error"][] = "Missing some input";
                 break;
-            }
+            }           
+            
+            if(!isset($input["data"]["pass"])) $input["data"]["pass"] = null;
             
             //Get data from inputs
             $login = htmlspecialchars($input["data"]["login"]);
-            $pass = $input["data"]["pass"];
 
             //Are u deleting own acc?
             if(!(isset($_SESSION["login"]) && ($_SESSION["login"] == $login))) {

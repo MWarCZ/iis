@@ -268,7 +268,7 @@ if(isset($input['request'])) {
         case "SELECT_BYDATE" : 
             debug_print("SELECT");
             //All input set check
-            if( !isset($input["data"]["id"])) {
+            if( !isset($input["data"]["date"])) {
                 $out["error"][] = "Missing some input";
                 break;
             }
