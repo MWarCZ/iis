@@ -161,11 +161,9 @@ if(isset($input['request'])) {
             }
             
             //If employee exist, verifi passwd and update data
-            if(employee_exist($db, $login)) {
-                if(password_verify($pass, get_passwd ($db, $login))) {                    
+            if(employee_exist($db, $login)) {                  
                     if(!update_employeeData($db, $login, $name, $surname, $ssn)) $out["error"][] = "Update error";
-                    else $out["data"] = true;             
-                } else $out["error"][] = "Wrong password";
+                    else $out["data"] = true;
             } else $out["error"][] = "Employee don't exist";
                     
             break;

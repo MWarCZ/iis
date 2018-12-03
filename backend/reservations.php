@@ -241,7 +241,7 @@ if(isset($input['request'])) {
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
             
-            if(($data = selectId($db, $id))) {
+            if(($data = selectUser($db, $id))) {
                 $out["data"] = $data;
             } else $out["error"][] = "Not found";
             
