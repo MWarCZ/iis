@@ -126,7 +126,7 @@ export default {
       let discount = this.discounts.find(d => d.id === this.selectedIdDiscount)
       let summ = tickets.length * this.projection.price
       if (discount && discount.discount) {
-        summ = summ * discount.discount / 100
+        summ = summ * (1 - discount.discount / 100)
         summ = Math.round(summ)
       }
       /*
