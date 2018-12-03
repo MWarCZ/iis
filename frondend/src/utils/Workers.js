@@ -320,6 +320,49 @@ const Workers = {
       })
   },
 
+  updateAccess (login, access) {
+    // TODO
+    console.log('=======e', email)
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=CHANGE_ACCESS' + '&data=' +
+      JSON.stringify({
+        login: login,
+        access: access
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Acces update:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
+  },
+  updatePassword (login, newPassword, newPassword2, oldPassword) {
+    // TODO
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=CHANGE_PASSW' + '&data=' +
+      JSON.stringify({
+        login: login,
+        old_pass: oldPassword,
+        new_pass: newPassword,
+        new_verifi: newPassword2
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('Change password Worker:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
+  },
   /// ////// ///
   //  REMOVE  //
   /// ////// ///

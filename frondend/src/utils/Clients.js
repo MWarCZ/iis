@@ -160,6 +160,7 @@ const Clients = {
    */
   update (id, firstname, lastname, login, password, email, birthday) {
     // TODO
+    console.log('=======e', email)
     return axios.post(BACKEND_URL + '/users.php',
       'request=UPDATE' + '&data=' +
       JSON.stringify({

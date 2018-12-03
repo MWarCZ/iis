@@ -2,63 +2,68 @@
   <div>
     <b-card>
       <b-alert variant="success" dismissible
-        @dismissed="registerSuccess = false"
-        :show="registerSuccess">
+        @dismissed="success = false"
+        :show="success">
         Podařilo se vytvořit.
       </b-alert>
       <b-alert variant="danger" dismissible
-        @dismissed="registerFailed = false"
-        :show="registerFailed">
+        @dismissed="failed = false"
+        :show="failed">
         Nepodařilo se vztvořit.
       </b-alert>
 
+      <b-input-group prepend="Login:">
+        <b-form-input v-model="worker.login"
+                      type="text"
+                      label="login"
+                      :state="checkLogin(worker.login)"
+                      :disabled="!editable"
+                      placeholder="Pracovníkovo přihlašovací jméno.">
+        </b-form-input>
+      </b-input-group>
+
       <b-input-group prepend="Jméno:">
-        <b-form-input v-model="client.firstname"
+        <b-form-input v-model="worker.firstname"
                       type="text"
                       label="firstname"
-                      :state="checkName(client.firstname)"
+                      :state="checkName(worker.firstname)"
+                      :disabled="!editable"
                       placeholder="Pracovníkovo křestní jméno.">
         </b-form-input>
       </b-input-group>
 
       <b-input-group prepend="Příjmení:">
-        <b-form-input v-model="client.lastname"
+        <b-form-input v-model="worker.lastname"
                       type="text"
                       label="lastname"
-                      :state="checkName(client.lastname)"
+                      :state="checkName(worker.lastname)"
+                      :disabled="!editable"
                       placeholder="Pracovníkovo příjmení.">
         </b-form-input>
       </b-input-group>
 
-      <b-input-group prepend="Login:">
-        <b-form-input v-model="client.login"
-                      type="text"
-                      label="login"
-                      :state="checkLogin(client.login)"
-                      placeholder="Pracovníkovo přihlašovací jméno.">
-        </b-form-input>
-      </b-input-group>
-
       <b-input-group prepend="SSN:">
-        <b-form-input v-model="client.ssn"
+        <b-form-input v-model="worker.ssn"
                   type="text"
                   label="ssn"
-                  :state="checkEmail(client.email)"
+                  :state="checkSSN(worker.email)"
                   placeholder="Pracovníkovo ssn."
+                      :disabled="!editable"
                   >
         </b-form-input>
       </b-input-group>
 
-      <b-input-group prepend="Access Level:">
-        <b-form-input v-model="client.access"
+      <b-input-group prepend="Access Level:" :append="access2str(worker.access)">
+        <b-form-input v-model="worker.access"
                   type="number"
                   label="access"
-                  :state="checkAccessLvl(client.access)"
+                  :state="checkAccessLvl(worker.access)"
+                      :disabled="!editable"
                   placeholder="urověň oprávnění (2-prodavač, 3-manager, 4-admin"
                   >
         </b-form-input>
       </b-input-group>
-
+<!--
       <b-input-group prepend="Heslo:">
         <b-form-input v-model="password"
                       type="password"
@@ -76,10 +81,14 @@
                       placeholder="Pracovníkovo přihlašovací heslo znovu.">
         </b-form-input>
       </b-input-group>
+       -->
 
-      <b-button variant="primary" @click="registerClient()">
-        Zaregistrovat se
+      <b-button variant="primary"
+                v-if="editable"
+                @click="emitWorker()">
+        OK
       </b-button>
+
     </b-card>
 
   </div>
@@ -91,32 +100,50 @@
 import DateTime from '@/utils/DateTime.js'
 
 export default {
-  name: 'WorkerCreate',
+  name: 'Worker',
   props: {
+    worker: {
+      type: [Object, Function],
+      default: () => ({
+        firstname: '',
+        lastname: '',
+        login: '',
+        ssn: ''
+      })
+    },
+    editable: {
+      default: false
+    }
+    /* worker:
+        id
+        firstname
+        lastname
+        access
+        login
+        ssn
+        deleted
+     */
   },
   data: function () {
     return {
-      user: undefined,
-      client: {
-        firstname: '',
-        lastname: '',
-        login: ''
-      },
       password: '',
       password2: '',
-      registerFailed: false,
-      registerSuccess: false,
-      DateTime: DateTime
+      DateTime: DateTime,
+      success: false,
+      failed: false
     }
   },
   computed: {
   },
   methods: {
+
     checkName (name) {
+      if (!this.editable) { return null }
       return !!name
     },
     checkLogin (login) {
       // TODO test s backendem
+      if (!this.editable) { return null }
       return !!login
     },
     checkNewPassword (password1) {
@@ -126,14 +153,43 @@ export default {
       return !!password1 && (password1 === password2)
     },
     checkBirthday (date) {
+      if (!this.editable) { return null }
       // TODO
       return true
     },
+    checkSSN (ssn) {
+      if (!this.editable) { return null }
+      return true
+    },
     checkAccessLvl (access) {
+      if (!this.editable) { return null }
       // TODO
       return access > 1 && access <= 4
     },
+    access2str (access) {
+      if (access == 2)
+        return "prodavač"
+      if (access == 3)
+        return "Manager"
+      if (access == 4)
+        return "Admin"
+      return "{ Takové neexistuji. }"
+    },
+    emitWorker () {
+      if (this.checkLogin(this.worker.login) &&
+        this.checkName(this.worker.firstname) &&
+        this.checkName(this.worker.lastname) &&
+        this.checkSSN(this.worker.ssn) &&
+        this.checkAccessLvl(this.worker.access)
+        ) {
+        console.log('Worker-emitWorker: ', this.worker )
+        this.$emit('changeWorker', { ...(this.worker) })
 
+        this.$emit('exit')
+      }
+    }
+
+/*
     registerClient: function () {
       console.log('Register client.')
       if (this.checkName(this.client.firstname) &&
@@ -168,26 +224,8 @@ export default {
         this.registerFailed = true
         this.$emit('fail')
       }
-      /*
-      this.$myStore.backend.Clients.auth(this.login, this.password)
-        .then(res => {
-          this.user = res
-          this.loginFailed = !res
 
-          console.log('Client is:', this.user)
-          if (!this.loginFailed) {
-            this.$emit('success')
-          }
-          this.$emit('failed')
-        })
-        .catch(e => {
-          console.log('Client problem.')
-          console.log(e)
-          this.loginFailed = true
-          this.$emit('failed')
-        })
-        */
-    }
+    }*/
   },
   mounted: function () {
   }

@@ -215,20 +215,20 @@ export default {
 
       if (user) {
         // id, firstname, lastname, login, password, email, birthday
-        this.$myStore.backend.Clients.update(this.newUser.id, this.newUser.login, this.oldPassword, this.newUser.email)
+        this.$myStore.backend.Clients.update(this.newUser.id,  this.newUser.firstname,  this.newUser.lastname, this.newUser.login, this.oldPassword, this.newUser.email)
           .then(res => {
             console.log('OK')
             this.user = user
-
+            this.changeSuccess = true
             this.$emit('success', { user: user })
           })
           .catch(e => {
-            console.log('KO')
-            this.failed = true
+            console.log('KO2')
+            this.changeFailed = true
             this.$emit('fail')
           })
       } else {
-        this.failed = true
+        this.changeFailed = true
         this.$emit('fail')
       }
     },
