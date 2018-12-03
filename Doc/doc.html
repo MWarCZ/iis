@@ -43,15 +43,46 @@
         </table>
 
         <h2>Implementace</h2>
-        <p>Struèná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé pøípady pou¾ití uvedené v use-case diagramu z IDS. V pøípadì, ¾e bylo nutno pøi implementaci uèinit zmìny v návrhu, musí být v dokumentaci zdùvodnìny.</p>
-
+        <p>
+            Struèná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé pøípady pou¾ití uvedené v use-case diagramu z IDS. 
+            V pøípadì, ¾e bylo nutno pøi implementaci uèinit zmìny v návrhu, musí být v dokumentaci zdùvodnìny.
+            
+            
+            PHP zpracovává jednotlivé dotazy (struktura dotazu ní¾e). Seznam v¹ech dotazù naleznete v souboru <a href="./API_Doc.json">API_Doc.json</a>,
+            kde je seznam v¹ech souborù které pøijímají data
+        </p>
+        
+        <dl>
+            <dt>Struktura pøijímaného dotazu</dt>
+            
+            <dd>[HTTP REQUEST] {request = &lt;REQUEST&gt; &amp; data = &lt;DATA&gt;}</dd>
+            <dd>&lt;REQUEST&gt; - plain text</dd>
+            <dd>&lt;DATA&gt; - JSON encoded data</dd>
+        </dl>
+        
+        <dl>
+            <dt>Pomocné soubory</dt>
+            
+            <dd><a href="./Diagram.png">Databázové schéma</a></dd>
+            <dd><a href="./Usecase.png">Usecase diagram</a></dd>
+            <dd><a href="./API_Doc.json">API_Doc.json</a></dd>
+        </dl>
+        
         <h2>Instalace</h2>
-        <ul>
+        
+        <p>Backend</p>
+        <ul>            
             <li>Testováno na PHP Version 7.2.12 a Apache 2.4.37</li>
             <li>V <i>/php/db_connect.php</i> je tøeba nastavit údaje pro pøipojení k DB</li>
-            <li>V <i>/php/parse_input.php</i> je tøeba nastavit root doménu ($rootDomain) kvùli správnému fungování sessions</li>
-            
+            <li>V <i>/php/parse_input.php</i> je tøeba nastavit root doménu ($rootDomain) kvùli správnému fungování sessions</li>            
             <li>Soubor <i>'xvalka05_xzajic16_FINAL.sql'</i> je export databáze se základními daty</li>
+        </ul>
+        
+        <p>Frontend</p>
+        <ul>
+            <li>V souboru <i>src/utils/constant.js</i> se musí nastavit adresa backendu</li>
+            <li>Projekt se musí zkompilovat pøes commandline 'npm build' nebo 'yarn build'</li>
+            <li>To vytvoøí slo¾ku dist, a v ní jsou poté soubory index.html a dal¹í</li>
         </ul>
 
         <h2>Známé problémy</h2>

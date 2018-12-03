@@ -164,7 +164,7 @@ function selectUser($db, $id) {
         return FALSE;
     }
     
-    return $query->fetch(PDO::FETCH_ASSOC);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function payAndPick($db, $id) {
