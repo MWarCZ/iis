@@ -18,6 +18,21 @@
             @addReservation="(addReservation(arguments[0]))"
             @addAndSellReservation="(addAndSellReservation(arguments[0]))"
             />
+    <Dialog v-if="newIdReservation >= 0"
+      @close="newIdReservation = -1"
+      >
+      <b-alert variant="success" show>
+        <h2 class="alert-heading">ID vaší rezervace je: {{newIdReservation}}</h2>
+        <br />
+        <h4 class="alert-heading">Prosim uschovejte si ho.</h4>
+        <br />
+        <b-button variant="success"
+                  @click="newIdReservation = -1"
+                  >
+        OK</b-button>
+      </b-alert>
+
+    </Dialog>
   </div>
 </template>
 
@@ -25,11 +40,13 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Film from '@/components/Film.vue'
+import Dialog from '@/components/Dialog.vue'
 
 export default {
   name: 'FilmPage',
   components: {
-    Film
+    Film,
+    Dialog
   },
   data: function () {
     return {
@@ -41,7 +58,8 @@ export default {
       discounts: () => [],
       actors: () => [],
 
-      allActors: () => []
+      allActors: () => [],
+      newIdReservation: -1
     }
   },
   created () {
@@ -192,6 +210,7 @@ export default {
             console.log('ERR:', res.error)
           } else {
             console.log('OK:', res.data)
+            this.newIdReservation = res.data
           }
         })
         .catch(e => {
@@ -213,6 +232,7 @@ export default {
             this.$myStore.backend.Reservations.payAndPick(res.data)
               .then(res2 => {
                 console.log('OK2:', res2.data)
+                this.newIdReservation = res.data
               })
               .catch(e => {
                 console.log('KO2:', e)

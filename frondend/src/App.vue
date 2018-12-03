@@ -32,9 +32,9 @@
         <Login @success="loginVisible = false;" />
         <h1>Registrace:</h1>
         <Register />
-        <a href="#" v-b-toggle="'worker_login'">
+        <h5><a href="#" v-b-toggle="'worker_login'">
           Vstup pro zaměstance
-        </a>
+        </a></h5>
         <b-collapse id="worker_login">
           <h2>Přihlášení zaměstance:</h2>
           <WorkerLogin @success="loginVisible = false; forceUpdate ()" />
