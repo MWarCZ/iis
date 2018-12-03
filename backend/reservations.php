@@ -146,6 +146,15 @@ if(isset($input['request'])) {
                 break;
             }
             
+            //All input set check
+            if( !isset($input["data"]["id"])) {
+                $out["error"][] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
+            
             if(payAndPick($db, $id)) {
                 $out["data"] = true;
             } else $out["error"][] = "SQL Error";
@@ -158,6 +167,15 @@ if(isset($input['request'])) {
                 $out["error"][] = "You don't have enough permissions";
                 break;
             }
+            
+            //All input set check
+            if( !isset($input["data"]["id"])) {
+                $out["error"][] = "Missing some input";
+                break;
+            }
+            
+            //Get data from inputs
+            $id = htmlspecialchars($input["data"]["id"]);
             
             if(pay($db, $id)) {
                 $out["data"] = true;
