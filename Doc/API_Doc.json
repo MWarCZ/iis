@@ -4,32 +4,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "desc",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, desc",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idAccess, description)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idAccess, description"
             }
         }
     ]
@@ -39,32 +39,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name, surname, birthday",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name, surname, birthday",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idActor, name, surname, birthday)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idActor, name, surname, birthday"
             }
         }
     ]
@@ -74,38 +74,38 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name, address",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name, address",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idCinema, name, address)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idCinema, name, address"
             }
         },
         {"EARNINGS" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idCinema, name, address, earnings"
             }
         }
     ]
@@ -115,32 +115,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name, surname, birthday",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name, surname, birthday",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idDirector, name, surname, birthday)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idDirector, name, surname, birthday"
             }
         }
     ]
@@ -149,32 +149,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "desc, discount",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, desc, discount",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idDiscount, description, discount)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idDiscount, description, discount"
             }
         }
     ]
@@ -184,56 +184,57 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, name, surname, ssn, pass, pass_verifi",
+                "output" : "true/NULL"
             }
         },
         {"LOGIN" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, pass",
+                "output" : "true/NULL"
             }
         },
         {"LOGOUT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "true/NULL"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
-            }
-        },
-        {"CHANGE_PASSW" : 
-            {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, name, surname, ssn, pass",
+                "output" : "true/NULL"
             }
         },
         {"CHANGE_ACCESS" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, acces",
+                "output" : "true/NULL"
+            }
+        },
+        {"CHANGE_PASSW" : 
+            {
+                "input"  : "login, old_pass, new_pass, new_verifi",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login",
+                "nepovyný": "pass",
+                "output" : "true/NULL"
             }
         },
         {"LOGGED" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "id, login, name, surname, email"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "idEmployee, login, name, surname, ssn, passwd, access_level, idCinema"
             }
         }
     ]
@@ -243,50 +244,60 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name, duration, released, rating, generes",
+                "nepovyný"  : "idDirector, idStudio, idAccess",    
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name, duration, released, rating, generes",
+                "nepovyný"  : "idDirector, idStudio, idAccess", 
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idFilm, name, duration, released, ratings",
+                " "      :        "director = {idDirector, name, surname, birthday}",
+                " "      :        "studio = {idStudio, name}",
+                " "      :        "actors = array(idActor, name, surname, birthday)",
+                " "      :        "genres = {idGenre, name})"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idFilm, name, duration, released, ratings",
+                " "      : "director = {idDirector, name, surname, birthday}",
+                " "      : "studio = {idStudio, name}",
+                " "      : "actors = array(idActor, name, surname, birthday)",
+                " "      : "genres = {idGenre, name}"
             }
         },
         {"ADD_ACTOR" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"DEL_ACTOR" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"EARNINGS" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         }
     ]
@@ -296,32 +307,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idGenre, name)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idGenre, name"
             }
         }
     ]
@@ -331,32 +342,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "mark, cpa, idCinema",
+                "output" : "true/NULL"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, mark, cpa, idCinema",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idHall, idCinema, cinemaMark, capacity)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idHall, idCinema, cinemaMark, capacity"
             }
         }
     ]
@@ -366,44 +377,44 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "date, idFilm, idHall, price",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, date, idFilm, idHall, price",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idReservation, date, idFilm, idHall)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idReservation, date, idFilm, idHall"
             }
         },
         {"SELECT_BYDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "array(idReservation, date, idFilm, idHall)"
             }
         },
         {"SELECT_ALL_WITH_DETAILS" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idReservation, date, idFilm, idHall, film, hall, cinema)"
             }
         }
     ]
@@ -413,62 +424,63 @@
     "REQUESTS" :[
         {"RESERVE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : ",tickets = array(idDiscount, idProjection, seatNumber)",
+                "nepovyný": "idUser",
+                "output" : "id"
             }
         },
         {"CANCEL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"CANCEL_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "idUser",
+                "output" : "true/NULL"
             }
         },
         {"PAY_PICK" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"PAY" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"PICK" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idReservation, reserved, totalPrice, paid, picked, idUser"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
             }
         },
         {"SELECT_USER" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
             }
         },
         {"SELECT_BYDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "date",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
             }
         }
     ]
@@ -478,32 +490,32 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "name",
+                "output" : "id"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id, name",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "true/NULL"
             }
         },
         {"SELECT_ALL" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "asocAray(idStudio,name)"
             }
         },
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idStudio,name"
             }
         }
     ]
@@ -513,20 +525,20 @@
     "REQUESTS" :[
         {"SELECT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "id",
+                "output" : "idTicket,price,idReservation,idDiscount,idProjection,seatNumber"
             }
         },
         {"SELECT_PROJECTION" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "idProjection",
+                "output" : "array(idTicket,price,idReservation,idDiscount,idProjection,seatNumber)"
             }
         },
         {"SELECT_RESERVATION" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "idReservation",
+                "output" : "array(idTicket,price,idReservation,idDiscount,idProjection,seatNumber)"
             }
         }
     ]
@@ -536,44 +548,44 @@
     "REQUESTS" :[
         {"INSERT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, name, surname, email, pass, pass_verifi",
+                "output" : "true/NULL"
             }
         },
         {"LOGIN" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, pass",
+                "output" : "true/NULL"
             }
         },
         {"LOGOUT" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "true/NULL"
             }
         },
         {"UPDATE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, name, surname, email, pass",
+                "output" : "true/NULL"
             }
         },
         {"CHANGE_PASSW" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, old_pass, new_pass, new_verifi",
+                "output" : "true/NULL"
             }
         },
         {"DELETE" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "login, pass",
+                "output" : "true/NULL"
             }
         },
         {"LOGGED" : 
             {
-                "input"  : "aaaa",
-                "output" : "bbbb"
+                "input"  : "",
+                "output" : "id, login, name, surname, email"
             }
         }
     ]
