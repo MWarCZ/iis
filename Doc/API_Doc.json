@@ -462,25 +462,29 @@
         {"SELECT" : 
             {
                 "input"  : "id",
-                "output" : "idReservation, reserved, totalPrice, paid, picked, idUser"
+                "output" : "idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber}"
             }
         },
         {"SELECT_ALL" : 
             {
                 "input"  : "",
-                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber})"
             }
         },
         {"SELECT_USER" : 
             {
                 "input"  : "id",
-                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber})"
             }
         },
         {"SELECT_BYDATE" : 
             {
                 "input"  : "date",
-                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser)"
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber})"
             }
         }
     ]

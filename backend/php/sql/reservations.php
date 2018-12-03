@@ -97,9 +97,12 @@ function selectAll($db) {
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
-    }
+    }    
+    $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
     
-    return $query->fetchAll(PDO::FETCH_ASSOC);
+    for($i = 0; $i < count($reservations); $i++) $reservations[$i]["tickets"] = getTickets($db, $reservations[$i]["idReservation"]);
+    
+    return $reservations;
 }
 
 function selectByDate($db, $date){
@@ -119,8 +122,11 @@ function selectByDate($db, $date){
         debug_print($e->getMessage());
         return FALSE;
     }
-        
-    return $query->fetchAll(PDO::FETCH_ASSOC);
+    $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
+    
+    for($i = 0; $i < count($reservations); $i++) $reservations[$i]["tickets"] = getTickets($db, $reservations[$i]["idReservation"]);
+    
+    return $reservations;
 }
 
 function selectId($db, $id) {
@@ -141,8 +147,11 @@ function selectId($db, $id) {
         debug_print($e->getMessage());
         return FALSE;
     }
+    $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
     
-    return $query->fetchAll(PDO::FETCH_ASSOC);
+    for($i = 0; $i < count($reservations); $i++) $reservations[$i]["tickets"] = getTickets($db, $reservations[$i]["idReservation"]);
+    
+    return $reservations;
 }
 
 function selectUser($db, $id) {
@@ -150,6 +159,37 @@ function selectUser($db, $id) {
     
     try {
         $query = $db->prepare("SELECT * FROM `reservations` WHERE `idUser` = ?");
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    
+    $params = array($id);
+    
+    try {
+        $query->execute($params);
+    } catch (PDOException $e) {
+        debug_print($e->getMessage());
+        return FALSE;
+    }
+    $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
+    
+    for($i = 0; $i < count($reservations); $i++) $reservations[$i]["tickets"] = getTickets($db, $reservations[$i]["idReservation"]);
+    
+    return $reservations;
+}
+
+function getTickets($db, $id) {
+    if($db == NULL) return FALSE;
+    
+    try {
+        $query = $db->prepare("SELECT tickets.* , projections.date, films.name as film, halls.cinemaMark as room, cinemas.name as cinema
+                                FROM tickets
+                                JOIN projections on tickets.idProjection=projections.idProjection
+                                JOIN films on projections.idFilm=films.idFilm
+                                JOIN halls on projections.idHall=halls.idHall
+                                JOIN cinemas on halls.idCinema=cinemas.idCinema
+                                WHERE tickets.idReservation = ?");
     } catch (PDOException $e) {
         debug_print($e->getMessage());
         return FALSE;
