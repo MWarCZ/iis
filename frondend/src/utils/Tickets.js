@@ -8,6 +8,7 @@ const Tickets = {
    * }]
    */
   getAll () {
+    /*
     let query = `{
       values: projections {
           id
@@ -51,12 +52,13 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* {
    * }
    */
   getById (id) {
+    /*
     let query = `{
       values: projection(id: ${id}) {
           id
@@ -99,7 +101,7 @@ const Tickets = {
 
       .catch(e => {
         return {}
-      })
+      })*/
   },
 
   /* [{
@@ -118,6 +120,7 @@ const Tickets = {
    * }]
    */
   getByIdClient (id) {
+    /*
     let query = `{
       values: clientTickets(idClient: ${id}) {
           id
@@ -177,7 +180,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* [{
    *   id
@@ -195,6 +198,7 @@ const Tickets = {
    * }]
    */
   getByIdReservation (id) {
+    /*
     let query = `{
       values: reservationTickets(idReservation: ${id}) {
           id
@@ -253,7 +257,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })
+      })*/
   },
   /* [{
    *   id
@@ -272,6 +276,12 @@ const Tickets = {
         return res.data
       })
       .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
+      .then(res => {
         let newResult = res.data.map(value => {
           value.id = Number(value.idTicket)
           value.seat = Number(value.seatNumber)
@@ -279,31 +289,32 @@ const Tickets = {
         })
         return newResult
       })
-      /*
-    let query = `{
-      values: projectionTickets(idProjection: ${id}) {
-          id
-          seat
+  },
+  getByIdReservation (id) {
+    return axios.post(BACKEND_URL + '/tickets.php',
+      'request=SELECT_RESERVATION' + '&data=' +
+      JSON.stringify({
+        idReservation: id
+      })
+      , axiosConfig)
+      .then(res => {
+        console.log('reservation tickets:', res.data)
+        return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
         }
-    }`
-    return axios.post(BACKEND_URL, {
-      query: query
-    })
-      .then(res => {
-        return res.data.data.values
+        return res
       })
       .then(res => {
-        return res.map((item) => {
-          let newItem = {}
-          newItem.id = item.id
-          newItem.seat = item.seat
-
-          return newItem
+        let newResult = res.data.map(value => {
+          value.id = Number(value.idTicket)
+          value.seat = Number(value.seatNumber)
+          return value
         })
+        return newResult
       })
-      .catch(e => {
-        return {}
-      }) */
   },
 
   /**/

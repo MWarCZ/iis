@@ -90,7 +90,7 @@ const Reservations = {
           return value
         })
         console.log('Id reservation:', newRes)
-        return newRes
+        return newRes[0]
       })
     /*
     let query = `{

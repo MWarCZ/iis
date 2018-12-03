@@ -381,13 +381,21 @@ const Workers = {
    */
   remove (id) {
     // TODO
-    return axios.post(BACKEND_URL, {
-    })
+    return axios.post(BACKEND_URL + '/employees.php',
+      'request=DELETE' + '&data=' +
+      JSON.stringify({
+        id: id
+      })
+      , axiosConfig)
       .then(res => {
+        console.log('Delete hall bool:', res.data)
         return res.data
       })
-      .catch(e => {
-        return undefined
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
   }
 

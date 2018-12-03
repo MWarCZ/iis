@@ -22,13 +22,14 @@
     <br />
     <button @click="getReservationByIdClient(1)">Reservations Client 1</button>
     <br />
+    <button @click="getTicketByIdReservation(1)">Ticket by reservation 1</button>
+    <br />
     <button @click="getWorkers()">Workers</button>
     <br />
-    <WorkersList :workers="workers"
-                />
+    <!-- <WorkersList :workers="workers" /> -->
 
     <br />
-    <WorkerCreate />
+    <!-- <WorkerCreate /> -->
     <br />
 
     <button @click="showDialog = true">Open</button>
@@ -163,6 +164,17 @@ export default {
       this.$myStore.backend.Reservations.getByIdClient(id)
         .then(res => {
           console.log('Reservations are:', res)
+          //this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          //this.workers = []
+        })
+    },
+    getTicketByIdReservation(id) {
+      this.$myStore.backend.Tickets.getByIdReservation(id)
+        .then(res => {
+          console.log('Tickets are:', res)
           //this.workers = res
         })
         .catch(e => {
