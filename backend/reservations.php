@@ -231,7 +231,7 @@ if(isset($input['request'])) {
         case "SELECT_ALL" : 
             debug_print("SELECT_ALL");
             //Check access level
-            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 3)) {
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 2)) {
                 $out["error"][] = "You don't have enough permissions";
                 break;
             }
@@ -267,6 +267,11 @@ if(isset($input['request'])) {
             
         case "SELECT_BYDATE" : 
             debug_print("SELECT");
+            //Check access level
+            if(!(isset($_SESSION["access"]) && $_SESSION["access"] >= 1)) {
+                $out["error"][] = "You don't have enough permissions";
+                break;
+            }
             //All input set check
             if( !isset($input["data"]["date"])) {
                 $out["error"][] = "Missing some input";
