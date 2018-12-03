@@ -61,6 +61,7 @@ export default {
                 this.user = res2
                 this.$myStore.user = this.user
                 this.$myStore.save()
+                this.$router.go()
                 this.$emit('success')
               })
               .catch(e => {

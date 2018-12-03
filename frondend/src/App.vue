@@ -14,11 +14,11 @@
       <template v-if="$myStore.user !== undefined">
         <router-link to="/myaccount">Můj účet</router-link> |
       </template>
-
+<!--
       <template v-if="$myStore.worker !== undefined">
         <router-link to="/sell">Prodej</router-link> |
       </template>
-
+ -->
       <template v-if="$myStore.user === undefined && $myStore.worker === undefined">
         <!--<router-link to="/login">Přihlasit se</router-link>-->
         <a href="#" @click="loginVisible = true">Přihlásit se</a>
@@ -67,42 +67,60 @@ export default {
   },
   data: function () {
     return {
-      loginVisible: false
+      loginVisible: false,
+      timer: ''
     }
   },
   created: function () {
-    this.$myStore.load()
-    if (this.$myStore.user) {
-      console.log('=====U:', this.$myStore.user)
-      this.$myStore.backend.Clients.getLogged()
-        .then(res => {
-          console.log('RELOAD_PAGE Get client data:', res)
-          this.$myStore.user = res
-          this.$myStore.save()
-          // this.$myStore.load()
-          this.$forceUpdate()
-        })
-        .catch(e => {
-          console.log('RELOAD_PAGE clent not logged:', e)
-        })
-    } // if user
-    this.$myStore.backend.Workers.getLogged()
-      .then(res => {
-        console.log('RELOAD_PAGE Get worker data:', res)
-        this.$myStore.worker = res
-        this.$myStore.save()
-        // this.$myStore.load()
-        this.$forceUpdate()
-      })
-      .catch(e => {
-        console.log('RELOAD_PAGE worker not logged:', e)
-      })
+    this.checkLogin()
+    this.timer = setInterval(this.checkLogin, 60000)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
   methods: {
     forceUpdate () {
       console.log(this.$router)
       console.log(this.$route)
       this.$forceUpdate()
+    },
+    checkLogin () {
+      this.$myStore.load()
+      if (this.$myStore.user) {
+        console.log('=====U:', this.$myStore.user)
+        this.$myStore.backend.Clients.getLogged()
+          .then(res => {
+            console.log('RELOAD_PAGE Get client data:', res)
+            this.$myStore.user = res
+            this.$myStore.save()
+            // this.$myStore.load()
+            this.$forceUpdate()
+          })
+          .catch(e => {
+            console.log('RELOAD_PAGE clent not logged:', e)
+            this.$myStore.user = undefined
+            this.$myStore.worker = undefined
+            this.$myStore.save()
+            this.$router.go()
+          })
+      } // if user
+      else {
+        this.$myStore.backend.Workers.getLogged()
+          .then(res => {
+            console.log('RELOAD_PAGE Get worker data:', res)
+            this.$myStore.worker = res
+            this.$myStore.save()
+            // this.$myStore.load()
+            this.$forceUpdate()
+          })
+          .catch(e => {
+            console.log('RELOAD_PAGE worker not logged:', e)
+            this.$myStore.user = undefined
+            this.$myStore.worker = undefined
+            this.$myStore.save()
+            this.$router.go()
+          })
+      } // else
     },
     logout: function () {
       this.$myStore.backend.Clients.logout()
@@ -111,7 +129,8 @@ export default {
           this.$myStore.user = undefined
           this.$myStore.worker = undefined
           this.$myStore.save()
-          this.$router.push('/')
+          this.$router.go()
+          // this.$router.push('/')
           this.$forceUpdate()
         })
         .catch(e => {
@@ -123,7 +142,8 @@ export default {
           this.$myStore.user = undefined
           this.$myStore.worker = undefined
           this.$myStore.save()
-          this.$router.push('/')
+          this.$router.go()
+          // this.$router.push('/')
           this.$forceUpdate()
         })
         .catch(e => {

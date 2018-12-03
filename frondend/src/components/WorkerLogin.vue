@@ -59,6 +59,7 @@ export default {
                 this.worker = res2
                 this.$myStore.worker = this.worker
                 this.$myStore.save()
+                this.$router.go()
                 this.$emit('success')
               })
               .catch(e => {

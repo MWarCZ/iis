@@ -379,16 +379,16 @@ const Workers = {
    * KO:
    *   null | false
    */
-  remove (id) {
+  remove (login) {
     // TODO
     return axios.post(BACKEND_URL + '/employees.php',
       'request=DELETE' + '&data=' +
       JSON.stringify({
-        id: id
+        login: login
       })
       , axiosConfig)
       .then(res => {
-        console.log('Delete hall bool:', res.data)
+        console.log('Delete worker bool:', res.data)
         return res.data
       })
       .then(res => {

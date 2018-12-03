@@ -19,7 +19,7 @@
 
       <h2>Seznam zaměstnanců</h2>
       <WorkersList :workers="workers"
-                  />
+            @success="getWorkers();" />
     </b-card>
     <b-card v-else>
       <h1>Nemáte dostatečná opravnění.</h1>

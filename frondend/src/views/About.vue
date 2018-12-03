@@ -30,6 +30,7 @@
 
     <br />
     <!-- <WorkerCreate /> -->
+    <SearchReservation />
     <br />
 
     <button @click="showDialog = true">Open</button>
@@ -96,6 +97,8 @@ import ErrorDialog from '@/components/ErrorDialog.vue'
 import WorkerCreate from '@/components/WorkerCreate.vue'
 import WorkersList from '@/components/WorkersList.vue'
 
+import SearchReservation from '@/components/SearchReservation.vue'
+
 export default {
   name: 'About',
   components: {
@@ -115,7 +118,9 @@ export default {
     Genres,
     ErrorDialog,
     WorkerCreate,
-    WorkersList
+    WorkersList,
+
+    SearchReservation
   },
   data: function () {
     return {

@@ -12,6 +12,14 @@
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
+          <b-button variant="outline-danger"
+                    v-if="!!$myStore.worker && $myStore.worker.access >= row.item.access"
+                    @click="deleteWorker(row.item.login)"
+
+                    >
+                    Smazat/Propustit
+          </b-button>
+          <br />
           <Worker :worker="row.item" />
 
           <b-input-group prepend="Změnit acces lvl:">
@@ -35,6 +43,7 @@
                     Požadejte o změnu někoho s vyšími pravy.
             </b-button>
           </b-input-group>
+
         </b-card>
       </template>
   <!--
@@ -126,12 +135,24 @@ export default {
       return workers1
     },
     changeAccess (login, access) {
-      console.log('AAAAAAAA', this.$myStore.backend.Workers.updateAccess)
       this.$myStore.backend.Workers.updateAccess(login, access)
         .then(res => {
           console.log('access is:', res)
           let worker = this.workers.find(w => w.login === login)
           worker.access = access
+          // this.nowRooms = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.failed = true
+        })
+    },
+    deleteWorker (login) {
+      this.$myStore.backend.Workers.remove(login)
+        .then(res => {
+          console.log('remove worker is:', res)
+          let worker = this.workers.find(w => w.login === login)
+          this.$emit('success', { worker: worker})
           // this.nowRooms = res
         })
         .catch(e => {
