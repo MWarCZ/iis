@@ -183,7 +183,7 @@ function getTickets($db, $id) {
     if($db == NULL) return FALSE;
     
     try {
-        $query = $db->prepare("SELECT tickets.* , projections.date, films.name as film, halls.cinemaMark as room, cinemas.name as cinema
+        $query = $db->prepare("SELECT tickets.* , projections.date, films.name as film, films.idFilm as idFilm, halls.cinemaMark as room, cinemas.name as cinema, cinemas.idCinema as idCinema
                                 FROM tickets
                                 JOIN projections on tickets.idProjection=projections.idProjection
                                 JOIN films on projections.idFilm=films.idFilm
