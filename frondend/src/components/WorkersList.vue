@@ -116,7 +116,7 @@ export default {
         { key: 'login', label: 'Login', sortable: true },
         { key: 'firstname', label: 'Jméno', sortable: true },
         { key: 'lastname', label: 'Příjmení', sortable: true },
-        { key: 'show_details', label: 'Zobrazit' },
+        { key: 'show_details', label: 'Zobrazit' }
       ]
     }
   },
@@ -152,14 +152,14 @@ export default {
         .then(res => {
           console.log('remove worker is:', res)
           let worker = this.workers.find(w => w.login === login)
-          this.$emit('success', { worker: worker})
+          this.$emit('success', { worker: worker })
           // this.nowRooms = res
         })
         .catch(e => {
           console.log('ERR:', e)
           this.failed = true
         })
-    },
+    }
   },
   mounted: function () {
     /*

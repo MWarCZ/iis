@@ -186,11 +186,12 @@ export default {
       let { film } = args
       this.film = film
     } */
+    /*
     providerActors (actors, idFilm) {
       let newRooms = rooms.filter(r => r.idCinema === idCinema)
       console.log('Cinema-providerRooms:', newRooms)
       return newRooms
-    }
+    } */
 
   }, // methots
 

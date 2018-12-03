@@ -52,7 +52,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* {
    * }
@@ -101,7 +101,7 @@ const Tickets = {
 
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
 
   /* [{
@@ -180,7 +180,7 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })*/
+      }) */
   },
   /* [{
    *   id
@@ -197,8 +197,8 @@ const Tickets = {
    *   salePrecentage // sleva o procenta
    * }]
    */
+  /*
   getByIdReservation (id) {
-    /*
     let query = `{
       values: reservationTickets(idReservation: ${id}) {
           id
@@ -257,8 +257,8 @@ const Tickets = {
       })
       .catch(e => {
         return {}
-      })*/
-  },
+      })
+  }, */
   /* [{
    *   id
    *   seat

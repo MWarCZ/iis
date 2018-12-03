@@ -189,6 +189,21 @@ export default {
       }
       return seats
     },
+
+    getTicketByIdProjection (id) {
+      this.$myStore.backend.Tickets.getByIdProjection(id)
+        .then(res => {
+          console.log('Tickets are:', res)
+          let seats = res.map(r => r.seat)
+          console.log('Seats:', seats)
+          this.disabledSeats = seats
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.disabledSeats = []
+        })
+    },
+
     downloadByProjection (idProjection) {
 
       // console.log('=========1=idProjection', idProjection)
@@ -232,6 +247,7 @@ export default {
 
   mounted: function () {
     console.log('Reservation-mounted:', this.projection)
+    this.getTicketByIdProjection(this.projection.id)
     // console.log('=========0=idProjection', this.idProjection)
     // this.downloadByProjection (this.idProjection)
     /*

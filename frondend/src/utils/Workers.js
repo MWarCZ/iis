@@ -15,7 +15,6 @@ const Workers = {
    * }]
    */
   getAll () {
-
     return axios.post(BACKEND_URL + '/employees.php',
       'request=SELECT_ALL'
       , axiosConfig)
@@ -47,8 +46,8 @@ const Workers = {
         ssn
         deleted
          */
-        console.log('ALL workers2:', res)
-        return res
+        console.log('ALL workers2:', newValue)
+        return newValue
       })
     /*
     let query = `{
@@ -260,7 +259,7 @@ const Workers = {
    */
   create (firstname, lastname, login, password, password2, ssn, idCinema, access) {
     // TODO
-    console.log("ssn:", ssn)
+    console.log('ssn:', ssn)
     return axios.post(BACKEND_URL + '/employees.php',
       'request=INSERT' + '&data=' +
       JSON.stringify({
@@ -315,17 +314,6 @@ const Workers = {
    *   lastname
    * }
    */
-  updatePassword (id, newPassword, oldPassword) {
-    // TODO
-    return axios.post(BACKEND_URL, {
-    })
-      .then(res => {
-        return res.data.data.values
-      })
-      .catch(e => {
-        return {}
-      })
-  },
 
   updateAccess (login, access) {
     // TODO

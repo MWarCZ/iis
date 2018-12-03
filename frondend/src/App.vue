@@ -6,7 +6,6 @@
       <router-link to="/cinemas">Kina</router-link> |
       <router-link to="/about">HokusPokus</router-link> |
 
-
       <template v-if="!!$myStore.worker && $myStore.worker.access >= 3">
         <router-link to="/workers">Správa pracovníků</router-link> |
       </template>
@@ -75,7 +74,7 @@ export default {
     this.checkLogin()
     this.timer = setInterval(this.checkLogin, 60000)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.timer)
   },
   methods: {
@@ -101,7 +100,7 @@ export default {
             this.$myStore.user = undefined
             this.$myStore.worker = undefined
             this.$myStore.save()
-            //this.$router.go()
+            // this.$router.go()
           })
       } // if user
       else {
@@ -118,7 +117,7 @@ export default {
             this.$myStore.user = undefined
             this.$myStore.worker = undefined
             this.$myStore.save()
-            //this.$router.go()
+            // this.$router.go()
           })
       } // else
     },

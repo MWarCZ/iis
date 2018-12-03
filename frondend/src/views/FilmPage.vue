@@ -104,8 +104,8 @@ export default {
           } else {
             console.log('OK:', res.data)
             this.film = args.film
-            //this.cinema.name = args.name
-            //this.cinema.address = args.address
+            // this.cinema.name = args.name
+            // this.cinema.address = args.address
           }
           /*
           console.log('OK')

@@ -167,13 +167,10 @@ export default {
       return access > 1 && access <= 4
     },
     access2str (access) {
-      if (access == 2)
-        return "prodavač"
-      if (access == 3)
-        return "Manager"
-      if (access == 4)
-        return "Admin"
-      return "{ Takové neexistuji. }"
+      if (access == 2) { return 'prodavač' }
+      if (access == 3) { return 'Manager' }
+      if (access == 4) { return 'Admin' }
+      return '{ Takové neexistuji. }'
     },
     emitWorker () {
       if (this.checkLogin(this.worker.login) &&
@@ -181,15 +178,15 @@ export default {
         this.checkName(this.worker.lastname) &&
         this.checkSSN(this.worker.ssn) &&
         this.checkAccessLvl(this.worker.access)
-        ) {
-        console.log('Worker-emitWorker: ', this.worker )
+      ) {
+        console.log('Worker-emitWorker: ', this.worker)
         this.$emit('changeWorker', { ...(this.worker) })
 
         this.$emit('exit')
       }
     }
 
-/*
+    /*
     registerClient: function () {
       console.log('Register client.')
       if (this.checkName(this.client.firstname) &&
@@ -225,7 +222,7 @@ export default {
         this.$emit('fail')
       }
 
-    }*/
+    } */
   },
   mounted: function () {
   }

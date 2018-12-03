@@ -24,6 +24,8 @@
     <br />
     <button @click="getTicketByIdReservation(1)">Ticket by reservation 1</button>
     <br />
+    <button @click="getTicketByIdProjection(1)">Ticket by projection 1</button>
+    <br />
     <button @click="getWorkers()">Workers</button>
     <br />
     <!-- <WorkersList :workers="workers" /> -->
@@ -132,7 +134,7 @@ export default {
     }
   },
   mounted () {
-    this.getWorkers ()
+    this.getWorkers()
   },
   methods: {
     showTest (args) {
@@ -145,11 +147,11 @@ export default {
       this.$myStore.backend.Reservations.getAll()
         .then(res => {
           console.log('Reservations are:', res)
-          //this.workers = res
+          // this.workers = res
         })
         .catch(e => {
           console.log('ERR:', e)
-          //this.workers = []
+          // this.workers = []
         })
     },
 
@@ -157,11 +159,11 @@ export default {
       this.$myStore.backend.Reservations.getById(id)
         .then(res => {
           console.log('Reservation is:', res)
-          //this.workers = res
+          // this.workers = res
         })
         .catch(e => {
           console.log('ERR:', e)
-          //this.workers = []
+          // this.workers = []
         })
     },
 
@@ -169,22 +171,36 @@ export default {
       this.$myStore.backend.Reservations.getByIdClient(id)
         .then(res => {
           console.log('Reservations are:', res)
-          //this.workers = res
+          // this.workers = res
         })
         .catch(e => {
           console.log('ERR:', e)
-          //this.workers = []
+          // this.workers = []
         })
     },
-    getTicketByIdReservation(id) {
+    getTicketByIdReservation (id) {
       this.$myStore.backend.Tickets.getByIdReservation(id)
         .then(res => {
           console.log('Tickets are:', res)
-          //this.workers = res
+          // this.workers = res
         })
         .catch(e => {
           console.log('ERR:', e)
-          //this.workers = []
+          // this.workers = []
+        })
+    },
+
+    getTicketByIdProjection (id) {
+      this.$myStore.backend.Tickets.getByIdProjection(111)
+        .then(res => {
+          console.log('Tickets are:', res)
+          let seat = res.map(r => r.seat)
+          console.log('Seat:', seat)
+          // this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          // this.workers = []
         })
     },
 

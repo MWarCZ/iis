@@ -63,7 +63,7 @@ export default {
     }
   },
   mounted () {
-    this.getWorkers ()
-  },
+    this.getWorkers()
+  }
 }
 </script>

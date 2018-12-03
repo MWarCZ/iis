@@ -46,7 +46,6 @@
             <b>Zaplaceno: </b> ANO
           </b-list-group-item>
 
-
           <b-list-group-item  v-if="!reservation.picked"
                               variant="warning">
             <b>Vyzvednuto: </b> NE
@@ -137,8 +136,7 @@ export default {
         })
     },
 
-    stornoReservation(id) {
-
+    stornoReservation (id) {
       this.$myStore.backend.Reservations.remove(id)
         .then(res2 => {
           console.log('Prodana rezervace:', res2.data)
@@ -148,8 +146,7 @@ export default {
           console.log('Prodana rezervace KO:', e)
         })
     },
-    payAndPickReservation(id) {
-
+    payAndPickReservation (id) {
       this.$myStore.backend.Reservations.payAndPick(id)
         .then(res2 => {
           console.log('Prodana rezervace:', res2.data)
@@ -159,8 +156,7 @@ export default {
           console.log('Prodana rezervace KO:', e)
         })
     },
-    payReservation(id) {
-
+    payReservation (id) {
       this.$myStore.backend.Reservations.pay(id)
         .then(res2 => {
           console.log('Prodana rezervace:', res2.data)
@@ -170,8 +166,7 @@ export default {
           console.log('Prodana rezervace KO:', e)
         })
     },
-    pickReservation(id) {
-
+    pickReservation (id) {
       this.$myStore.backend.Reservations.pick(id)
         .then(res2 => {
           console.log('Prodana rezervace:', res2.data)

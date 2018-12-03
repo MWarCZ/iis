@@ -215,7 +215,7 @@ export default {
 
       if (user) {
         // id, firstname, lastname, login, password, email, birthday
-        this.$myStore.backend.Clients.update(this.newUser.id,  this.newUser.firstname,  this.newUser.lastname, this.newUser.login, this.oldPassword, this.newUser.email)
+        this.$myStore.backend.Clients.update(this.newUser.id, this.newUser.firstname, this.newUser.lastname, this.newUser.login, this.oldPassword, this.newUser.email)
           .then(res => {
             console.log('OK')
             this.user = user

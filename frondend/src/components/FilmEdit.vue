@@ -78,7 +78,7 @@ export default {
     },
     film: {
       type: Object,
-      default: () => { genres: [] }
+      default: () => ({ genres: [] })
     }
   },
   data: function () {
@@ -112,7 +112,6 @@ export default {
       if (this.checkName(this.newFilm.name) &&
         this.checkDuration(this.newFilm.duration)
       ) {
-
         let director = this.directors.find(dir => dir.id === this.newFilm.idDirector)
         if (director) {
           this.newFilm.firstnameDirector = director.firstname
@@ -124,9 +123,8 @@ export default {
         }
 
         this.$emit('updateFilm', {
-          film: this.newFilm, idGenreArr: this.idGenreArr,
+          film: this.newFilm, idGenreArr: this.idGenreArr
         })
-
 
         this.$emit('exit')
       } else {
@@ -160,7 +158,7 @@ export default {
       } else {
         this.failed = true
         this.$emit('fail')
-      }*/
+      } */
     },
     changeGenres (args) {
       let { idGenreArr, genres } = args
@@ -185,7 +183,7 @@ export default {
           console.log('ERR:', e)
           this.oldFilm = undefined
         })
-    }*/
+    } */
     // Ziskani seznamu studii
     this.$myStore.backend.Studios.getAll()
       .then(res => {
