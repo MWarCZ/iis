@@ -51,7 +51,7 @@ if(isset($input['request'])) {
             
             //All input set check
             if( !isset($input["data"]["id"]) &&
-                !isset($input["data"]["id"])) {
+                !isset($input["data"]["name"])) {
                 $out["error"][] = "Missing some input";
                 break;
             }

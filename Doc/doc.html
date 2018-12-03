@@ -31,7 +31,6 @@
         </dl>
 
         <h2>U¾ivatelé systému pro testování</h2>
-        <p>Uveïte prosím existující zástupce <strong>v¹ech rolí u¾ivatelù</strong>.</p>
         <table>
             <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
             <tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
@@ -46,18 +45,23 @@
         <p>
             Struèná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé pøípady pou¾ití uvedené v use-case diagramu z IDS. 
             V pøípadì, ¾e bylo nutno pøi implementaci uèinit zmìny v návrhu, musí být v dokumentaci zdùvodnìny.
-            
-            
+        </p>
+        
+        <p>
             PHP zpracovává jednotlivé dotazy (struktura dotazu ní¾e). Seznam v¹ech dotazù naleznete v souboru <a href="./API_Doc.json">API_Doc.json</a>,
-            kde je seznam v¹ech souborù které pøijímají data
+            kde je seznam v¹ech souborù které pøijímají data, a co pøijímá a vrací který request
         </p>
         
         <dl>
             <dt>Struktura pøijímaného dotazu</dt>
             
-            <dd>[HTTP REQUEST] {request = &lt;REQUEST&gt; &amp; data = &lt;DATA&gt;}</dd>
+            <dd>[HTTP REQUEST] {request = &lt;REQUEST&gt; &amp; data = &lt;input&gt;}</dd>
             <dd>&lt;REQUEST&gt; - plain text</dd>
             <dd>&lt;DATA&gt; - JSON encoded data</dd>
+            
+            <dt>Struktura odeslaných dat (v JSON)</dt>
+            
+            <dd>{"error" = [&lt;ERRORS&gt;], "data" = &lt;output&gt;}</dd>
         </dl>
         
         <dl>
