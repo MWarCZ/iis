@@ -162,9 +162,13 @@ if(isset($input['request'])) {
             
             //If employee exist, verifi passwd and update data
             if(employee_exist($db, $login)) {                  
+                if(password_verify($pass, get_passwd ($db, $login)) || $_SESSION["access"] >= 3) {
                     if(!update_employeeData($db, $login, $name, $surname, $ssn)) $out["error"][] = "Update error";
-                    else $out["data"] = true;
+                    else $out["data"] = true;                   
+                } else $out["error"][] = "Wrong password";
             } else $out["error"][] = "Employee don't exist";
+            
+            
                     
             break;
         
@@ -274,7 +278,7 @@ if(isset($input['request'])) {
             
             //If employee exist, verifi passwd and delete
             if(employee_exist($db, $login)) {
-                if(password_verify($pass, get_passwd ($db, $login))) {
+                if(password_verify($pass, get_passwd ($db, $login)) || $_SESSION["access"] >= 3) {
                     //First sign out
                     if(isset($_SESSION["id"])) {
                         session_unset();
@@ -286,9 +290,7 @@ if(isset($input['request'])) {
                     
                     if(!delete_employee($db, $login)) $out["error"][] = "Delete error";
                     else $out["data"] = true;                   
-                } else {
-                    $out["error"][] = "Wrong password";
-                }
+                } else $out["error"][] = "Wrong password";
             } else $out["error"][] = "employee don't exist";
             
             break;
