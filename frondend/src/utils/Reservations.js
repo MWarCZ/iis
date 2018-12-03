@@ -19,6 +19,12 @@ const Reservations = {
         return res.data
       })
       .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
+      .then(res => {
         let newRes = res.data.map(value => {
           value.id = Number(value.idReservation)
           value.reserved = value.reserved
@@ -66,6 +72,12 @@ const Reservations = {
       .then(res => {
         console.log('Id reservation:', res.data)
         return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
       .then(res => {
         let newRes = res.data.map(value => {
@@ -119,6 +131,12 @@ const Reservations = {
         return res.data
       })
       .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
+      })
+      .then(res => {
         let newRes = res.data.map(value => {
           value.id = Number(value.idReservation)
           value.reserved = value.reserved
@@ -159,6 +177,12 @@ const Reservations = {
       .then(res => {
         console.log('ByDate reservations:', res.data)
         return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
       .then(res => {
         let newRes = res.data.map(value => {

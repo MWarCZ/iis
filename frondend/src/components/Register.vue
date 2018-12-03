@@ -121,7 +121,8 @@ export default {
     },
     checkEmail (email) {
       // TODO
-      return !!email && email.indexOf('@') > 0
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
 
     registerClient: function () {
@@ -130,7 +131,8 @@ export default {
         this.checkName(this.client.lastname) &&
         this.checkLogin(this.client.login) &&
         this.checkNewPassword(this.password) &&
-        this.checkRepeatNewPassword(this.password, this.password2)
+        this.checkRepeatNewPassword(this.password, this.password2) &&
+        this.checkEmail(this.client.email)
       ) {
         this.client.password = this.password
         // TODO

@@ -16,15 +16,23 @@
 
           <b-input-group prepend="Změnit acces lvl:">
             <b-form-select v-model="newAcces"
+                    v-if="!!$myStore.worker && $myStore.worker.access >= 4"
                            >
               <option value="2"> Prodavač</option>
               <option value="3"> Manager</option>
               <option value="4"> Admin</option>
             </b-form-select>
             <b-button variant="outline-primary"
+                    v-if="!!$myStore.worker && $myStore.worker.access >= 4"
                     @click="changeAccess(row.item.login, newAcces)"
                     >
                     Změnit
+            </b-button>
+            <b-button variant="outline-secondary"
+                      v-else
+                      disabled
+                    >
+                    Požadejte o změnu někoho s vyšími pravy.
             </b-button>
           </b-input-group>
         </b-card>
@@ -51,18 +59,26 @@
                     @exit="showDialog = false"
                     />
     </Dialog>
+
+    <ErrorDialog
+      :showDialog="failed"
+      @close="failed = false"
+      message="Akce nebyla odmítnuta."
+      />
   </div>
 </template>
 
 <script>
 import Worker from '@/components/Worker.vue'
 import Dialog from '@/components/Dialog.vue'
+import ErrorDialog from '@/components/ErrorDialog.vue'
 
 export default {
   name: 'WorkersList',
   components: {
     Worker,
-    Dialog
+    Dialog,
+    ErrorDialog
   },
   props: {
     workers: {
@@ -85,6 +101,7 @@ export default {
       editedWorker: {},
       newAcces: 2,
       showDialog: false,
+      failed: false,
       fields: [
         { key: 'access', label: 'Access lvl', sortable: true },
         { key: 'login', label: 'Login', sortable: true },
@@ -109,19 +126,19 @@ export default {
       return workers1
     },
     changeAccess (login, access) {
+      console.log('AAAAAAAA', this.$myStore.backend.Workers.updateAccess)
       this.$myStore.backend.Workers.updateAccess(login, access)
         .then(res => {
           console.log('access is:', res)
-          if (res[0] === undefined) {
-            throw new Error({ msg: 'Empty Rooms', res })
-          }
+          let worker = this.workers.find(w => w.login === login)
+          worker.access = access
           // this.nowRooms = res
         })
         .catch(e => {
           console.log('ERR:', e)
+          this.failed = true
         })
-
-    }
+    },
   },
   mounted: function () {
     /*

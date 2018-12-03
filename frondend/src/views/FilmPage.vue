@@ -210,7 +210,7 @@ export default {
             console.log('ERR:', res.error)
           } else {
             console.log('OK:', res.data)
-            this.$myStore.backend.Reservations.pick(res.data)
+            this.$myStore.backend.Reservations.payAndPick(res.data)
               .then(res2 => {
                 console.log('OK2:', res2.data)
               })

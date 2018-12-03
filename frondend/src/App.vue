@@ -6,6 +6,11 @@
       <router-link to="/cinemas">Kina</router-link> |
       <router-link to="/about">HokusPokus</router-link> |
 
+
+      <template v-if="!!$myStore.worker && $myStore.worker.access >= 3">
+        <router-link to="/workers">Správa pracovníků</router-link> |
+      </template>
+
       <template v-if="$myStore.user !== undefined">
         <router-link to="/myaccount">Můj účet</router-link> |
       </template>

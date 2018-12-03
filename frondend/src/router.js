@@ -8,6 +8,7 @@ import CinemasPage from './views/CinemasPage.vue'
 import CinemaPage from './views/CinemaPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import AccountPage from './views/AccountPage.vue'
+import WorkersPage from './views/WorkersPage.vue'
 
 import SellPage from './views/SellPage.vue'
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/myaccount',
       name: 'My Account',
       component: AccountPage
+    },
+    {
+      path: '/workers',
+      name: 'Workers',
+      component: WorkersPage
     }
   ]
 })

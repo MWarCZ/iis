@@ -260,6 +260,7 @@ const Workers = {
    */
   create (firstname, lastname, login, password, password2, ssn, idCinema, access) {
     // TODO
+    console.log("ssn:", ssn)
     return axios.post(BACKEND_URL + '/employees.php',
       'request=INSERT' + '&data=' +
       JSON.stringify({
@@ -270,11 +271,17 @@ const Workers = {
         pass: password,
         pass_verifi: password2,
         idCinema: idCinema,
-        access: access
+        acces: access
       })
       , axiosConfig)
       .then(res => {
         return res.data
+      })
+      .then(res => {
+        if (!res.data) {
+          throw new Error(res.error)
+        }
+        return res
       })
   },
 
@@ -322,12 +329,11 @@ const Workers = {
 
   updateAccess (login, access) {
     // TODO
-    console.log('=======e', email)
     return axios.post(BACKEND_URL + '/employees.php',
       'request=CHANGE_ACCESS' + '&data=' +
       JSON.stringify({
         login: login,
-        access: access
+        acces: Number(access)
       })
       , axiosConfig)
       .then(res => {

@@ -9,7 +9,7 @@
       <b-alert variant="danger" dismissible
         @dismissed="registerFailed = false"
         :show="registerFailed">
-        Nepodařilo se vztvořit.
+        Nepodařilo se vytvořit.
       </b-alert>
 
       <b-input-group prepend="Jméno:">
@@ -43,22 +43,22 @@
         <b-form-input v-model="client.ssn"
                   type="text"
                   label="ssn"
-                  :state="checkEmail(client.email)"
-                  placeholder="Pracovníkovo ssn."
+                  :state="checkSSN(client.ssn)"
+                  placeholder="Pracovnikovo ssn. pr. 123456/1234"
                   >
         </b-form-input>
       </b-input-group>
-
+<!--
       <b-input-group prepend="Access Level:">
-        <b-form-input v-model="client.access"
-                  type="number"
-                  label="access"
+        <b-form-select v-model="client.access"
                   :state="checkAccessLvl(client.access)"
-                  placeholder="urověň oprávnění (2-prodavač, 3-manager, 4-admin"
-                  >
-        </b-form-input>
+                       >
+          <option :value="2"> Prodavač</option>
+          <option :value="3"> Manager</option>
+          <option :value="4"> Admin</option>
+        </b-form-select>
       </b-input-group>
-
+ -->
       <b-input-group prepend="Heslo:">
         <b-form-input v-model="password"
                       type="password"
@@ -77,8 +77,8 @@
         </b-form-input>
       </b-input-group>
 
-      <b-button variant="primary" @click="registerClient()">
-        Zaregistrovat se
+      <b-button variant="primary" @click="registerWorker()">
+        Zaregistrovat Pracovnika
       </b-button>
     </b-card>
 
@@ -100,7 +100,8 @@ export default {
       client: {
         firstname: '',
         lastname: '',
-        login: ''
+        login: '',
+        ssn: ''
       },
       password: '',
       password2: '',
@@ -125,42 +126,45 @@ export default {
     checkRepeatNewPassword (password1, password2) {
       return !!password1 && (password1 === password2)
     },
-    checkBirthday (date) {
-      // TODO
-      return true
+    checkSSN (ssn) {
+      var re = /^([0-9]{6})(\/)?([0-9]{3,4})$/
+      return re.test(ssn)
     },
     checkAccessLvl (access) {
       // TODO
       return access > 1 && access <= 4
     },
 
-    registerClient: function () {
-      console.log('Register client.')
+    registerWorker: function () {
+      console.log('Register worker.')
       if (this.checkName(this.client.firstname) &&
         this.checkName(this.client.lastname) &&
         this.checkLogin(this.client.login) &&
         this.checkNewPassword(this.password) &&
-        this.checkRepeatNewPassword(this.password, this.password2)
+        this.checkRepeatNewPassword(this.password, this.password2) &&
+        this.checkSSN(this.client.ssn)
       ) {
         this.client.password = this.password
         // TODO
-        // firstname, lastname, login, password, password2, email , birthday
-        this.$myStore.backend.Clients.create(
+        // firstname, lastname, login, password, password2, ssn, idCinema, access
+        this.$myStore.backend.Workers.create(
           this.client.firstname,
           this.client.lastname,
           this.client.login,
           this.password,
           this.password2,
-          this.client.email
+          this.client.ssn,
+          this.client.idCinema,
+          this.client.access
         )
           .then(res => {
             console.log('OK')
             console.log('RES:', res)
             this.registerSuccess = true
-            this.$emit('success', { client: this.client })
+            this.$emit('success', { worker: this.client })
           })
           .catch(e => {
-            console.log('KO')
+            console.log('KO2', e)
             this.registerFailed = true
             this.$emit('fail')
           })

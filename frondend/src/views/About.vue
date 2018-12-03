@@ -16,12 +16,19 @@
     <br />
     <button @click="getFilm(1)">Film 1</button>
     <br />
+    <button @click="getReservationsAll()">All reservations</button>
+    <br />
+    <button @click="getReservationById(1)">Reservation 1</button>
+    <br />
+    <button @click="getReservationByIdClient(1)">Reservations Client 1</button>
+    <br />
     <button @click="getWorkers()">Workers</button>
     <br />
     <WorkersList :workers="workers"
                 />
 
-    <!-- <WorkerCreate /> -->
+    <br />
+    <WorkerCreate />
     <br />
 
     <button @click="showDialog = true">Open</button>
@@ -118,11 +125,50 @@ export default {
       workers: () => []
     }
   },
+  mounted () {
+    this.getWorkers ()
+  },
   methods: {
     showTest (args) {
       let { idGenreArr, genres } = args
       this.arr = idGenreArr
       this.genres = genres
+    },
+
+    getReservationsAll () {
+      this.$myStore.backend.Reservations.getAll()
+        .then(res => {
+          console.log('Reservations are:', res)
+          //this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          //this.workers = []
+        })
+    },
+
+    getReservationById (id) {
+      this.$myStore.backend.Reservations.getById(id)
+        .then(res => {
+          console.log('Reservation is:', res)
+          //this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          //this.workers = []
+        })
+    },
+
+    getReservationByIdClient (id) {
+      this.$myStore.backend.Reservations.getByIdClient(id)
+        .then(res => {
+          console.log('Reservations are:', res)
+          //this.workers = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          //this.workers = []
+        })
     },
 
     getWorkers () {
