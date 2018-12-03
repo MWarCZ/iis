@@ -103,7 +103,7 @@ if(isset($input['request'])) {
             //Delete hall
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"][] = "SQL Error";
+            } else $out["error"][] = "SQL Error - Projection exist with this hall";
             
             break;
             

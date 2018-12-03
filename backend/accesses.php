@@ -84,7 +84,7 @@ if(isset($input['request'])) {
             //Delete projection
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"][] = "SQL Error";
+            } else $out["error"][] = "SQL Error - Film exist with this access";
             
             break;
             

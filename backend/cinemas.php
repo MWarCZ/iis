@@ -88,7 +88,7 @@ if(isset($input['request'])) {
             
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"][] = "SQL Error";
+            } else $out["error"][] = "SQL Error - Hall exist with this cinema";
             
             break;
             

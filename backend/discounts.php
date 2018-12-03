@@ -98,7 +98,7 @@ if(isset($input['request'])) {
             //Delete projection
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"][] = "SQL Error";
+            } else $out["error"][] = "SQL Error - Reservation exist under this discount";
             
             break;
             

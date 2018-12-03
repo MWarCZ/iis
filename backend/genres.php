@@ -90,7 +90,7 @@ if(isset($input['request'])) {
             //Delete hall
             if(delete($db, $id)) {
                 $out["data"] = true;
-            } else $out["error"][] = "SQL Error";
+            } else $out["error"][] = "SQL Error - Film exist with this genre";
             
             break;
             
