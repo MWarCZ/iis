@@ -16,7 +16,7 @@ function validate_ssn($ssn) {
 //        
 //    } else 
     
-    if(preg_match("/^([0-9]{6})(\/)?([0-9]{3-4})$/", $ssn)) return true;
+    if(preg_match("/^([0-9]{6})(\/)?([0-9]{3,4})$/", $ssn)) return true;
     
     return false;
 }
