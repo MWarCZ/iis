@@ -11,7 +11,7 @@
       </template>
 
       <template slot="cinema" slot-scope="row">
-        <router-link class="link-as-text" :to="'/film/'+row.item.idCinema">
+        <router-link class="link-as-text" :to="'/cinema/'+row.item.idCinema">
         {{row.item.cinema}}
         </router-link>
       </template>
