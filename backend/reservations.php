@@ -199,9 +199,9 @@ if(isset($input['request'])) {
             //Get data from inputs
             $id = htmlspecialchars($input["data"]["id"]);
             
-            if(($data = selectId($db, $id))) {
-                $out["data"] = $data;
-            } else $out["error"][] = "Not found";
+            if(pick($db, $id)) {
+                $out["data"] = true;
+            } else $out["error"][] = "SQL Error";
             
             break;
             
