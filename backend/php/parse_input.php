@@ -8,7 +8,7 @@ $rootDomain = '.mwarcz.cz/';
 session_name();
 session_start(); 
 
-setcookie("session_cookie", "value", time() + 600, '/', $rootDomain);
+setcookie("session_cookie", "value", time() + 3600, '/', $rootDomain);
 
 //Parse POST data
 if(isset($_REQUEST["request"])) {
