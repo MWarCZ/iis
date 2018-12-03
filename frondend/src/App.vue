@@ -101,7 +101,7 @@ export default {
             this.$myStore.user = undefined
             this.$myStore.worker = undefined
             this.$myStore.save()
-            this.$router.go()
+            //this.$router.go()
           })
       } // if user
       else {
@@ -118,7 +118,7 @@ export default {
             this.$myStore.user = undefined
             this.$myStore.worker = undefined
             this.$myStore.save()
-            this.$router.go()
+            //this.$router.go()
           })
       } // else
     },
@@ -129,8 +129,8 @@ export default {
           this.$myStore.user = undefined
           this.$myStore.worker = undefined
           this.$myStore.save()
+          this.$router.push('/')
           this.$router.go()
-          // this.$router.push('/')
           this.$forceUpdate()
         })
         .catch(e => {
@@ -142,8 +142,8 @@ export default {
           this.$myStore.user = undefined
           this.$myStore.worker = undefined
           this.$myStore.save()
+          this.$router.push('/')
           this.$router.go()
-          // this.$router.push('/')
           this.$forceUpdate()
         })
         .catch(e => {
