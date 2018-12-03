@@ -29,8 +29,17 @@
       <Dialog v-if="loginVisible" @close="loginVisible = false">
         <h1>Přihlášení:</h1>
         <Login @success="loginVisible = false;" />
-        <h1>Registrace:</h1>
-        <Register />
+        <!-- <h1>Registrace:</h1> -->
+        <!-- <Register /> -->
+
+        <h3><a href="#" v-b-toggle="'client_register'">
+          Zaregistrovat se
+        </a></h3>
+        <b-collapse id="client_register">
+          <h2>Registrace:</h2>
+          <Register />
+        </b-collapse>
+
         <h5><a href="#" v-b-toggle="'worker_login'">
           Vstup pro zaměstance
         </a></h5>
