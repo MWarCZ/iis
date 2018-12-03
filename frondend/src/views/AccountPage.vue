@@ -6,8 +6,10 @@
       <AccountClient :idClient="idUser" />
       <h2>Rezervace</h2>
       <Reservations :idClient="idUser" />
+<!--
       <h2>Zakoupené lístky</h2>
       <Tickets :idClient="idUser"/>
+       -->
     </b-card>
   </div>
 </template>

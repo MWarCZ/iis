@@ -104,6 +104,7 @@ export default {
           } else {
             console.log('OK:', res.data)
             this.film = args.film
+            this.$router.go()
             // this.cinema.name = args.name
             // this.cinema.address = args.address
           }

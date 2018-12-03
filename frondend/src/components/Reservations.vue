@@ -1,5 +1,51 @@
 <template>
-  <div style="overflow:auto">
+  <div style="overflow:auto" class="reservationsBox">
+
+        <b-list-group class="reservation" v-for="(reservation, index) in reservations" :key="index" >
+          <b-list-group-item>
+            <b>ID: </b>{{reservation.id}}
+          </b-list-group-item>
+
+          <b-list-group-item>
+            <b>Celková cena: </b>{{reservation.totalPrice}}
+          </b-list-group-item>
+<!--
+          <b-list-group-item>
+            <b>Zarezervováno v: </b>{{reservation.reserved}}
+          </b-list-group-item> -->
+
+          <b-list-group-item  v-if="!reservation.paid"
+                              variant="warning">
+            <b>Zaplaceno: </b> NE
+          </b-list-group-item>
+          <b-list-group-item  v-else
+                              variant="success">
+            <b>Zaplaceno: </b> ANO
+          </b-list-group-item>
+
+          <b-list-group-item  v-if="!reservation.picked"
+                              variant="warning">
+            <b>Vyzvednuto: </b> NE
+          </b-list-group-item>
+          <b-list-group-item  v-else
+                              variant="success">
+            <b>Vyzvednuto: </b> ANO
+          </b-list-group-item>
+
+          <b-list-group-item>
+            <b>Akce: </b>
+            <template v-if="!!$myStore.user && $myStore.user.id == reservation.idUser">
+              <b-button v-if="!reservation.picked"
+                        variant="outline-danger"
+                        @click="stornoReservation(reservation.id)">
+                Zrušit rezervaci
+              </b-button>
+            </template>
+
+          </b-list-group-item>
+          <br/>
+        </b-list-group>
+    <!--
     <b-table striped hover
       :fields="fields"
       :items="reservationsProvider()"
@@ -25,7 +71,7 @@
         </template>
       </template>
     </b-table>
-
+ -->
   </div>
 </template>
 
@@ -64,7 +110,29 @@ export default {
     debug (...obj) {
       console.log(...obj)
     },
+    getReservationByIdClient (id) {
+      this.$myStore.backend.Reservations.getByIdClient(id)
+        .then(res => {
+          console.log('Reservations are:', res)
+          this.reservations = res
+        })
+        .catch(e => {
+          console.log('ERR:', e)
+          this.reservations = []
+        })
+    },
 
+    stornoReservation (id) {
+      this.$myStore.backend.Reservations.remove(id)
+        .then(res2 => {
+          console.log('Prodana rezervace:', res2.data)
+          this.reservations = this.reservations.filter(r => r.id !== id)
+        })
+        .catch(e => {
+          console.log('Prodana rezervace KO:', e)
+        })
+    },
+/*
     getFinalPrice: function (price, salePrice, salePercent) {
       let sale = 0
       sale += (salePrice) || 0
@@ -105,10 +173,12 @@ export default {
         return res
       })
       return reservations
-    }
+    } */
 
   },
   mounted: function () {
+    this.getReservationByIdClient(this.idClient)
+    /*
     if (this.idClient !== undefined) {
       // Stazeni klientovych rezervaci a listku
       this.$myStore.backend.Reservations.getByIdClient(this.idClient)
@@ -174,12 +244,21 @@ export default {
           console.log('ERR:', e)
           this.reservations = []
         })
-    }
+    }*/
   }
 }
 </script>
 
 <style scoped lang="less">
+
+.reservationsBox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.reservation {
+      max-width: 300px;
+}
 
 .clickable {
   cursor: pointer;
