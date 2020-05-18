@@ -1,0 +1,193 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+        <title>Projekt IIS</title>
+        <style type="text/css">
+            table { border-collapse: collapse; }
+            td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+            dt { font-weight: bold; margin-top: 0.5em; }
+        </style>
+    </head>
+    <body>
+
+        <h1>Zadání č.39 - Řetězec multikin</h1>
+
+        <dl>
+            <dt>Autoři</dt>
+            <dd>Miroslav Válka
+                <a href="mailto:xvalka05@stud.fit.vutbr.cz">xvalka05@stud.fit.vutbr.cz</a> -
+                Frontend - Vue.js, HTTP Requests
+            </dd>
+            <dd>Roman Zajíc
+                <a href="mailto:xzajic16@stud.fit.vutbr.cz">xzajic16@stud.fit.vutbr.cz</a> - 
+                PHP API, DB Manipulation 
+            </dd>
+            <dt>URL aplikace</dt>
+            <dd><a href="http://xxx.mwarcz.cz/">http://xxx.mwarcz.cz/</a></dd>
+            <dd><a href="http://www.stud.fit.vutbr.cz/~xzajic16/IIS">http://www.stud.fit.vutbr.cz/~xzajic16/IIS</a></dd>
+            
+        </dl>
+
+        <h2>Uživatelé systému pro testování</h2>
+        <table>
+            <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+            <tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
+            <tr><td>manager</td><td>manager</td><td>Manažer</td></tr>
+            <tr><td>worker</td><td>worker</td><td>Prodavač</td></tr>
+            <tr><td>user</td><td>user</td><td>Zákazník</td></tr>
+            <tr><td>user2</td><td>user2</td><td>Zákazník</td></tr>
+            <tr><td>user3</td><td>user3</td><td>Zákazník</td></tr>
+        </table>
+
+        <h2>Implementace</h2>
+        <p>
+            Stručná dokumentace k implementaci, která popisuje, které PHP skripty implementují jednotlivé případy použití uvedené v use-case diagramu z IDS. 
+            V případě, že bylo nutno při implementaci učinit změny v návrhu, musí být v dokumentaci zdůvodněny.
+        </p>
+        
+        <p>
+            PHP zpracovává jednotlivé dotazy (struktura dotazu níže). Seznam všech dotazů naleznete v souboru <a href="./API_Doc.json">API_Doc.json</a>,
+            kde je seznam všech souborů které přijímají data, a co přijímá a vrací který request. Každý .php soubor zajištuje kompletní správu dané kategorie. 
+            Jedinná vyjímka je u <i>reservations.php</i> / <i>tickets.php</i> -> lístek se vytváří u rezervace a tickets.php obsahuje pouze selecty do DB.
+        </p>
+        <table>
+            <tr>
+                <th>PŘÍPAD UŽITÍ</th>
+                <th>SOUBOR</th>
+                <th>REQUEST</th>
+            </tr>
+            <tr>
+                <th>Uživatel</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <td>Rezervoval lístky</td>
+                <td>reservation.php</td>
+                <td>RESERVE</td>
+            </tr>
+            <tr>
+                <td>Rušení rezervace</td>
+                <td>reservation.php</td>
+                <td>CANCEL, CANCEL_ALL</td>
+            </tr>
+            <tr>
+                <td>Procházení historie</td>
+                <td>reservation.php</td>
+                <td>SELECT, SELCET_ALL, .... </td>
+            </tr>
+            <tr>
+                <td>Registrace</td>
+                <td>user.php</td>
+                <td>INSERT</td>
+            </tr>
+            <tr>
+                <td>Zobrazit program</td>
+                <td>projections.php</td>
+                <td>SELECT, SELECT_ALL, ....</td>
+            </tr>
+            <tr>
+                <td>Hledat film</td>
+                <td>films.php</td>
+                <td>SELECT, SELECT_ALL, ....</td>
+            </tr>
+            <tr>
+                <th>Zaměstnanec</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <td>Prodat vstupenku</td>
+                <td>reservation.php</td>
+                <td>PAY, PAY_PICK</td>
+            </tr>
+            <tr>
+                <td>Vydat vstupenku</td>
+                <td>reservation.php</td>
+                <td>PICK</td>
+            </tr>
+            <tr>
+                <th>Manažer</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <td>Zjistit tržby</td>
+                <td>films.php / cinemas.php</td>
+                <td>EARNINGS</td>
+            </tr>
+            <tr>
+                <td>Editace programu</td>
+                <td>projections.php</td>
+                <td>INSERT, UPDATE, DELETE</td>
+            </tr>            
+            <tr>
+                <td>Editace kina/filmu/sálu/...</td>
+                <td>cinemas.php / films.php / halls.php / ....</td>
+                <td>INSERT, UPDATE, DELETE</td>
+            </tr>
+            <tr>
+                <th>Administrátor</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <td>Editace práv</td>
+                <td>employees.php</td>
+                <td>CHANGE_ACCESS</td>
+            </tr>
+        </table>
+        
+        <dl>
+            <dt>Struktura přijímaného dotazu</dt>
+            
+            <dd>[HTTP REQUEST] {request = &lt;REQUEST&gt; &amp; data = &lt;input&gt;}</dd>
+            <dd>&lt;REQUEST&gt; - plain text</dd>
+            <dd>&lt;DATA&gt; - JSON encoded data</dd>
+            
+            <dt>Struktura odeslaných dat (v JSON)</dt>
+            
+            <dd>{"error" = [&lt;ERRORS&gt;], "data" = &lt;output&gt;}</dd>
+        </dl>
+        
+        <dl>
+            <dt>Pomocné soubory</dt>
+            
+            <dd><a href="./Diagram.png">Databázové schéma</a></dd>
+            <dd><a href="./Usecase.png">Usecase diagram</a></dd>
+            <dd><a href="./API_Doc.json">API_Doc.json</a></dd>
+        </dl>
+        
+        <h2>Instalace</h2>
+        
+        <p>Backend</p>
+        <ul>            
+            <li>Testováno na PHP Version 7.2.12 a Apache 2.4.37</li>
+            <li>V <i>/php/db_connect.php</i> je třeba nastavit údaje pro připojení k DB </li>
+            <li>V <i>/php/parse_input.php</i> je třeba nastavit root doménu ($rootDomain) kvůli správnému fungování sessions</li>            
+            <li>Soubor <i>'xvalka05_xzajic16_FINAL.sql'</i> je export databáze se základními daty - nutno naimportovat</li>
+        </ul>
+        
+        <p>Frontend</p>
+        <ul>
+            <li>Je potřeba Nodejs v10.9.0 a npm 6.2.0 nebo yarn 1.9.4</li>
+            <li>V složce '/frondend/' provést instalaci balíčků tzn. použít příkaz 'yarn' nebo 'npm install'</li>
+            <li>V souboru <i>src/utils/constant.js</i> se musí nastavit adresa backendu</li>
+            <li>Po úspěšném stažení balíčků je možné spouštět cíle z packet.json -> 'yarn start' nebo 'yarn build' či 'yarn lint' obdobně pro 'npm'</li>
+            <li>To vytvoří složku '/dist/' a v ní jsou poté soubory <i>index.html</i> a další</li>
+        </ul>
+
+        <h2>Známé problémy</h2>
+        <ul>
+            <li>nelze přidávat nové žánry, studia, herce a režiséry</li>
+            <li>nelze zobrazit tržby dle kina/filmu</li>
+            <li>kino nejde smazat pokud obsahuje nějakou mistnost</li>
+            <li>mistnost nejde smazat pokud obsahuje nějakou projekci</li>
+            <li>projekci nejde smazat pokud obsahuje nějakou rezervaci</li>
+        </ul>
+
+    </body>
+</html>

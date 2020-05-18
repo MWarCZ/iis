@@ -1,0 +1,599 @@
+[
+{
+    "URL" : "accesses.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "desc",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, desc",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idAccess, description)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idAccess, description"
+            }
+        }
+    ]
+},
+{
+    "URL" : "actors.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name, surname, birthday",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name, surname, birthday",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idActor, name, surname, birthday)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idActor, name, surname, birthday"
+            }
+        }
+    ]
+},
+{
+    "URL" : "cinemas.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name, address",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name, address",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idCinema, name, address)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idCinema, name, address"
+            }
+        },
+        {"EARNINGS" : 
+            {
+                "input"  : "id",
+                "output" : "idCinema, name, address, earnings"
+            }
+        }
+    ]
+},
+{
+    "URL" : "directors.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name, surname, birthday",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name, surname, birthday",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idDirector, name, surname, birthday)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idDirector, name, surname, birthday"
+            }
+        }
+    ]
+},{
+    "URL" : "discounts.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "desc, discount",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, desc, discount",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idDiscount, description, discount)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idDiscount, description, discount"
+            }
+        }
+    ]
+},
+{
+    "URL" : "employees.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "login, name, surname, ssn, pass, pass_verifi",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGIN" : 
+            {
+                "input"  : "login, pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGOUT" : 
+            {
+                "input"  : "",
+                "output" : "true/NULL"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "login, name, surname, ssn, pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"CHANGE_ACCESS" : 
+            {
+                "input"  : "login, acces",
+                "output" : "true/NULL"
+            }
+        },
+        {"CHANGE_PASSW" : 
+            {
+                "input"  : "login, old_pass, new_pass, new_verifi",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "login",
+                "nepovyný": "pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGGED" : 
+            {
+                "input"  : "",
+                "output" : "id, login, name, surname, email"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "idEmployee, login, name, surname, ssn, passwd, access_level, idCinema"
+            }
+        }
+    ]
+},
+{
+    "URL" : "films.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name, duration, released, rating, generes",
+                "nepovyný"  : "idDirector, idStudio, idAccess",    
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name, duration, released, rating, generes",
+                "nepovyný"  : "idDirector, idStudio, idAccess", 
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idFilm, name, duration, released, ratings",
+                " "      :        "director = {idDirector, name, surname, birthday}",
+                " "      :        "studio = {idStudio, name}",
+                " "      :        "actors = array(idActor, name, surname, birthday)",
+                " "      :        "genres = {idGenre, name})"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idFilm, name, duration, released, ratings",
+                " "      : "director = {idDirector, name, surname, birthday}",
+                " "      : "studio = {idStudio, name}",
+                " "      : "actors = array(idActor, name, surname, birthday)",
+                " "      : "genres = {idGenre, name}"
+            }
+        },
+        {"ADD_ACTOR" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"DEL_ACTOR" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"EARNINGS" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        }
+    ]
+},
+{
+    "URL" : "genres.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idGenre, name)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idGenre, name"
+            }
+        }
+    ]
+},
+{
+    "URL" : "halls.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "mark, cpa, idCinema",
+                "output" : "true/NULL"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, mark, cpa, idCinema",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idHall, idCinema, cinemaMark, capacity)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idHall, idCinema, cinemaMark, capacity"
+            }
+        }
+    ]
+},
+{
+    "URL" : "projections.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "date, idFilm, idHall, price",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, date, idFilm, idHall, price",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idReservation, date, idFilm, idHall)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idReservation, date, idFilm, idHall"
+            }
+        },
+        {"SELECT_BYDATE" : 
+            {
+                "input"  : "id",
+                "output" : "array(idReservation, date, idFilm, idHall)"
+            }
+        },
+        {"SELECT_ALL_WITH_DETAILS" : 
+            {
+                "input"  : "",
+                "output" : "array(idReservation, date, idFilm, idHall, film, hall, cinema)"
+            }
+        }
+    ]
+},
+{
+    "URL" : "reservations.php",
+    "REQUESTS" :[
+        {"RESERVE" : 
+            {
+                "input"  : ",tickets = array(idDiscount, idProjection, seatNumber)",
+                "nepovyný": "idUser",
+                "output" : "id"
+            }
+        },
+        {"CANCEL" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"CANCEL_ALL" : 
+            {
+                "input"  : "idUser",
+                "output" : "true/NULL"
+            }
+        },
+        {"PAY_PICK" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"PAY" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"PICK" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber, date, film, room, cinema}"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber, date, film, room, cinema})"
+            }
+        },
+        {"SELECT_USER" : 
+            {
+                "input"  : "id",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber, date, film, room, cinema})"
+            }
+        },
+        {"SELECT_BYDATE" : 
+            {
+                "input"  : "date",
+                "output" : "array(idReservation, reserved, totalPrice, paid, picked, idUser",
+                " "      : "      tickets : {idTicket, price, idReservation, idDiscount, idProjection, seatNumber, date, film, room, cinema})"
+            }
+        }
+    ]
+},
+{
+    "URL" : "studios.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "name",
+                "output" : "id"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "id, name",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "id",
+                "output" : "true/NULL"
+            }
+        },
+        {"SELECT_ALL" : 
+            {
+                "input"  : "",
+                "output" : "asocAray(idStudio,name)"
+            }
+        },
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idStudio,name"
+            }
+        }
+    ]
+},
+{
+    "URL" : "tickets.php",
+    "REQUESTS" :[
+        {"SELECT" : 
+            {
+                "input"  : "id",
+                "output" : "idTicket,price,idReservation,idDiscount,idProjection,seatNumber"
+            }
+        },
+        {"SELECT_PROJECTION" : 
+            {
+                "input"  : "idProjection",
+                "output" : "array(idTicket,price,idReservation,idDiscount,idProjection,seatNumber)"
+            }
+        },
+        {"SELECT_RESERVATION" : 
+            {
+                "input"  : "idReservation",
+                "output" : "array(idTicket,price,idReservation,idDiscount,idProjection,seatNumber)"
+            }
+        }
+    ]
+},
+{
+    "URL" : "users.php",
+    "REQUESTS" :[
+        {"INSERT" : 
+            {
+                "input"  : "login, name, surname, email, pass, pass_verifi",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGIN" : 
+            {
+                "input"  : "login, pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGOUT" : 
+            {
+                "input"  : "",
+                "output" : "true/NULL"
+            }
+        },
+        {"UPDATE" : 
+            {
+                "input"  : "login, name, surname, email, pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"CHANGE_PASSW" : 
+            {
+                "input"  : "login, old_pass, new_pass, new_verifi",
+                "output" : "true/NULL"
+            }
+        },
+        {"DELETE" : 
+            {
+                "input"  : "login, pass",
+                "output" : "true/NULL"
+            }
+        },
+        {"LOGGED" : 
+            {
+                "input"  : "",
+                "output" : "id, login, name, surname, email"
+            }
+        }
+    ]
+}
+]
+
+
